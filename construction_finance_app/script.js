@@ -285,9 +285,18 @@ function displayLabour() {
     list.innerHTML = '';
     data.labour.forEach((item, index) => {
         const li = document.createElement('li');
-        li.innerHTML = `${item.name} - ${item.date} - $${item.money} <button class="delete-btn" data-type="labour" data-index="${index}">×</button>`;
+        li.className = 'record-card record-labour';
+        li.innerHTML = `
+            <div class="record-left">
+                <span class="record-name">${item.name}</span>
+                <span class="record-date">${item.date}</span>
+            </div>
+            <div class="record-right">
+                <span class="record-amount">$${Number(item.money).toLocaleString()}</span>
+                <button class="delete-btn" data-type="labour" data-index="${index}">×</button>
+            </div>`;
         li.addEventListener('click', (e) => {
-            if (e.target.classList.contains('delete')) return;
+            if (e.target.classList.contains('delete-btn')) return;
             showLabourDetails(item.name);
         });
         list.appendChild(li);
@@ -337,9 +346,18 @@ function displayEngineers() {
     list.innerHTML = '';
     data.engineers.forEach((item, index) => {
         const li = document.createElement('li');
-        li.innerHTML = `${item.name} - ${item.date} - $${item.amount} (${item.paymentType}) <button class="delete-btn" data-type="engineers" data-index="${index}">×</button>`;
+        li.className = 'record-card record-engineer';
+        li.innerHTML = `
+            <div class="record-left">
+                <span class="record-name">${item.name}</span>
+                <span class="record-date">${item.date} · ${item.paymentType}</span>
+            </div>
+            <div class="record-right">
+                <span class="record-amount">$${Number(item.amount).toLocaleString()}</span>
+                <button class="delete-btn" data-type="engineers" data-index="${index}">×</button>
+            </div>`;
         li.addEventListener('click', (e) => {
-            if (e.target.classList.contains('delete')) return;
+            if (e.target.classList.contains('delete-btn')) return;
             showEngineerDetails(item.name);
         });
         list.appendChild(li);
@@ -351,9 +369,18 @@ function displayExpenses() {
     list.innerHTML = '';
     data.expenses.forEach((item, index) => {
         const li = document.createElement('li');
-        li.innerHTML = `${item.description} - ${item.date} - $${item.amount} <button class="delete-btn" data-type="expenses" data-index="${index}">×</button>`;
+        li.className = 'record-card record-expense';
+        li.innerHTML = `
+            <div class="record-left">
+                <span class="record-name">${item.description}</span>
+                <span class="record-date">${item.date}</span>
+            </div>
+            <div class="record-right">
+                <span class="record-amount">$${Number(item.amount).toLocaleString()}</span>
+                <button class="delete-btn" data-type="expenses" data-index="${index}">×</button>
+            </div>`;
         li.addEventListener('click', (e) => {
-            if (e.target.classList.contains('delete')) return;
+            if (e.target.classList.contains('delete-btn')) return;
             showExpenseDetails(index);
         });
         list.appendChild(li);

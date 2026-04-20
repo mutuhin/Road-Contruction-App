@@ -559,6 +559,65 @@ li:last-child {
     border-bottom: none;
 }
 
+.record-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 14px;
+    border-bottom: 1px dashed var(--line2);
+    border-left: 4px solid transparent;
+    border-radius: 0;
+    cursor: pointer;
+    transition: background-color 0.15s;
+    flex-direction: row;
+    gap: 0;
+}
+
+.record-card:hover {
+    background-color: var(--line2);
+}
+
+.record-labour  { border-left-color: var(--green); }
+.record-engineer { border-left-color: var(--blue); }
+.record-expense  { border-left-color: var(--red); }
+
+.record-left {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.record-name {
+    font-weight: 700;
+    font-size: 1em;
+    color: var(--ink);
+}
+
+.record-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+}
+
+.record-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.record-amount {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 900;
+    font-size: 1.5em;
+    letter-spacing: -0.02em;
+}
+
+.record-labour  .record-amount { color: var(--green); }
+.record-engineer .record-amount { color: var(--blue); }
+.record-expense  .record-amount { color: var(--red); }
+
 .delete-btn {
     background: var(--paper);
     color: var(--ink2);

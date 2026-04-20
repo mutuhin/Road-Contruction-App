@@ -115,12 +115,31 @@ document.addEventListener('DOMContentLoaded', function() {
         exportData();
     });
 
+    // Dashboard stat cards
+    const totalSpentCard = document.getElementById('totalSpentCard');
+    const totalDueCard = document.getElementById('totalDueCard');
+    if (totalSpentCard) {
+        totalSpentCard.addEventListener('click', showTotalSpentDetails);
+    }
+    if (totalDueCard) {
+        totalDueCard.addEventListener('click', showTotalDueDetails);
+    }
+
     // Entity help link
     const entityHelpLink = document.getElementById('entityHelpLink');
     if (entityHelpLink) {
         entityHelpLink.addEventListener('click', function(e) {
             e.preventDefault();
             document.getElementById('entityList').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    }
+
+    // Close detail panel
+    const closeDetailsBtn = document.getElementById('closeDetailsBtn');
+    if (closeDetailsBtn) {
+        closeDetailsBtn.addEventListener('click', function() {
+            const detailPanel = document.getElementById('detailPanel');
+            if (detailPanel) detailPanel.classList.add('hidden');
         });
     }
 
@@ -235,11 +254,13 @@ function displayData() {
     renderEntitySummary();
     
     // Add delete event listeners
-    document.querySelectorAll('.delete').forEach(btn => {
+    document.querySelectorAll('.delete-btn[data-type]').forEach(btn => {
         btn.addEventListener('click', function() {
             const type = this.getAttribute('data-type');
             const index = parseInt(this.getAttribute('data-index'));
-            deleteItem(type, index);
+            if (type && !Number.isNaN(index)) {
+                deleteItem(type, index);
+            }
         });
     });
 }
@@ -249,7 +270,7 @@ function displayLabour() {
     list.innerHTML = '';
     data.labour.forEach((item, index) => {
         const li = document.createElement('li');
-        li.innerHTML = `${item.name} - ${item.date} - $${item.money} <button class="delete" data-type="labour" data-index="${index}">Delete</button>`;
+        li.innerHTML = `${item.name} - ${item.date} - $${item.money} <button class="delete-btn" data-type="labour" data-index="${index}">×</button>`;
         li.addEventListener('click', (e) => {
             if (e.target.classList.contains('delete')) return;
             showLabourDetails(item.name);
@@ -263,7 +284,7 @@ function displayMaterials() {
     list.innerHTML = '';
     data.materials.forEach((item, index) => {
         const li = document.createElement('li');
-        li.innerHTML = `${item.buyer} - ${item.materialName} - ${item.date} - Bill: $${item.bill}, Paid: $${item.paid}, Due: $${item.due} <button class="delete" data-type="materials" data-index="${index}">Delete</button>`;
+        li.innerHTML = `${item.buyer} - ${item.materialName} - ${item.date} - Bill: $${item.bill}, Paid: $${item.paid}, Due: $${item.due} <button class="delete-btn" data-type="materials" data-index="${index}">×</button>`;
         li.addEventListener('click', (e) => {
             if (e.target.classList.contains('delete')) return;
             showMaterialDetails(item.buyer, item.materialName);
@@ -277,7 +298,7 @@ function displayPayments() {
     list.innerHTML = '';
     data.payments.forEach((item, index) => {
         const li = document.createElement('li');
-        li.innerHTML = `${item.type} - ${item.details} - $${item.amount} <button class="delete" data-type="payments" data-index="${index}">Delete</button>`;
+        li.innerHTML = `${item.type} - ${item.details} - $${item.amount} <button class="delete-btn" data-type="payments" data-index="${index}">×</button>`;
         if (item.image) {
             const img = document.createElement('img');
             img.src = item.image;
@@ -298,7 +319,7 @@ function displayEngineers() {
     list.innerHTML = '';
     data.engineers.forEach((item, index) => {
         const li = document.createElement('li');
-        li.innerHTML = `${item.name} - ${item.date} - $${item.amount} (${item.paymentType}) <button class="delete" data-type="engineers" data-index="${index}">Delete</button>`;
+        li.innerHTML = `${item.name} - ${item.date} - $${item.amount} (${item.paymentType}) <button class="delete-btn" data-type="engineers" data-index="${index}">×</button>`;
         li.addEventListener('click', (e) => {
             if (e.target.classList.contains('delete')) return;
             showEngineerDetails(item.name);
@@ -312,7 +333,7 @@ function displayExpenses() {
     list.innerHTML = '';
     data.expenses.forEach((item, index) => {
         const li = document.createElement('li');
-        li.innerHTML = `${item.description} - ${item.date} - $${item.amount} <button class="delete" data-type="expenses" data-index="${index}">Delete</button>`;
+        li.innerHTML = `${item.description} - ${item.date} - $${item.amount} <button class="delete-btn" data-type="expenses" data-index="${index}">×</button>`;
         li.addEventListener('click', (e) => {
             if (e.target.classList.contains('delete')) return;
             showExpenseDetails(index);
@@ -345,7 +366,7 @@ function showLabourDetails(name) {
     labourData.forEach(item => {
         details += `${item.date}: $${item.money}\n`;
     });
-    alert(details);
+    showDetails(`${name} details`, details);
 }
 
 function showMaterialDetails(buyer, materialName) {
@@ -356,7 +377,7 @@ function showMaterialDetails(buyer, materialName) {
     materialData.forEach(item => {
         details += `${item.date}: Bill $${item.bill}, Paid $${item.paid}, Due $${item.due}, Quantity: ${item.quantity}\n`;
     });
-    alert(details);
+    showDetails(`${buyer} / ${materialName}`, details);
 }
 
 function showEngineerDetails(name) {
@@ -366,18 +387,18 @@ function showEngineerDetails(name) {
     engineerData.forEach(item => {
         details += `${item.date}: $${item.amount} (${item.paymentType})\n`;
     });
-    alert(details);
+    showDetails(`${name} details`, details);
 }
 
 function showPaymentDetails(index) {
     const payment = data.payments[index];
-    alert(`Payment Details:\nType: ${payment.type}\nDetails: ${payment.details}\nAmount: $${payment.amount}`);
+    showDetails('Payment details', `Type: ${payment.type}\nDetails: ${payment.details || 'cash'}\nAmount: $${payment.amount}`);
 }
 
 function showBuyerDetails(buyer) {
     const materialData = data.materials.filter(item => item.buyer === buyer);
     if (!materialData.length) {
-        alert('No raw materials found for this buyer.');
+        showDetails('No details found', 'No raw materials found for this buyer.');
         return;
     }
     const totalPaid = materialData.reduce((sum, item) => sum + item.paid, 0);
@@ -386,13 +407,13 @@ function showBuyerDetails(buyer) {
     materialData.forEach(item => {
         details += `${item.date}: ${item.materialName}, Bill $${item.bill}, Paid $${item.paid}, Due $${item.due}, Quantity: ${item.quantity}\n`;
     });
-    alert(details);
+    showDetails(`${buyer} details`, details);
 }
 
 function showMaterialNameDetails(name) {
     const materialData = data.materials.filter(item => item.materialName === name);
     if (!materialData.length) {
-        alert('No raw materials found for this material name.');
+        showDetails('No details found', 'No raw materials found for this material name.');
         return;
     }
     const totalPaid = materialData.reduce((sum, item) => sum + item.paid, 0);
@@ -401,18 +422,9 @@ function showMaterialNameDetails(name) {
     materialData.forEach(item => {
         details += `${item.date}: Buyer ${item.buyer}, Bill $${item.bill}, Paid $${item.paid}, Due $${item.due}, Quantity: ${item.quantity}\n`;
     });
-    alert(details);
+    showDetails(`${name} details`, details);
 }
 
-function showEngineerDetails(name) {
-    const engineerData = data.engineers.filter(item => item.name === name);
-    const totalPaid = engineerData.reduce((sum, item) => sum + item.amount, 0);
-    let details = `${name} - Total Paid: $${totalPaid.toFixed(2)}\n\nPayments:\n`;
-    engineerData.forEach(item => {
-        details += `${item.date}: $${item.amount} (${item.paymentType})\n`;
-    });
-    alert(details);
-}
 
 function renderEntitySummary() {
     const list = document.getElementById('entityList');
@@ -448,5 +460,61 @@ function showEntityDetails(type, name) {
 
 function showExpenseDetails(index) {
     const expense = data.expenses[index];
-    alert(`Expense Details:\nDescription: ${expense.description}\nDate: ${expense.date}\nAmount: $${expense.amount}`);
+    showDetails('Expense details', `Description: ${expense.description}\nDate: ${expense.date}\nAmount: $${expense.amount}`);
+}
+
+function showTotalSpentDetails() {
+    let totalSpent = 0;
+    let details = 'Breakdown:\n\n';
+    data.labour.forEach(item => {
+        totalSpent += item.money;
+        details += `Labour: ${item.name} - ${item.date} - $${item.money}\n`;
+    });
+    data.materials.forEach(item => {
+        totalSpent += item.paid;
+        details += `Material: ${item.buyer} / ${item.materialName} - Paid $${item.paid} (Bill $${item.bill})\n`;
+    });
+    data.payments.forEach(item => {
+        totalSpent += item.amount;
+        details += `Payment: ${item.type} - ${item.details || 'cash'} - $${item.amount}\n`;
+    });
+    data.engineers.forEach(item => {
+        totalSpent += item.amount;
+        details += `Engineer: ${item.name} - ${item.date} - $${item.amount}\n`;
+    });
+    data.expenses.forEach(item => {
+        totalSpent += item.amount;
+        details += `Expense: ${item.description} - ${item.date} - $${item.amount}\n`;
+    });
+    details += `\nTotal Money Spent: $${totalSpent.toFixed(2)}`;
+    showDetails('Total Money Spent', details);
+}
+
+function showTotalDueDetails() {
+    const totalDue = data.materials.reduce((sum, item) => sum + item.due, 0);
+    let details = 'Raw Material Due Details:\n\n';
+    data.materials.forEach(item => {
+        if (item.due > 0) {
+            details += `${item.date}: ${item.buyer} / ${item.materialName} - Bill $${item.bill}, Paid $${item.paid}, Due $${item.due}\n`;
+        }
+    });
+    if (!data.materials.some(item => item.due > 0)) {
+        details += 'No outstanding due details found.';
+    }
+    details += `\nTotal Due: $${totalDue.toFixed(2)}`;
+    showDetails('Total Due', details);
+}
+
+function showDetails(title, content) {
+    const detailPanel = document.getElementById('detailPanel');
+    const detailsTitle = document.getElementById('detailsTitle');
+    const detailsContent = document.getElementById('detailsContent');
+    if (detailPanel && detailsTitle && detailsContent) {
+        detailsTitle.textContent = title;
+        detailsContent.textContent = content;
+        detailPanel.classList.remove('hidden');
+        detailPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+        alert(`${title}\n\n${content}`);
+    }
 }

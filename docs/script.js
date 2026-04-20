@@ -66,39 +66,6 @@ document.addEventListener('DOMContentLoaded', function() {
         updateMatRefPlaceholder();
     });
 
-    // Payment form
-    const paymentTypeInput = document.getElementById('paymentType');
-    const paymentDetailsInput = document.getElementById('paymentDetails');
-
-    function updatePaymentDetailsRequirements() {
-        if (paymentTypeInput.value === 'cash') {
-            paymentDetailsInput.placeholder = 'Details optional for cash';
-        } else {
-            paymentDetailsInput.placeholder = 'Cheque/NPSB/Number';
-        }
-    }
-
-    paymentTypeInput.addEventListener('change', updatePaymentDetailsRequirements);
-    updatePaymentDetailsRequirements();
-
-    document.getElementById('paymentForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const type = paymentTypeInput.value;
-        let details = paymentDetailsInput.value.trim();
-        const amount = parseFloat(document.getElementById('paymentAmount').value);
-        const imageFile = document.getElementById('paymentImage').files[0];
-        if (type !== 'cash' && !details) {
-            alert('Please enter payment details for non-cash payments.');
-            return;
-        }
-        if (isNaN(amount) || amount <= 0) {
-            alert('Please enter a valid payment amount.');
-            return;
-        }
-        addPayment(type, details, amount, imageFile);
-        this.reset();
-        updatePaymentDetailsRequirements();
-    });
 
     // Engineer form
     document.getElementById('engineerForm').addEventListener('submit', function(e) {

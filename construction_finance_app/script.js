@@ -1,5 +1,10 @@
 const DATABASE_KEY = 'roadConstructionFinanceDB';
 
+// ── Bangla number formatting ──────────────────────
+const BN = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
+const toBn = s => String(s).replace(/\d/g, d => BN[+d]);
+const fmtTaka = n => '৳\u00a0' + toBn(Math.abs(Number(n)).toLocaleString(undefined, { maximumFractionDigits: 2 }));
+
 document.addEventListener('DOMContentLoaded', function() {
     loadData();
     updateDashboard();
@@ -182,7 +187,7 @@ document.addEventListener('DOMContentLoaded', function() {
         billAmtEl.readOnly = hasCalc;
         if (!hasCalc) { billAmtEl.readOnly = false; billAmtEl.value = ''; tenderValueEl.value = ''; tenderPctEl.value = ''; }
         const lbl = document.getElementById('tenderValueLabel');
-        if (lbl) lbl.textContent = cat === 'tender' ? 'Tender Value ($)' : 'Base Value ($)';
+        if (lbl) lbl.textContent = cat === 'tender' ? 'Tender Value (৳)' : 'Base Value (৳)';
         calcTenderAmt();
     }
     function calcTenderAmt() {
@@ -465,19 +470,19 @@ function exportPDF(fd) {
         y = doc.lastAutoTable.finalY + 8;
     };
 
-    const $ = n => '$' + Number(n).toLocaleString();
+    const fmt = n => '\u09F3\u00a0' + Math.abs(Number(n)).toLocaleString(undefined, { maximumFractionDigits: 2 });
 
     section('Labour',        ['Name','Date','Amount'],
-        fd.labour.map(i => [i.name, i.date, $(i.money)]), [45,106,79]);
+        fd.labour.map(i => [i.name, i.date, fmt(i.money)]), [45,106,79]);
 
     section('Materials',     ['Buyer','Material','Date','Bill','Paid','Due','Method'],
-        fd.materials.map(i => [i.buyer, i.materialName, i.date, $(i.bill), $(i.paid), $(i.due), i.paymentType||'cash']), [26,78,140]);
+        fd.materials.map(i => [i.buyer, i.materialName, i.date, fmt(i.bill), fmt(i.paid), fmt(i.due), i.paymentType||'cash']), [26,78,140]);
 
     section('Engineer Dowry',['Name','Date','Amount','Payment'],
-        fd.engineers.map(i => [i.name, i.date, $(i.amount), i.paymentType]), [93,63,211]);
+        fd.engineers.map(i => [i.name, i.date, fmt(i.amount), i.paymentType]), [93,63,211]);
 
     section('Expenses',      ['Description','Date','Amount'],
-        fd.expenses.map(i => [i.description, i.date, $(i.amount)]), [214,78,31]);
+        fd.expenses.map(i => [i.description, i.date, fmt(i.amount)]), [214,78,31]);
 
     // Totals
     let spent = 0, due = 0;
@@ -488,8 +493,8 @@ function exportPDF(fd) {
 
     doc.setDrawColor(200); doc.line(14, y, 196, y); y += 6;
     doc.setFontSize(11); doc.setFont('helvetica', 'bold');
-    doc.text(`Total Spent: ${$(spent)}`, 14, y); y += 6;
-    doc.text(`Total Due:   ${$(due)}`,   14, y);
+    doc.text(`Total Spent: ${fmt(spent)}`, 14, y); y += 6;
+    doc.text(`Total Due:   ${fmt(due)}`,   14, y);
 
     doc.save('road_construction_report.pdf');
 }
@@ -600,7 +605,7 @@ function displayLabour() {
                 <span class="record-date">${item.date}</span>
             </div>
             <div class="record-right">
-                <span class="record-amount">$${Number(item.money).toLocaleString()}</span>
+                <span class="record-amount">${fmtTaka(item.money)}</span>
                 <button class="delete-btn" data-type="labour" data-index="${index}">×</button>
             </div>`;
         li.addEventListener('click', (e) => {
@@ -618,7 +623,7 @@ function displayMaterials() {
     data.materials.forEach((item, index) => {
         const li = document.createElement('li');
         const payLabel = item.paymentType === 'bank' ? `Bank${item.paymentRef ? ' · ' + item.paymentRef : ''}` : 'Cash';
-        li.innerHTML = `${item.buyer} - ${item.materialName} - ${item.date} - Bill: $${item.bill}, Paid: $${item.paid} <span class="pay-method-tag">${payLabel}</span>, Due: $${item.due} <button class="delete-btn" data-type="materials" data-index="${index}">×</button>`;
+        li.innerHTML = `${item.buyer} - ${item.materialName} - ${item.date} - Bill: ${fmtTaka(item.bill)}, Paid: ${fmtTaka(item.paid)} <span class="pay-method-tag">${payLabel}</span>, Due: ${fmtTaka(item.due)} <button class="delete-btn" data-type="materials" data-index="${index}">×</button>`;
         li.addEventListener('click', (e) => {
             if (e.target.classList.contains('delete')) return;
             showMaterialDetails(item.buyer, item.materialName);
@@ -633,7 +638,7 @@ function displayPayments() {
     list.innerHTML = '';
     data.payments.forEach((item, index) => {
         const li = document.createElement('li');
-        li.innerHTML = `${item.type} - ${item.details} - $${item.amount} <button class="delete-btn" data-type="payments" data-index="${index}">×</button>`;
+        li.innerHTML = `${item.type} - ${item.details} - ${fmtTaka(item.amount)} <button class="delete-btn" data-type="payments" data-index="${index}">×</button>`;
         if (item.image) {
             const img = document.createElement('img');
             img.src = item.image;
@@ -661,7 +666,7 @@ function displayEngineers() {
                 <span class="record-date">${item.date} · ${item.paymentType}</span>
             </div>
             <div class="record-right">
-                <span class="record-amount">$${Number(item.amount).toLocaleString()}</span>
+                <span class="record-amount">${fmtTaka(item.amount)}</span>
                 <button class="delete-btn" data-type="engineers" data-index="${index}">×</button>
             </div>`;
         li.addEventListener('click', (e) => {
@@ -684,7 +689,7 @@ function displayExpenses() {
                 <span class="record-date">${item.date}</span>
             </div>
             <div class="record-right">
-                <span class="record-amount">$${Number(item.amount).toLocaleString()}</span>
+                <span class="record-amount">${fmtTaka(item.amount)}</span>
                 <button class="delete-btn" data-type="expenses" data-index="${index}">×</button>
             </div>`;
         li.addEventListener('click', (e) => {
@@ -718,9 +723,9 @@ function updateDashboard() {
 
     const totalGotBill  = (data.govtReceived || []).reduce((s, g) => s + (g.amount || 0), 0);
 
-    document.getElementById('totalSpent').textContent = totalSpent.toFixed(2);
+    document.getElementById('totalSpent').textContent = fmtTaka(totalSpent);
 
-    const fmt = n => '$' + Math.abs(n).toLocaleString(undefined, { minimumFractionDigits: 2 });
+    const fmt = fmtTaka;
     const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
 
     // Liquid cash
@@ -736,7 +741,7 @@ function updateDashboard() {
     if (cashLabEl) cashLabEl.className = 'cash-label cash-balance-label ' + (cashPositive ? 'cash-pos' : 'cash-neg');
 
     const dueFromGovt = Math.max(0, govtPayment - totalGotBill);
-    document.getElementById('totalDue').textContent = dueFromGovt.toFixed(2);
+    document.getElementById('totalDue').textContent = fmtTaka(dueFromGovt);
 
     set('pnlTender',      fmt(tenderTotal));
     set('pnlGovt',        fmt(govtTotal));
@@ -761,11 +766,11 @@ function updateDashboard() {
 function showLabourDetails(name) {
     const items = data.labour.filter(item => item.name === name);
     const total = items.reduce((sum, item) => sum + item.money, 0);
-    let html = `<div class="detail-header">Total Paid: <strong>$${total.toLocaleString(undefined, {minimumFractionDigits: 2})}</strong></div>`;
+    let html = `<div class="detail-header">Total Paid: <strong>${fmtTaka(total)}</strong></div>`;
     items.forEach(item => {
         html += `<div class="detail-item">
             <span class="detail-date">${item.date}</span>
-            <span class="detail-amount">$${Number(item.money).toLocaleString()}</span>
+            <span class="detail-amount">${fmtTaka(item.money)}</span>
         </div>`;
     });
     showDetailsHTML(name, html);
@@ -775,7 +780,7 @@ function showMaterialDetails(buyer, materialName) {
     const items = data.materials.filter(item => item.buyer === buyer && item.materialName === materialName);
     const totalPaid = items.reduce((sum, item) => sum + item.paid, 0);
     const totalDue = items.reduce((sum, item) => sum + item.due, 0);
-    let html = `<div class="detail-header">Paid <strong>$${totalPaid.toLocaleString(undefined, {minimumFractionDigits: 2})}</strong> · Due <span class="detail-due-text">$${totalDue.toLocaleString(undefined, {minimumFractionDigits: 2})}</span></div>`;
+    let html = `<div class="detail-header">Paid <strong>${fmtTaka(totalPaid)}</strong> · Due <span class="detail-due-text">${fmtTaka(totalDue)}</span></div>`;
     items.forEach(item => {
         const payLabel = item.paymentType === 'bank'
             ? `Bank Transfer${item.paymentRef ? ' · ' + item.paymentRef : ''}`
@@ -787,26 +792,26 @@ function showMaterialDetails(buyer, materialName) {
                 <span class="detail-paymethod">${payLabel}</span>
             </div>
             <div class="detail-amounts">
-                <span class="detail-paid-tag">Paid $${Number(item.paid).toLocaleString()}</span>
-                ${item.due > 0 ? `<span class="detail-due-tag">Due $${Number(item.due).toLocaleString()}</span>` : ''}
+                <span class="detail-paid-tag">Paid ${fmtTaka(item.paid)}</span>
+                ${item.due > 0 ? `<span class="detail-due-tag">Due ${fmtTaka(item.due)}</span>` : ''}
             </div>
         </div>`;
     });
-    html += `<div class="detail-total">Total Paid: $${totalPaid.toFixed(2)}</div>`;
+    html += `<div class="detail-total">Total Paid: ${fmtTaka(totalPaid)}</div>`;
     showDetailsHTML(`${buyer} / ${materialName}`, html);
 }
 
 function showEngineerDetails(name) {
     const items = data.engineers.filter(item => item.name === name);
     const total = items.reduce((sum, item) => sum + item.amount, 0);
-    let html = `<div class="detail-header">Total Paid: <strong>$${total.toLocaleString(undefined, {minimumFractionDigits: 2})}</strong></div>`;
+    let html = `<div class="detail-header">Total Paid: <strong>${fmtTaka(total)}</strong></div>`;
     items.forEach(item => {
         html += `<div class="detail-item">
             <div class="detail-meta">
                 <span class="detail-date">${item.date}</span>
                 <span class="detail-name">${item.paymentType}</span>
             </div>
-            <span class="detail-amount">$${Number(item.amount).toLocaleString()}</span>
+            <span class="detail-amount">${fmtTaka(item.amount)}</span>
         </div>`;
     });
     showDetailsHTML(name, html);
@@ -814,7 +819,7 @@ function showEngineerDetails(name) {
 
 function showPaymentDetails(index) {
     const payment = data.payments[index];
-    showDetails('Payment details', `Type: ${payment.type}\nDetails: ${payment.details || 'cash'}\nAmount: $${payment.amount}`);
+    showDetails('Payment details', `Type: ${payment.type}\nDetails: ${payment.details || 'cash'}\nAmount: ${fmtTaka(payment.amount)}`);
 }
 
 function showBuyerDetails(buyer) {
@@ -825,7 +830,7 @@ function showBuyerDetails(buyer) {
     }
     const totalPaid = items.reduce((sum, item) => sum + item.paid, 0);
     const totalDue = items.reduce((sum, item) => sum + item.due, 0);
-    let html = `<div class="detail-header">Paid <strong>$${totalPaid.toLocaleString(undefined, {minimumFractionDigits: 2})}</strong> · Due <span class="detail-due-text">$${totalDue.toLocaleString(undefined, {minimumFractionDigits: 2})}</span></div>`;
+    let html = `<div class="detail-header">Paid <strong>${fmtTaka(totalPaid)}</strong> · Due <span class="detail-due-text">${fmtTaka(totalDue)}</span></div>`;
     items.forEach(item => {
         const payLabel = item.paymentType === 'bank'
             ? `Bank Transfer${item.paymentRef ? ' · ' + item.paymentRef : ''}`
@@ -837,12 +842,12 @@ function showBuyerDetails(buyer) {
                 <span class="detail-paymethod">${payLabel}</span>
             </div>
             <div class="detail-amounts">
-                <span class="detail-paid-tag">Paid $${Number(item.paid).toLocaleString()}</span>
-                ${item.due > 0 ? `<span class="detail-due-tag">Due $${Number(item.due).toLocaleString()}</span>` : ''}
+                <span class="detail-paid-tag">Paid ${fmtTaka(item.paid)}</span>
+                ${item.due > 0 ? `<span class="detail-due-tag">Due ${fmtTaka(item.due)}</span>` : ''}
             </div>
         </div>`;
     });
-    html += `<div class="detail-total">Total Paid: $${totalPaid.toFixed(2)}</div>`;
+    html += `<div class="detail-total">Total Paid: ${fmtTaka(totalPaid)}</div>`;
     showDetailsHTML(buyer, html);
 }
 
@@ -854,7 +859,7 @@ function showMaterialNameDetails(name) {
     }
     const totalPaid = items.reduce((sum, item) => sum + item.paid, 0);
     const totalDue = items.reduce((sum, item) => sum + item.due, 0);
-    let html = `<div class="detail-header">Paid <strong>$${totalPaid.toLocaleString(undefined, {minimumFractionDigits: 2})}</strong> · Due <span class="detail-due-text">$${totalDue.toLocaleString(undefined, {minimumFractionDigits: 2})}</span></div>`;
+    let html = `<div class="detail-header">Paid <strong>${fmtTaka(totalPaid)}</strong> · Due <span class="detail-due-text">${fmtTaka(totalDue)}</span></div>`;
     items.forEach(item => {
         html += `<div class="detail-item">
             <div class="detail-meta">
@@ -862,12 +867,12 @@ function showMaterialNameDetails(name) {
                 <span class="detail-name">${item.buyer}</span>
             </div>
             <div class="detail-amounts">
-                <span class="detail-paid-tag">Paid $${Number(item.paid).toLocaleString()}</span>
-                ${item.due > 0 ? `<span class="detail-due-tag">Due $${Number(item.due).toLocaleString()}</span>` : ''}
+                <span class="detail-paid-tag">Paid ${fmtTaka(item.paid)}</span>
+                ${item.due > 0 ? `<span class="detail-due-tag">Due ${fmtTaka(item.due)}</span>` : ''}
             </div>
         </div>`;
     });
-    html += `<div class="detail-total">Total Paid: $${totalPaid.toFixed(2)}</div>`;
+    html += `<div class="detail-total">Total Paid: ${fmtTaka(totalPaid)}</div>`;
     showDetailsHTML(name, html);
 }
 
@@ -911,10 +916,10 @@ function displayBills() {
                 <div class="bill-info">
                     <span class="bill-party">${bill.party || '—'}</span>
                     <span class="bill-desc">${bill.description}</span>
-                    ${bill.tenderValue ? `<span class="bill-tender-meta">$${Number(bill.tenderValue).toLocaleString()} − ${bill.tenderPct}%</span>` : ''}
+                    ${bill.tenderValue ? `<span class="bill-tender-meta">${fmtTaka(bill.tenderValue)} − ${toBn(bill.tenderPct)}%</span>` : ''}
                     <span class="bill-due-date" style="color:${overdue ? 'var(--red)' : 'var(--muted)'}">Due: ${bill.dueDate}</span>
                 </div>
-                <span class="bill-amount">$${Number(bill.amount).toLocaleString()}</span>
+                <span class="bill-amount">${fmtTaka(bill.amount)}</span>
             </div>
             <div class="bill-actions">
                 ${!isPaid ? `<button class="bill-pay-btn" data-index="${index}">✓ Mark Paid</button>` : ''}
@@ -974,7 +979,7 @@ function showEntityDetails(type, name) {
 
 function showExpenseDetails(index) {
     const expense = data.expenses[index];
-    showDetails('Expense details', `Description: ${expense.description}\nDate: ${expense.date}\nAmount: $${expense.amount}`);
+    showDetails('Expense details', `Description: ${expense.description}\nDate: ${expense.date}\nAmount: ${fmtTaka(expense.amount)}`);
 }
 
 function showTotalSpentDetails() {
@@ -991,7 +996,7 @@ function showTotalSpentDetails() {
             <span class="detail-date">${date}</span>
             <span class="detail-name">${name}</span>
         </div>
-        <span class="detail-amount">$${Number(amount).toLocaleString()}</span>
+        <span class="detail-amount">${fmtTaka(amount)}</span>
     </div>`;
 
     data.labour.forEach(item => { totalSpent += item.money; });
@@ -1007,7 +1012,7 @@ function showTotalSpentDetails() {
     html += section('Expenses', data.expenses.map(i => row(i.date, i.description, i.amount)));
 
     if (!html) html = '<p class="due-empty">No spending recorded yet.</p>';
-    html += `<div class="detail-total">Total Spent: $${totalSpent.toFixed(2)}</div>`;
+    html += `<div class="detail-total">Total Spent: ${fmtTaka(totalSpent)}</div>`;
     showDetailsHTML('Total Money Spent', html);
 }
 
@@ -1024,11 +1029,11 @@ function showTotalDueDetails() {
                     <span class="due-date">${item.date}</span>
                     <span class="due-name">${item.buyer} / ${item.materialName}</span>
                 </div>
-                <span class="due-amount">Due $${Number(item.due).toLocaleString()}</span>
+                <span class="due-amount">Due ${fmtTaka(item.due)}</span>
             </div>`;
         });
     }
-    html += `<div class="due-total">Total Due: $${totalDue.toFixed(2)}</div>`;
+    html += `<div class="due-total">Total Due: ${fmtTaka(totalDue)}</div>`;
     showDetailsHTML('Total Due', html);
 }
 
@@ -1116,7 +1121,7 @@ function displayGotBills() {
                 <span class="record-date">${item.date}</span>
             </div>
             <div class="record-right">
-                <span class="record-amount">$${Number(item.amount).toLocaleString()}</span>
+                <span class="record-amount">${fmtTaka(item.amount)}</span>
                 <button class="delete-btn" data-type="govtReceived" data-index="${index}">×</button>
             </div>`;
         li.querySelector('.delete-btn').addEventListener('click', function() {
@@ -1139,7 +1144,7 @@ function displayCash() {
                 <span class="record-date">${item.date}</span>
             </div>
             <div class="record-right">
-                <span class="record-amount">$${Number(item.amount).toLocaleString()}</span>
+                <span class="record-amount">${fmtTaka(item.amount)}</span>
                 <button class="delete-btn" data-type="cashIn" data-index="${index}">×</button>
             </div>`;
         li.querySelector('.delete-btn').addEventListener('click', function() {
@@ -1171,15 +1176,15 @@ function displayContracts() {
             <div class="contract-amounts">
                 <div class="contract-stat">
                     <span class="contract-stat-label">Contract</span>
-                    <span class="contract-stat-value">$${Number(contract.amount).toLocaleString()}</span>
+                    <span class="contract-stat-value">${fmtTaka(contract.amount)}</span>
                 </div>
                 <div class="contract-stat">
                     <span class="contract-stat-label">Paid</span>
-                    <span class="contract-stat-value cstat-paid">$${Number(paid).toLocaleString()}</span>
+                    <span class="contract-stat-value cstat-paid">${fmtTaka(paid)}</span>
                 </div>
                 <div class="contract-stat">
                     <span class="contract-stat-label">Remaining</span>
-                    <span class="contract-stat-value cstat-remaining">$${Number(remaining).toLocaleString()}</span>
+                    <span class="contract-stat-value cstat-remaining">${fmtTaka(remaining)}</span>
                 </div>
             </div>
             <div class="contract-bar-wrap">
@@ -1212,20 +1217,19 @@ function updateSectionCards() {
     ]).size;
 
     const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
-    const $ = n => '$' + Number(n).toLocaleString();
 
-    set('dashLabourTotal', $(labourTotal));
-    set('dashLabourSub', data.labour.length + ' entries');
-    set('dashMatTotal', $(matPaid));
-    set('dashMatSub', matDue > 0 ? 'Due ' + $(matDue) : 'No due');
-    set('dashEngTotal', $(engTotal));
-    set('dashEngSub', data.engineers.length + ' entries');
-    set('dashExpTotal', $(expTotal));
-    set('dashExpSub', data.expenses.length + ' entries');
-    set('dashBillsTotal', pendingBills.length + ' pending');
-    set('dashBillsSub', $(billsTotal));
-    set('dashPeopleTotal', peopleCount + ' people');
-    set('dashPeopleSub', data.materials.length + ' materials');
+    set('dashLabourTotal', fmtTaka(labourTotal));
+    set('dashLabourSub', toBn(data.labour.length) + ' entries');
+    set('dashMatTotal', fmtTaka(matPaid));
+    set('dashMatSub', matDue > 0 ? 'Due ' + fmtTaka(matDue) : 'No due');
+    set('dashEngTotal', fmtTaka(engTotal));
+    set('dashEngSub', toBn(data.engineers.length) + ' entries');
+    set('dashExpTotal', fmtTaka(expTotal));
+    set('dashExpSub', toBn(data.expenses.length) + ' entries');
+    set('dashBillsTotal', toBn(pendingBills.length) + ' pending');
+    set('dashBillsSub', fmtTaka(billsTotal));
+    set('dashPeopleTotal', toBn(peopleCount) + ' people');
+    set('dashPeopleSub', toBn(data.materials.length) + ' materials');
 
     const contracts = data.contracts || [];
     const contractRemaining = contracts.reduce((s, c) => {
@@ -1234,6 +1238,6 @@ function updateSectionCards() {
             .reduce((a, l) => a + (l.money || 0), 0);
         return s + Math.max(0, c.amount - paid);
     }, 0);
-    set('dashContractTotal', contracts.length + ' contracts');
-    set('dashContractSub', '$' + Number(contractRemaining).toLocaleString() + ' remaining');
+    set('dashContractTotal', toBn(contracts.length) + ' contracts');
+    set('dashContractSub', fmtTaka(contractRemaining) + ' remaining');
 }

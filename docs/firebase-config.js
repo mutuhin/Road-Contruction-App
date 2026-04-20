@@ -7,13 +7,13 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 const firebaseConfig = {
-    apiKey:            "YOUR_API_KEY",
-    authDomain:        "YOUR_PROJECT_ID.firebaseapp.com",
-    databaseURL:       "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
-    projectId:         "YOUR_PROJECT_ID",
-    storageBucket:     "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId:             "YOUR_APP_ID"
+    apiKey:            "AIzaSyAqxuRTPv8mmpACGzlmCTv0_qkIBx2-89U",
+    authDomain:        "road-bb205.firebaseapp.com",
+    databaseURL:       "https://road-bb205-default-rtdb.firebaseio.com",
+    projectId:         "road-bb205",
+    storageBucket:     "road-bb205.firebasestorage.app",
+    messagingSenderId: "103059548552",
+    appId:             "1:103059548552:web:50d8016fdc9cd4a9b4b23d"
 };
 
 try {

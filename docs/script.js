@@ -501,17 +501,23 @@ function renderEntitySummary() {
             li.innerHTML = `<span class="entity-type-items"><span class="entity-tag">${label}</span><span class="entity-name">${name}</span></span>`;
             li.dataset.entityType = type;
             li.dataset.entityName = name;
-            li.addEventListener('click', () => {
-                showEntityDetails(type, name);
-            });
+            li.addEventListener('click', () => showEntityDetails(type, name));
             list.appendChild(li);
         });
     };
 
     addEntities('labour', 'Labour', data.labour.map(item => item.name));
     addEntities('engineer', 'Engineer', data.engineers.map(item => item.name));
-    addEntities('buyer', 'Buyer', data.materials.map(item => item.buyer));
-    addEntities('material', 'Material', data.materials.map(item => item.materialName));
+
+    // Materials: show unique buyer+material pairs
+    const uniquePairs = Array.from(new Set(data.materials.map(i => `${i.buyer}||${i.materialName}`))).sort();
+    uniquePairs.forEach(pair => {
+        const [buyer, materialName] = pair.split('||');
+        const li = document.createElement('li');
+        li.innerHTML = `<span class="entity-type-items"><span class="entity-tag">Material</span><span class="entity-name">${materialName}</span><span class="entity-buyer">${buyer}</span></span>`;
+        li.addEventListener('click', () => showMaterialDetails(buyer, materialName));
+        list.appendChild(li);
+    });
 }
 
 function showEntityDetails(type, name) {

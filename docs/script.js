@@ -114,6 +114,53 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.getElementById('doExportBtn').addEventListener('click', runExport);
 
+    // Bills to Pay form
+    const billCategoryEl = document.getElementById('billCategory');
+    const billPartySelectGroup = document.getElementById('billPartySelectGroup');
+    const billPartyInputGroup  = document.getElementById('billPartyInputGroup');
+    const billPartySelect = document.getElementById('billPartySelect');
+    const billPartyInput  = document.getElementById('billPartyInput');
+
+    function populateBillParty() {
+        const cat = billCategoryEl.value;
+        const freeText = cat === 'tender' || cat === 'other';
+        billPartySelectGroup.classList.toggle('hidden', freeText);
+        billPartyInputGroup.classList.toggle('hidden', !freeText);
+        if (freeText) return;
+
+        let names = [];
+        if (cat === 'material') names = [...new Set(data.materials.map(i => i.buyer))];
+        if (cat === 'labour')   names = [...new Set(data.labour.map(i => i.name))];
+        if (cat === 'engineer') names = [...new Set(data.engineers.map(i => i.name))];
+
+        billPartySelect.innerHTML = names.length
+            ? names.map(n => `<option value="${n}">${n}</option>`).join('')
+            : '<option value="">— no entries yet —</option>';
+    }
+
+    billCategoryEl.addEventListener('change', populateBillParty);
+    populateBillParty();
+
+    document.getElementById('billForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const cat = billCategoryEl.value;
+        const freeText = cat === 'tender' || cat === 'other';
+        const party = freeText ? billPartyInput.value.trim() : billPartySelect.value;
+        const description = document.getElementById('billDescription').value.trim();
+        const amount = parseFloat(document.getElementById('billAmountInput').value);
+        const dueDate = document.getElementById('billDueDate').value;
+        if (!description || !amount || !dueDate || (!party && !freeText)) {
+            alert('Please fill all fields.');
+            return;
+        }
+        data.bills.push({ cat, party, description, amount, dueDate, status: 'pending', created: new Date().toISOString().slice(0,10) });
+        saveData();
+        displayBills();
+        updateDashboard();
+        this.reset();
+        populateBillParty();
+    });
+
     // Dashboard stat cards
     const totalSpentCard = document.getElementById('totalSpentCard');
     const totalDueCard = document.getElementById('totalDueCard');
@@ -164,7 +211,8 @@ let data = {
     materials: [],
     payments: [],
     engineers: [],
-    expenses: []
+    expenses: [],
+    bills: []
 };
 
 const toArr = v => !v ? [] : Array.isArray(v) ? v : Object.values(v);
@@ -195,6 +243,7 @@ function loadData() {
                     payments:  toArr(val.payments),
                     engineers: toArr(val.engineers),
                     expenses:  toArr(val.expenses),
+                    bills:     toArr(val.bills),
                 };
                 localStorage.setItem(DATABASE_KEY, JSON.stringify(data));
             }
@@ -412,6 +461,7 @@ function displayData() {
     displayPayments();
     displayEngineers();
     displayExpenses();
+    displayBills();
     renderEntitySummary();
     
     // Add delete event listeners
@@ -424,6 +474,18 @@ function displayData() {
             }
         });
     });
+}
+
+function deleteItem(type, index) {
+    if (!confirm('Delete this entry?')) return;
+    if (type === 'bills') {
+        data.bills.splice(index, 1);
+    } else if (data[type]) {
+        data[type].splice(index, 1);
+    }
+    saveData();
+    displayData();
+    updateDashboard();
 }
 
 function displayLabour() {
@@ -663,6 +725,57 @@ function showMaterialNameDetails(name) {
     showDetailsHTML(name, html);
 }
 
+
+const BILL_CAT_LABELS = { material: 'Material', labour: 'Labour', engineer: 'Engineer', tender: 'Tender Drop', other: 'Other' };
+const BILL_CAT_COLORS = { material: 'var(--blue)', labour: 'var(--green)', engineer: '#7c3aed', tender: 'var(--amber)', other: 'var(--muted)' };
+
+function displayBills() {
+    const list = document.getElementById('billList');
+    if (!list) return;
+    list.innerHTML = '';
+    if (!data.bills || !data.bills.length) return;
+
+    const today = new Date().toISOString().slice(0, 10);
+
+    data.bills.forEach((bill, index) => {
+        const overdue = bill.status === 'pending' && bill.dueDate < today;
+        const isPaid  = bill.status === 'paid';
+        const li = document.createElement('li');
+        li.className = `bill-card ${isPaid ? 'bill-paid' : overdue ? 'bill-overdue' : 'bill-pending'}`;
+        li.innerHTML = `
+            <div class="bill-top">
+                <span class="bill-cat-tag" style="background:${BILL_CAT_COLORS[bill.cat] || 'var(--muted)'}20;color:${BILL_CAT_COLORS[bill.cat] || 'var(--muted)'}">
+                    ${BILL_CAT_LABELS[bill.cat] || bill.cat}
+                </span>
+                <span class="bill-status-tag ${isPaid ? 'bill-tag-paid' : overdue ? 'bill-tag-overdue' : 'bill-tag-pending'}">
+                    ${isPaid ? '✓ Paid' : overdue ? '! Overdue' : '⏳ Pending'}
+                </span>
+            </div>
+            <div class="bill-middle">
+                <div class="bill-info">
+                    <span class="bill-party">${bill.party || '—'}</span>
+                    <span class="bill-desc">${bill.description}</span>
+                    <span class="bill-due-date" style="color:${overdue ? 'var(--red)' : 'var(--muted)'}">Due: ${bill.dueDate}</span>
+                </div>
+                <span class="bill-amount">$${Number(bill.amount).toLocaleString()}</span>
+            </div>
+            <div class="bill-actions">
+                ${!isPaid ? `<button class="bill-pay-btn" data-index="${index}">✓ Mark Paid</button>` : ''}
+                <button class="delete-btn" data-type="bills" data-index="${index}">×</button>
+            </div>`;
+        list.appendChild(li);
+    });
+
+    list.querySelectorAll('.bill-pay-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const i = parseInt(this.dataset.index);
+            data.bills[i].status = 'paid';
+            saveData();
+            displayBills();
+            updateDashboard();
+        });
+    });
+}
 
 function renderEntitySummary() {
     const list = document.getElementById('entityList');

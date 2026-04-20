@@ -166,6 +166,43 @@
             <ul id="expenseList"></ul>
         </div>
         <div class="section">
+            <h3>Bills to Pay</h3>
+            <form id="billForm">
+                <div class="form-group">
+                    <label for="billCategory">Category</label>
+                    <select id="billCategory">
+                        <option value="material">Material</option>
+                        <option value="labour">Labour</option>
+                        <option value="engineer">Engineer</option>
+                        <option value="tender">Tender Drop</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group" id="billPartySelectGroup">
+                    <label for="billPartySelect">Party / Name</label>
+                    <select id="billPartySelect"></select>
+                </div>
+                <div class="form-group hidden" id="billPartyInputGroup">
+                    <label for="billPartyInput">Party / Name</label>
+                    <input type="text" id="billPartyInput" placeholder="Enter name">
+                </div>
+                <div class="form-group">
+                    <label for="billDescription">Description</label>
+                    <input type="text" id="billDescription" required>
+                </div>
+                <div class="form-group">
+                    <label for="billAmountInput">Amount ($)</label>
+                    <input type="number" id="billAmountInput" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="billDueDate">Due Date</label>
+                    <input type="date" id="billDueDate" required>
+                </div>
+                <button type="submit">Add Bill</button>
+            </form>
+            <ul id="billList"></ul>
+        </div>
+        <div class="section">
             <h3>People & Materials</h3>
             <p class="entity-help"><a href="#entityList" id="entityHelpLink">Click any name below to view all related details.</a></p>
             <ul id="entityList"></ul>

@@ -776,6 +776,122 @@ li:last-child {
     }
 }
 
+/* ── Bills to Pay ───────────────────────────────── */
+.bill-card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 14px 16px;
+    margin: 6px 10px;
+    border-radius: 10px;
+    border-left: 5px solid transparent;
+    box-shadow: 0 1px 4px rgba(26,35,50,.09);
+    transition: transform 0.12s, box-shadow 0.12s;
+    border-bottom: none;
+}
+
+.bill-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(26,35,50,.13);
+    background-color: unset;
+}
+
+.bill-pending  { background: var(--amber2);  border-left-color: var(--amber); }
+.bill-overdue  { background: var(--red2);    border-left-color: var(--red); }
+.bill-paid     { background: var(--green2);  border-left-color: var(--green); opacity: 0.75; }
+
+.bill-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.bill-cat-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+.bill-status-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+.bill-tag-pending { background: var(--amber2);  color: var(--amber); }
+.bill-tag-overdue { background: var(--red2);    color: var(--red); }
+.bill-tag-paid    { background: var(--green2);  color: var(--green); }
+
+.bill-middle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.bill-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.bill-party {
+    font-weight: 700;
+    font-size: 1.05em;
+    color: var(--ink);
+}
+
+.bill-desc {
+    font-size: 0.88em;
+    color: var(--ink2);
+}
+
+.bill-due-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.04em;
+}
+
+.bill-amount {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 900;
+    font-size: 1.7em;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    white-space: nowrap;
+}
+
+.bill-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+.bill-pay-btn {
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    border-radius: 5px;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: none;
+    transition: opacity 0.15s;
+}
+
+.bill-pay-btn:hover {
+    opacity: 0.8;
+    transform: none;
+    box-shadow: none;
+}
+
 /* ── Export Modal ────────────────────────────────── */
 .modal-overlay {
     position: fixed;

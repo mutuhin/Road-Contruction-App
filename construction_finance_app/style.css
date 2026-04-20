@@ -1174,6 +1174,21 @@ footer {
 }
 .record-cash .record-amount { color: #1d4ed8; }
 
+.record-gotbill {
+    background: var(--green2);
+    border-left-color: var(--green);
+}
+.record-gotbill .record-amount { color: var(--green); }
+
+.gotbill-sub {
+    border-top: 2px solid var(--green2);
+    margin-top: 4px;
+}
+
+.gotbill-sub h4 {
+    color: var(--green);
+}
+
 /* ── P&L Summary Card ────────────────────────────── */
 .pnl-card {
     margin: 0 16px 18px;

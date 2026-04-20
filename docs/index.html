@@ -34,7 +34,7 @@
                 <p class="amount">$<span id="totalSpent">0</span></p>
             </div>
             <div class="stat stat-clickable" id="totalDueCard">
-                <h3>Total Due</h3>
+                <h3>Due from Govt</h3>
                 <p class="amount">$<span id="totalDue">0</span></p>
             </div>
         </div>
@@ -70,7 +70,7 @@
             </div>
             <div class="pnl-divider"></div>
             <div class="pnl-row">
-                <span class="pnl-label pnl-govt-label">Govt Will Give</span>
+                <span class="pnl-label pnl-govt-label">Total Bill (Income)</span>
                 <span class="pnl-amount pnl-govt" id="pnlGovtPayment">$0</span>
             </div>
             <div class="pnl-row">
@@ -287,6 +287,25 @@
                 <button type="submit">Add Bill</button>
             </form>
             <ul id="billList"></ul>
+            <div class="subsection gotbill-sub">
+                <h4>Received from Govt</h4>
+                <form id="gotBillForm">
+                    <div class="form-group">
+                        <label for="gotBillDesc">Description</label>
+                        <input type="text" id="gotBillDesc" placeholder="e.g. 1st installment">
+                    </div>
+                    <div class="form-group">
+                        <label for="gotBillAmount">Amount ($)</label>
+                        <input type="number" id="gotBillAmount" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="gotBillDate">Date</label>
+                        <input type="date" id="gotBillDate" required>
+                    </div>
+                    <button type="submit">Add Received</button>
+                </form>
+                <ul id="gotBillList"></ul>
+            </div>
         </div>
         <div class="section" id="secPeople">
             <h3>People & Materials</h3>

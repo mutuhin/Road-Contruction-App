@@ -114,6 +114,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.getElementById('doExportBtn').addEventListener('click', runExport);
 
+    // Got Bill (Received from Govt) form
+    document.getElementById('gotBillForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const description = document.getElementById('gotBillDesc').value.trim();
+        const amount = parseFloat(document.getElementById('gotBillAmount').value);
+        const date   = document.getElementById('gotBillDate').value;
+        if (!date || isNaN(amount) || amount <= 0) {
+            alert('Please enter a valid amount and date.');
+            return;
+        }
+        data.govtReceived.push({ description: description || 'Received', amount, date });
+        saveData();
+        displayGotBills();
+        updateDashboard();
+        this.reset();
+    });
+
     // Cash In form
     document.getElementById('cashForm').addEventListener('submit', function(e) {
         e.preventDefault();
@@ -270,7 +287,8 @@ let data = {
     expenses: [],
     bills: [],
     contracts: [],
-    cashIn: []
+    cashIn: [],
+    govtReceived: []
 };
 
 const toArr = v => !v ? [] : Array.isArray(v) ? v : Object.values(v);
@@ -303,7 +321,8 @@ function loadData() {
                     expenses:  toArr(val.expenses),
                     bills:     toArr(val.bills),
                     contracts: toArr(val.contracts),
-                    cashIn:    toArr(val.cashIn),
+                    cashIn:       toArr(val.cashIn),
+                    govtReceived: toArr(val.govtReceived),
                 };
                 localStorage.setItem(DATABASE_KEY, JSON.stringify(data));
             }
@@ -522,6 +541,7 @@ function displayData() {
     displayEngineers();
     displayExpenses();
     displayBills();
+    displayGotBills();
     displayContracts();
     displayCash();
     renderEntitySummary();
@@ -546,6 +566,8 @@ function deleteItem(type, index) {
         data.contracts.splice(index, 1);
     } else if (type === 'cashIn') {
         data.cashIn.splice(index, 1);
+    } else if (type === 'govtReceived') {
+        data.govtReceived.splice(index, 1);
     } else if (data[type]) {
         data[type].splice(index, 1);
     }
@@ -682,8 +704,9 @@ function updateDashboard() {
     const profit = govtPayment - totalSpent;
     const isProfit = profit >= 0;
 
+    const totalGotBill  = (data.govtReceived || []).reduce((s, g) => s + (g.amount || 0), 0);
+
     document.getElementById('totalSpent').textContent = totalSpent.toFixed(2);
-    document.getElementById('totalDue').textContent = totalDue.toFixed(2);
 
     const fmt = n => '$' + Math.abs(n).toLocaleString(undefined, { minimumFractionDigits: 2 });
     const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
@@ -699,6 +722,9 @@ function updateDashboard() {
     const cashLabEl  = document.getElementById('cashBalanceLabel');
     if (cashBalEl) cashBalEl.className = 'cash-val cash-balance ' + (cashPositive ? 'cash-pos' : 'cash-neg');
     if (cashLabEl) cashLabEl.className = 'cash-label cash-balance-label ' + (cashPositive ? 'cash-pos' : 'cash-neg');
+
+    const dueFromGovt = Math.max(0, govtPayment - totalGotBill);
+    document.getElementById('totalDue').textContent = dueFromGovt.toFixed(2);
 
     set('pnlTender',      fmt(tenderTotal));
     set('pnlGovt',        fmt(govtTotal));
@@ -1063,6 +1089,29 @@ function openSection(id) {
     el.classList.remove('hidden');
     document.querySelector(`.bnav-btn[data-target="${id}"]`)?.classList.add('active');
     setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 40);
+}
+
+function displayGotBills() {
+    const list = document.getElementById('gotBillList');
+    if (!list) return;
+    list.innerHTML = '';
+    (data.govtReceived || []).forEach((item, index) => {
+        const li = document.createElement('li');
+        li.className = 'record-card record-gotbill';
+        li.innerHTML = `
+            <div class="record-left">
+                <span class="record-name">${item.description}</span>
+                <span class="record-date">${item.date}</span>
+            </div>
+            <div class="record-right">
+                <span class="record-amount">$${Number(item.amount).toLocaleString()}</span>
+                <button class="delete-btn" data-type="govtReceived" data-index="${index}">×</button>
+            </div>`;
+        li.querySelector('.delete-btn').addEventListener('click', function() {
+            deleteItem('govtReceived', parseInt(this.dataset.index));
+        });
+        list.appendChild(li);
+    });
 }
 
 function displayCash() {

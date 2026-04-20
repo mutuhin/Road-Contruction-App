@@ -114,6 +114,51 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.getElementById('doExportBtn').addEventListener('click', runExport);
 
+    // Contract form
+    document.getElementById('contractForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const name   = document.getElementById('contractName').value.trim();
+        const amount = parseFloat(document.getElementById('contractAmount').value);
+        const date   = document.getElementById('contractDate').value;
+        const note   = document.getElementById('contractNote').value.trim();
+        if (!name || !date || isNaN(amount) || amount <= 0) {
+            alert('Please enter valid data.');
+            return;
+        }
+        data.contracts.push({ name, amount, date, note });
+        saveData();
+        displayContracts();
+        updateDashboard();
+        this.reset();
+    });
+
+    // Tender auto-calculate
+    const billCatEl        = document.getElementById('billCategory');
+    const tenderValueGroup = document.getElementById('tenderValueGroup');
+    const tenderPctGroup   = document.getElementById('tenderPctGroup');
+    const tenderValueEl    = document.getElementById('tenderValue');
+    const tenderPctEl      = document.getElementById('tenderPct');
+    const billAmtEl        = document.getElementById('billAmountInput');
+
+    function updateBillForm() {
+        const isTender = billCatEl.value === 'tender';
+        tenderValueGroup.classList.toggle('hidden', !isTender);
+        tenderPctGroup.classList.toggle('hidden', !isTender);
+        billAmtEl.readOnly = isTender;
+        if (!isTender) { billAmtEl.readOnly = false; billAmtEl.value = ''; }
+        calcTenderAmt();
+    }
+    function calcTenderAmt() {
+        if (billCatEl.value !== 'tender') return;
+        const v = parseFloat(tenderValueEl.value) || 0;
+        const p = parseFloat(tenderPctEl.value) || 0;
+        billAmtEl.value = (v * p / 100).toFixed(2);
+    }
+    billCatEl.addEventListener('change', updateBillForm);
+    tenderValueEl.addEventListener('input', calcTenderAmt);
+    tenderPctEl.addEventListener('input', calcTenderAmt);
+    updateBillForm();
+
     // Bills to Pay form
     document.getElementById('billForm').addEventListener('submit', function(e) {
         e.preventDefault();
@@ -126,11 +171,17 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('Please fill all required fields.');
             return;
         }
-        data.bills.push({ cat, party, description, amount, dueDate, status: 'pending', created: new Date().toISOString().slice(0,10) });
+        const entry = { cat, party, description, amount, dueDate, status: 'pending', created: new Date().toISOString().slice(0,10) };
+        if (cat === 'tender') {
+            entry.tenderValue = parseFloat(document.getElementById('tenderValue').value) || 0;
+            entry.tenderPct   = parseFloat(document.getElementById('tenderPct').value) || 0;
+        }
+        data.bills.push(entry);
         saveData();
         displayBills();
         updateDashboard();
         this.reset();
+        updateBillForm();
     });
 
     // Dashboard stat cards
@@ -200,7 +251,8 @@ let data = {
     payments: [],
     engineers: [],
     expenses: [],
-    bills: []
+    bills: [],
+    contracts: []
 };
 
 const toArr = v => !v ? [] : Array.isArray(v) ? v : Object.values(v);
@@ -232,6 +284,7 @@ function loadData() {
                     engineers: toArr(val.engineers),
                     expenses:  toArr(val.expenses),
                     bills:     toArr(val.bills),
+                    contracts: toArr(val.contracts),
                 };
                 localStorage.setItem(DATABASE_KEY, JSON.stringify(data));
             }
@@ -450,6 +503,7 @@ function displayData() {
     displayEngineers();
     displayExpenses();
     displayBills();
+    displayContracts();
     renderEntitySummary();
     
     // Add delete event listeners
@@ -468,6 +522,8 @@ function deleteItem(type, index) {
     if (!confirm('Delete this entry?')) return;
     if (type === 'bills') {
         data.bills.splice(index, 1);
+    } else if (type === 'contracts') {
+        data.contracts.splice(index, 1);
     } else if (data[type]) {
         data[type].splice(index, 1);
     }
@@ -716,21 +772,16 @@ function showMaterialNameDetails(name) {
 
 
 const BILL_CAT_LABELS = {
-    tender:'Tender Drop',
-    p0:'Phase 0 — Paperwork', p1:'Phase 1 — Site Setup', p2:'Phase 2 — Clearing',
-    p3:'Phase 3 — Earth Work', p4:'Phase 4 — Salvage', p5:'Phase 5 — Widening',
-    p6:'Phase 6 — Hard Bed', p7:'Phase 7 — Edge Repair', p8:'Phase 8 — Culvert',
-    p9:'Phase 9 — End Edging', p10:'Phase 10 — Sand Binding', p11:'Phase 11 — Sub-Base',
-    p12:'Phase 12 — WBM', p13:'Phase 13 — Bituminous', p14:'Phase 14 — Palisading',
-    p15:'Phase 15 — Road Safety', p16:'Phase 16 — Handover', other:'Other'
+    tender: 'Tender Drop',
+    govt:   'Govt Fees',
+    lged:   'LGED Office Fees',
+    other:  'Other'
 };
 const BILL_CAT_COLORS = {
-    tender:'var(--amber)', other:'var(--muted)',
-    p0:'#7c3aed', p1:'var(--blue)', p2:'var(--green)', p3:'#b45309',
-    p4:'var(--muted)', p5:'var(--blue)', p6:'#0f766e', p7:'var(--red)',
-    p8:'#7c3aed', p9:'var(--green)', p10:'#b45309', p11:'var(--blue)',
-    p12:'#0f766e', p13:'var(--red)', p14:'#7c3aed', p15:'var(--amber)',
-    p16:'var(--green)'
+    tender: 'var(--amber)',
+    govt:   'var(--blue)',
+    lged:   'var(--green)',
+    other:  'var(--muted)'
 };
 
 function displayBills() {
@@ -759,6 +810,7 @@ function displayBills() {
                 <div class="bill-info">
                     <span class="bill-party">${bill.party || '—'}</span>
                     <span class="bill-desc">${bill.description}</span>
+                    ${bill.cat === 'tender' && bill.tenderValue ? `<span class="bill-tender-meta">Tender $${Number(bill.tenderValue).toLocaleString()} × ${bill.tenderPct}%</span>` : ''}
                     <span class="bill-due-date" style="color:${overdue ? 'var(--red)' : 'var(--muted)'}">Due: ${bill.dueDate}</span>
                 </div>
                 <span class="bill-amount">$${Number(bill.amount).toLocaleString()}</span>
@@ -907,7 +959,7 @@ function showDetails(title, content) {
     }
 }
 
-const SECTION_IDS = ['secLabour', 'secMaterials', 'secEngineer', 'secExpenses', 'secBills', 'secPeople'];
+const SECTION_IDS = ['secLabour', 'secMaterials', 'secEngineer', 'secExpenses', 'secBills', 'secPeople', 'secContract'];
 
 function initSections() {
     SECTION_IDS.forEach(id => {
@@ -934,18 +986,68 @@ function initSections() {
 }
 
 function openSection(id) {
+    document.querySelectorAll('.bnav-btn').forEach(b => b.classList.remove('active'));
     if (id === 'dashboard') {
+        SECTION_IDS.forEach(sid => document.getElementById(sid)?.classList.add('hidden'));
         document.getElementById('dashboard').scrollIntoView({ behavior: 'smooth', block: 'start' });
-        document.querySelectorAll('.bnav-btn').forEach(b => b.classList.remove('active'));
         document.querySelector('.bnav-btn[data-target="dashboard"]')?.classList.add('active');
         return;
     }
+    // Close all sections, then open only the target
+    SECTION_IDS.forEach(sid => document.getElementById(sid)?.classList.add('hidden'));
     const el = document.getElementById(id);
     if (!el) return;
     el.classList.remove('hidden');
-    document.querySelectorAll('.bnav-btn').forEach(b => b.classList.remove('active'));
     document.querySelector(`.bnav-btn[data-target="${id}"]`)?.classList.add('active');
     setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 40);
+}
+
+function displayContracts() {
+    const list = document.getElementById('contractList');
+    if (!list) return;
+    list.innerHTML = '';
+    (data.contracts || []).forEach((contract, index) => {
+        const paid = (data.labour || [])
+            .filter(l => l.name.trim().toLowerCase() === contract.name.trim().toLowerCase())
+            .reduce((s, l) => s + (l.money || 0), 0);
+        const remaining = Math.max(0, contract.amount - paid);
+        const pct = contract.amount > 0 ? Math.min(100, (paid / contract.amount) * 100) : 0;
+
+        const li = document.createElement('li');
+        li.className = 'contract-card';
+        li.innerHTML = `
+            <div class="contract-top">
+                <span class="contract-name">${contract.name}</span>
+                <button class="delete-btn" data-type="contracts" data-index="${index}">×</button>
+            </div>
+            ${contract.note ? `<span class="contract-note">${contract.note}</span>` : ''}
+            <div class="contract-amounts">
+                <div class="contract-stat">
+                    <span class="contract-stat-label">Contract</span>
+                    <span class="contract-stat-value">$${Number(contract.amount).toLocaleString()}</span>
+                </div>
+                <div class="contract-stat">
+                    <span class="contract-stat-label">Paid</span>
+                    <span class="contract-stat-value cstat-paid">$${Number(paid).toLocaleString()}</span>
+                </div>
+                <div class="contract-stat">
+                    <span class="contract-stat-label">Remaining</span>
+                    <span class="contract-stat-value cstat-remaining">$${Number(remaining).toLocaleString()}</span>
+                </div>
+            </div>
+            <div class="contract-bar-wrap">
+                <div class="contract-bar-fill" style="width:${pct.toFixed(0)}%"></div>
+            </div>
+            <span class="contract-bar-label">${pct.toFixed(0)}% paid · ${contract.date}</span>`;
+        list.appendChild(li);
+    });
+
+    // Wire up delete buttons
+    list.querySelectorAll('.delete-btn[data-type="contracts"]').forEach(btn => {
+        btn.addEventListener('click', function() {
+            deleteItem('contracts', parseInt(this.dataset.index));
+        });
+    });
 }
 
 function updateSectionCards() {
@@ -977,4 +1079,14 @@ function updateSectionCards() {
     set('dashBillsSub', $(billsTotal));
     set('dashPeopleTotal', peopleCount + ' people');
     set('dashPeopleSub', data.materials.length + ' materials');
+
+    const contracts = data.contracts || [];
+    const contractRemaining = contracts.reduce((s, c) => {
+        const paid = (data.labour || [])
+            .filter(l => l.name.trim().toLowerCase() === c.name.trim().toLowerCase())
+            .reduce((a, l) => a + (l.money || 0), 0);
+        return s + Math.max(0, c.amount - paid);
+    }, 0);
+    set('dashContractTotal', contracts.length + ' contracts');
+    set('dashContractSub', '$' + Number(contractRemaining).toLocaleString() + ' remaining');
 }

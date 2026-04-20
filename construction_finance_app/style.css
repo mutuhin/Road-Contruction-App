@@ -1100,6 +1100,7 @@ footer {
 .sec-expenses  { border-top-color: var(--red); }
 .sec-bills     { border-top-color: var(--amber); }
 .sec-people    { border-top-color: var(--muted); }
+.sec-contract  { border-top-color: #0f766e; }
 
 .sec-card-label {
     font-family: 'JetBrains Mono', monospace;
@@ -1122,6 +1123,102 @@ footer {
     font-family: 'JetBrains Mono', monospace;
     font-size: 10px;
     color: var(--muted);
+}
+
+/* ── Contract Cards ──────────────────────────────── */
+.contract-card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 14px 16px;
+    margin: 6px 10px;
+    border-radius: 10px;
+    background: #ccfbf1;
+    border-left: 5px solid #0f766e;
+    box-shadow: 0 1px 4px rgba(26,35,50,.09);
+    border-bottom: none;
+}
+
+.contract-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.contract-name {
+    font-weight: 700;
+    font-size: 1.1em;
+    color: var(--ink);
+}
+
+.contract-note {
+    font-size: 0.85em;
+    color: var(--ink2);
+}
+
+.contract-amounts {
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+}
+
+.contract-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    background: rgba(255,255,255,.5);
+    border-radius: 7px;
+    padding: 8px 6px;
+}
+
+.contract-stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+}
+
+.contract-stat-value {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 900;
+    font-size: 1.15em;
+    color: var(--ink);
+    margin-top: 2px;
+}
+
+.cstat-paid      { color: var(--green); }
+.cstat-remaining { color: #0f766e; }
+
+.contract-bar-wrap {
+    height: 6px;
+    background: rgba(0,0,0,.1);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.contract-bar-fill {
+    height: 100%;
+    background: #0f766e;
+    border-radius: 3px;
+    transition: width 0.4s ease;
+}
+
+.contract-bar-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+}
+
+.bill-tender-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--amber);
+    font-weight: 600;
+    letter-spacing: 0.03em;
 }
 
 /* ── Bottom Navigation ───────────────────────────── */

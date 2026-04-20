@@ -152,7 +152,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (billCatEl.value !== 'tender') return;
         const v = parseFloat(tenderValueEl.value) || 0;
         const p = parseFloat(tenderPctEl.value) || 0;
-        billAmtEl.value = (v * p / 100).toFixed(2);
+        billAmtEl.value = (v - (v * p / 100)).toFixed(2);
     }
     billCatEl.addEventListener('change', updateBillForm);
     tenderValueEl.addEventListener('input', calcTenderAmt);

@@ -360,34 +360,53 @@ function updateDashboard() {
 }
 
 function showLabourDetails(name) {
-    const labourData = data.labour.filter(item => item.name === name);
-    const totalPaid = labourData.reduce((sum, item) => sum + item.money, 0);
-    let details = `${name} - Total Paid: $${totalPaid.toFixed(2)}\n\nPayments:\n`;
-    labourData.forEach(item => {
-        details += `${item.date}: $${item.money}\n`;
+    const items = data.labour.filter(item => item.name === name);
+    const total = items.reduce((sum, item) => sum + item.money, 0);
+    let html = `<div class="detail-header">Total Paid: <strong>$${total.toLocaleString(undefined, {minimumFractionDigits: 2})}</strong></div>`;
+    items.forEach(item => {
+        html += `<div class="detail-item">
+            <span class="detail-date">${item.date}</span>
+            <span class="detail-amount">$${Number(item.money).toLocaleString()}</span>
+        </div>`;
     });
-    showDetails(`${name} details`, details);
+    showDetailsHTML(name, html);
 }
 
 function showMaterialDetails(buyer, materialName) {
-    const materialData = data.materials.filter(item => item.buyer === buyer && item.materialName === materialName);
-    const totalPaid = materialData.reduce((sum, item) => sum + item.paid, 0);
-    const totalDue = materialData.reduce((sum, item) => sum + item.due, 0);
-    let details = `${buyer} - ${materialName} - Total Paid: $${totalPaid.toFixed(2)}, Total Due: $${totalDue.toFixed(2)}\n\nTransactions:\n`;
-    materialData.forEach(item => {
-        details += `${item.date}: Bill $${item.bill}, Paid $${item.paid}, Due $${item.due}, Quantity: ${item.quantity}\n`;
+    const items = data.materials.filter(item => item.buyer === buyer && item.materialName === materialName);
+    const totalPaid = items.reduce((sum, item) => sum + item.paid, 0);
+    const totalDue = items.reduce((sum, item) => sum + item.due, 0);
+    let html = `<div class="detail-header">Paid <strong>$${totalPaid.toLocaleString(undefined, {minimumFractionDigits: 2})}</strong> · Due <span class="detail-due-text">$${totalDue.toLocaleString(undefined, {minimumFractionDigits: 2})}</span></div>`;
+    items.forEach(item => {
+        html += `<div class="detail-item">
+            <div class="detail-meta">
+                <span class="detail-date">${item.date}</span>
+                <span class="detail-name">Qty: ${item.quantity}</span>
+            </div>
+            <div class="detail-amounts">
+                <span class="detail-paid-tag">Paid $${Number(item.paid).toLocaleString()}</span>
+                ${item.due > 0 ? `<span class="detail-due-tag">Due $${Number(item.due).toLocaleString()}</span>` : ''}
+            </div>
+        </div>`;
     });
-    showDetails(`${buyer} / ${materialName}`, details);
+    html += `<div class="detail-total">Total Paid: $${totalPaid.toFixed(2)}</div>`;
+    showDetailsHTML(`${buyer} / ${materialName}`, html);
 }
 
 function showEngineerDetails(name) {
-    const engineerData = data.engineers.filter(item => item.name === name);
-    const totalPaid = engineerData.reduce((sum, item) => sum + item.amount, 0);
-    let details = `${name} - Total Paid: $${totalPaid.toFixed(2)}\n\nPayments:\n`;
-    engineerData.forEach(item => {
-        details += `${item.date}: $${item.amount} (${item.paymentType})\n`;
+    const items = data.engineers.filter(item => item.name === name);
+    const total = items.reduce((sum, item) => sum + item.amount, 0);
+    let html = `<div class="detail-header">Total Paid: <strong>$${total.toLocaleString(undefined, {minimumFractionDigits: 2})}</strong></div>`;
+    items.forEach(item => {
+        html += `<div class="detail-item">
+            <div class="detail-meta">
+                <span class="detail-date">${item.date}</span>
+                <span class="detail-name">${item.paymentType}</span>
+            </div>
+            <span class="detail-amount">$${Number(item.amount).toLocaleString()}</span>
+        </div>`;
     });
-    showDetails(`${name} details`, details);
+    showDetailsHTML(name, html);
 }
 
 function showPaymentDetails(index) {
@@ -396,33 +415,53 @@ function showPaymentDetails(index) {
 }
 
 function showBuyerDetails(buyer) {
-    const materialData = data.materials.filter(item => item.buyer === buyer);
-    if (!materialData.length) {
-        showDetails('No details found', 'No raw materials found for this buyer.');
+    const items = data.materials.filter(item => item.buyer === buyer);
+    if (!items.length) {
+        showDetailsHTML(buyer, '<p class="due-empty">No materials found for this buyer.</p>');
         return;
     }
-    const totalPaid = materialData.reduce((sum, item) => sum + item.paid, 0);
-    const totalDue = materialData.reduce((sum, item) => sum + item.due, 0);
-    let details = `${buyer} - Total Paid: $${totalPaid.toFixed(2)}, Total Due: $${totalDue.toFixed(2)}\n\nTransactions:\n`;
-    materialData.forEach(item => {
-        details += `${item.date}: ${item.materialName}, Bill $${item.bill}, Paid $${item.paid}, Due $${item.due}, Quantity: ${item.quantity}\n`;
+    const totalPaid = items.reduce((sum, item) => sum + item.paid, 0);
+    const totalDue = items.reduce((sum, item) => sum + item.due, 0);
+    let html = `<div class="detail-header">Paid <strong>$${totalPaid.toLocaleString(undefined, {minimumFractionDigits: 2})}</strong> · Due <span class="detail-due-text">$${totalDue.toLocaleString(undefined, {minimumFractionDigits: 2})}</span></div>`;
+    items.forEach(item => {
+        html += `<div class="detail-item">
+            <div class="detail-meta">
+                <span class="detail-date">${item.date}</span>
+                <span class="detail-name">${item.materialName}</span>
+            </div>
+            <div class="detail-amounts">
+                <span class="detail-paid-tag">Paid $${Number(item.paid).toLocaleString()}</span>
+                ${item.due > 0 ? `<span class="detail-due-tag">Due $${Number(item.due).toLocaleString()}</span>` : ''}
+            </div>
+        </div>`;
     });
-    showDetails(`${buyer} details`, details);
+    html += `<div class="detail-total">Total Paid: $${totalPaid.toFixed(2)}</div>`;
+    showDetailsHTML(buyer, html);
 }
 
 function showMaterialNameDetails(name) {
-    const materialData = data.materials.filter(item => item.materialName === name);
-    if (!materialData.length) {
-        showDetails('No details found', 'No raw materials found for this material name.');
+    const items = data.materials.filter(item => item.materialName === name);
+    if (!items.length) {
+        showDetailsHTML(name, '<p class="due-empty">No transactions found for this material.</p>');
         return;
     }
-    const totalPaid = materialData.reduce((sum, item) => sum + item.paid, 0);
-    const totalDue = materialData.reduce((sum, item) => sum + item.due, 0);
-    let details = `${name} - Total Paid: $${totalPaid.toFixed(2)}, Total Due: $${totalDue.toFixed(2)}\n\nTransactions:\n`;
-    materialData.forEach(item => {
-        details += `${item.date}: Buyer ${item.buyer}, Bill $${item.bill}, Paid $${item.paid}, Due $${item.due}, Quantity: ${item.quantity}\n`;
+    const totalPaid = items.reduce((sum, item) => sum + item.paid, 0);
+    const totalDue = items.reduce((sum, item) => sum + item.due, 0);
+    let html = `<div class="detail-header">Paid <strong>$${totalPaid.toLocaleString(undefined, {minimumFractionDigits: 2})}</strong> · Due <span class="detail-due-text">$${totalDue.toLocaleString(undefined, {minimumFractionDigits: 2})}</span></div>`;
+    items.forEach(item => {
+        html += `<div class="detail-item">
+            <div class="detail-meta">
+                <span class="detail-date">${item.date}</span>
+                <span class="detail-name">${item.buyer}</span>
+            </div>
+            <div class="detail-amounts">
+                <span class="detail-paid-tag">Paid $${Number(item.paid).toLocaleString()}</span>
+                ${item.due > 0 ? `<span class="detail-due-tag">Due $${Number(item.due).toLocaleString()}</span>` : ''}
+            </div>
+        </div>`;
     });
-    showDetails(`${name} details`, details);
+    html += `<div class="detail-total">Total Paid: $${totalPaid.toFixed(2)}</div>`;
+    showDetailsHTML(name, html);
 }
 
 
@@ -465,29 +504,36 @@ function showExpenseDetails(index) {
 
 function showTotalSpentDetails() {
     let totalSpent = 0;
-    let details = 'Breakdown:\n\n';
-    data.labour.forEach(item => {
-        totalSpent += item.money;
-        details += `Labour: ${item.name} - ${item.date} - $${item.money}\n`;
-    });
-    data.materials.forEach(item => {
-        totalSpent += item.paid;
-        details += `Material: ${item.buyer} / ${item.materialName} - Paid $${item.paid} (Bill $${item.bill})\n`;
-    });
-    data.payments.forEach(item => {
-        totalSpent += item.amount;
-        details += `Payment: ${item.type} - ${item.details || 'cash'} - $${item.amount}\n`;
-    });
-    data.engineers.forEach(item => {
-        totalSpent += item.amount;
-        details += `Engineer: ${item.name} - ${item.date} - $${item.amount}\n`;
-    });
-    data.expenses.forEach(item => {
-        totalSpent += item.amount;
-        details += `Expense: ${item.description} - ${item.date} - $${item.amount}\n`;
-    });
-    details += `\nTotal Money Spent: $${totalSpent.toFixed(2)}`;
-    showDetails('Total Money Spent', details);
+    let html = '';
+
+    const section = (label, rows) => {
+        if (!rows.length) return '';
+        return `<div class="detail-section-title">${label}</div>${rows.join('')}`;
+    };
+
+    const row = (date, name, amount) => `<div class="detail-item">
+        <div class="detail-meta">
+            <span class="detail-date">${date}</span>
+            <span class="detail-name">${name}</span>
+        </div>
+        <span class="detail-amount">$${Number(amount).toLocaleString()}</span>
+    </div>`;
+
+    data.labour.forEach(item => { totalSpent += item.money; });
+    data.materials.forEach(item => { totalSpent += item.paid; });
+    data.payments.forEach(item => { totalSpent += item.amount; });
+    data.engineers.forEach(item => { totalSpent += item.amount; });
+    data.expenses.forEach(item => { totalSpent += item.amount; });
+
+    html += section('Labour', data.labour.map(i => row(i.date, i.name, i.money)));
+    html += section('Materials', data.materials.map(i => row(i.date, `${i.buyer} / ${i.materialName}`, i.paid)));
+    html += section('Payments', data.payments.map(i => row(i.type, i.details || 'Cash', i.amount)));
+    html += section('Engineers', data.engineers.map(i => row(i.date, i.name, i.amount)));
+    html += section('Expenses', data.expenses.map(i => row(i.date, i.description, i.amount)));
+
+    if (!html) html = '<p class="due-empty">No spending recorded yet.</p>';
+    html += `<div class="detail-total">Total Spent: $${totalSpent.toFixed(2)}</div>`;
+    showDetailsHTML('Total Money Spent', html);
 }
 
 function showTotalDueDetails() {

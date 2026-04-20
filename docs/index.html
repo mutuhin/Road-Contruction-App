@@ -356,6 +356,11 @@
             });
 
             navigator.serviceWorker.register('./sw.js').then(reg => {
+                function checkForWaiting() {
+                    if (reg.waiting && navigator.serviceWorker.controller) {
+                        showUpdateBanner(reg.waiting);
+                    }
+                }
                 // New SW found while page is open
                 reg.addEventListener('updatefound', () => {
                     const newWorker = reg.installing;
@@ -365,10 +370,14 @@
                         }
                     });
                 });
-                // SW already waiting when page loads (user had app open in background)
-                if (reg.waiting && navigator.serviceWorker.controller) {
-                    showUpdateBanner(reg.waiting);
-                }
+                // SW already waiting on load
+                checkForWaiting();
+                // Re-check every time user comes back to the app
+                document.addEventListener('visibilitychange', () => {
+                    if (document.visibilityState === 'visible') {
+                        reg.update().then(checkForWaiting);
+                    }
+                });
             });
         }
     </script>

@@ -1,4 +1,4 @@
-const CACHE = 'road-construction-v14';
+const CACHE = 'road-construction-v15';
 const STATIC = [
   'https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Archivo:wght@700;900&display=swap',
   './logo.png'

@@ -32,8 +32,7 @@ html, body {
     background-image: linear-gradient(rgba(26,35,50,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(26,35,50,.04) 1px, transparent 1px);
     background-size: 24px 24px;
     min-height: 100vh;
-    padding-top: env(safe-area-inset-top);
-    padding-bottom: env(safe-area-inset-bottom);
+    padding: calc(24px + env(safe-area-inset-top)) 24px calc(24px + env(safe-area-inset-bottom));
 }
 
 .app-header {

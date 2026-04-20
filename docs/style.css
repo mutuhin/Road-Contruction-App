@@ -306,6 +306,27 @@ h1 {
     padding-top: 6px;
 }
 
+.detail-paymethod {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--blue);
+    letter-spacing: 0.04em;
+    font-weight: 600;
+}
+
+.pay-method-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--blue);
+    background: var(--blue2);
+    border-radius: 3px;
+    padding: 1px 5px;
+    vertical-align: middle;
+    margin: 0 2px;
+}
+
 .detail-total {
     margin-top: 14px;
     padding-top: 10px;

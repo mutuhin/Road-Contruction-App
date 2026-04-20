@@ -94,6 +94,17 @@
                         <input type="number" id="paidAmount" step="0.01" required>
                     </div>
                     <div class="form-group">
+                        <label for="materialPaymentType">Payment Method</label>
+                        <select id="materialPaymentType">
+                            <option value="cash">Cash</option>
+                            <option value="bank">Bank Transfer</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="materialPaymentRef">Reference</label>
+                        <input type="text" id="materialPaymentRef" placeholder="Optional for cash">
+                    </div>
+                    <div class="form-group">
                         <label for="dueAmount">Due Amount ($)</label>
                         <input type="number" id="dueAmount" step="0.01" readonly>
                     </div>

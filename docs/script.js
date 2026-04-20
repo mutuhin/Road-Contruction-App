@@ -22,16 +22,24 @@ document.addEventListener('DOMContentLoaded', function() {
     const billInput = document.getElementById('billAmount');
     const paidInput = document.getElementById('paidAmount');
     const dueInput = document.getElementById('dueAmount');
+    const matPaymentTypeInput = document.getElementById('materialPaymentType');
+    const matPaymentRefInput = document.getElementById('materialPaymentRef');
 
     function updateDue() {
         const bill = parseFloat(billInput.value) || 0;
         const paid = parseFloat(paidInput.value) || 0;
-        const due = calculateDue(bill, paid);
-        dueInput.value = due.toFixed(2);
+        dueInput.value = calculateDue(bill, paid).toFixed(2);
+    }
+
+    function updateMatRefPlaceholder() {
+        matPaymentRefInput.placeholder = matPaymentTypeInput.value === 'bank'
+            ? 'Cheque/NPSB/Number'
+            : 'Optional for cash';
     }
 
     billInput.addEventListener('input', updateDue);
     paidInput.addEventListener('input', updateDue);
+    matPaymentTypeInput.addEventListener('change', updateMatRefPlaceholder);
 
     document.getElementById('materialForm').addEventListener('submit', function(e) {
         e.preventDefault();
@@ -42,13 +50,20 @@ document.addEventListener('DOMContentLoaded', function() {
         const quantity = document.getElementById('quantity').value.trim();
         const paid = parseFloat(document.getElementById('paidAmount').value);
         const due = calculateDue(bill, paid);
+        const paymentType = matPaymentTypeInput.value;
+        const paymentRef = matPaymentRefInput.value.trim();
         if (!buyer || !materialName || !date || isNaN(bill) || bill < 0 || !quantity || isNaN(paid) || paid < 0 || paid > bill) {
             alert('Please enter valid data. Paid amount must be between 0 and bill amount.');
             return;
         }
-        addMaterial(buyer, materialName, date, bill, quantity, paid, due);
+        if (paid > 0 && paymentType === 'bank' && !paymentRef) {
+            alert('Please enter a reference number for bank transfer.');
+            return;
+        }
+        addMaterial(buyer, materialName, date, bill, quantity, paid, due, paymentType, paymentRef);
         this.reset();
         dueInput.value = '';
+        updateMatRefPlaceholder();
     });
 
     // Payment form
@@ -204,8 +219,8 @@ function addLabour(name, date, money) {
     updateDashboard();
 }
 
-function addMaterial(buyer, materialName, date, bill, quantity, paid, due) {
-    data.materials.push({ buyer, materialName, date, bill, quantity, paid, due });
+function addMaterial(buyer, materialName, date, bill, quantity, paid, due, paymentType, paymentRef) {
+    data.materials.push({ buyer, materialName, date, bill, quantity, paid, due, paymentType: paymentType || 'cash', paymentRef: paymentRef || '' });
     saveData();
     displayData();
     updateDashboard();
@@ -284,7 +299,8 @@ function displayMaterials() {
     list.innerHTML = '';
     data.materials.forEach((item, index) => {
         const li = document.createElement('li');
-        li.innerHTML = `${item.buyer} - ${item.materialName} - ${item.date} - Bill: $${item.bill}, Paid: $${item.paid}, Due: $${item.due} <button class="delete-btn" data-type="materials" data-index="${index}">×</button>`;
+        const payLabel = item.paymentType === 'bank' ? `Bank${item.paymentRef ? ' · ' + item.paymentRef : ''}` : 'Cash';
+        li.innerHTML = `${item.buyer} - ${item.materialName} - ${item.date} - Bill: $${item.bill}, Paid: $${item.paid} <span class="pay-method-tag">${payLabel}</span>, Due: $${item.due} <button class="delete-btn" data-type="materials" data-index="${index}">×</button>`;
         li.addEventListener('click', (e) => {
             if (e.target.classList.contains('delete')) return;
             showMaterialDetails(item.buyer, item.materialName);
@@ -378,10 +394,14 @@ function showMaterialDetails(buyer, materialName) {
     const totalDue = items.reduce((sum, item) => sum + item.due, 0);
     let html = `<div class="detail-header">Paid <strong>$${totalPaid.toLocaleString(undefined, {minimumFractionDigits: 2})}</strong> · Due <span class="detail-due-text">$${totalDue.toLocaleString(undefined, {minimumFractionDigits: 2})}</span></div>`;
     items.forEach(item => {
+        const payLabel = item.paymentType === 'bank'
+            ? `Bank Transfer${item.paymentRef ? ' · ' + item.paymentRef : ''}`
+            : 'Cash';
         html += `<div class="detail-item">
             <div class="detail-meta">
                 <span class="detail-date">${item.date}</span>
                 <span class="detail-name">Qty: ${item.quantity}</span>
+                <span class="detail-paymethod">${payLabel}</span>
             </div>
             <div class="detail-amounts">
                 <span class="detail-paid-tag">Paid $${Number(item.paid).toLocaleString()}</span>
@@ -424,10 +444,14 @@ function showBuyerDetails(buyer) {
     const totalDue = items.reduce((sum, item) => sum + item.due, 0);
     let html = `<div class="detail-header">Paid <strong>$${totalPaid.toLocaleString(undefined, {minimumFractionDigits: 2})}</strong> · Due <span class="detail-due-text">$${totalDue.toLocaleString(undefined, {minimumFractionDigits: 2})}</span></div>`;
     items.forEach(item => {
+        const payLabel = item.paymentType === 'bank'
+            ? `Bank Transfer${item.paymentRef ? ' · ' + item.paymentRef : ''}`
+            : 'Cash';
         html += `<div class="detail-item">
             <div class="detail-meta">
                 <span class="detail-date">${item.date}</span>
                 <span class="detail-name">${item.materialName}</span>
+                <span class="detail-paymethod">${payLabel}</span>
             </div>
             <div class="detail-amounts">
                 <span class="detail-paid-tag">Paid $${Number(item.paid).toLocaleString()}</span>

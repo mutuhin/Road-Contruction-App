@@ -191,6 +191,8 @@ document.addEventListener('DOMContentLoaded', function() {
     billCatEl.addEventListener('change', updateBillForm);
     tenderValueEl.addEventListener('input', calcTenderAmt);
     tenderPctEl.addEventListener('input', calcTenderAmt);
+    // Set default to Govt Fees (no percentage fields shown)
+    billCatEl.value = 'govt';
     updateBillForm();
 
     // Bills to Pay form

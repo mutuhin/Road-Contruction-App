@@ -296,6 +296,7 @@ function displayLabour() {
 
 function displayMaterials() {
     const list = document.getElementById('materialList');
+    if (!list) return;
     list.innerHTML = '';
     data.materials.forEach((item, index) => {
         const li = document.createElement('li');

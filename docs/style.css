@@ -1147,8 +1147,12 @@ footer {
     letter-spacing: -0.02em;
 }
 
-.pnl-income  { color: #6ee7b7; }
-.pnl-expense { color: #fca5a5; }
+.pnl-income      { color: #6ee7b7; }
+.pnl-expense     { color: #fca5a5; }
+.pnl-deduct      { color: #fca5a5; font-size: 0.95em; }
+.pnl-deduct-label { color: rgba(250,246,236,.4); font-size: 10px; }
+.pnl-govt        { color: #93c5fd; font-size: 1.3em; }
+.pnl-govt-label  { color: #93c5fd; font-size: 12px; font-weight: 700; }
 
 .pnl-divider {
     height: 1px;

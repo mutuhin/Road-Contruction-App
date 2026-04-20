@@ -652,22 +652,28 @@ function updateDashboard() {
     data.engineers.forEach(item => totalSpent += (item.amount || 0));
     data.expenses.forEach(item => totalSpent += (item.amount || 0));
 
-    const totalBillIncome = (data.bills || []).reduce((s, b) => s + (b.amount || 0), 0);
-    const profit = totalBillIncome - totalSpent;
+    const bills = data.bills || [];
+    const tenderTotal = bills.filter(b => b.cat === 'tender').reduce((s, b) => s + (b.amount || 0), 0);
+    const govtTotal   = bills.filter(b => b.cat === 'govt').reduce((s, b) => s + (b.amount || 0), 0);
+    const lgedTotal   = bills.filter(b => b.cat === 'lged').reduce((s, b) => s + (b.amount || 0), 0);
+    const govtPayment = tenderTotal - govtTotal - lgedTotal;
+    const profit = govtPayment - totalSpent;
     const isProfit = profit >= 0;
 
     document.getElementById('totalSpent').textContent = totalSpent.toFixed(2);
     document.getElementById('totalDue').textContent = totalDue.toFixed(2);
 
     const fmt = n => '$' + Math.abs(n).toLocaleString(undefined, { minimumFractionDigits: 2 });
+    const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
 
-    const pnlIncome = document.getElementById('pnlIncome');
-    const pnlSpent  = document.getElementById('pnlSpent');
+    set('pnlTender',      fmt(tenderTotal));
+    set('pnlGovt',        fmt(govtTotal));
+    set('pnlLged',        fmt(lgedTotal));
+    set('pnlGovtPayment', fmt(govtPayment));
+    set('pnlSpent',       fmt(totalSpent));
+
     const pnlResult = document.getElementById('pnlResult');
     const pnlLabel  = document.getElementById('pnlResultLabel');
-
-    if (pnlIncome) pnlIncome.textContent = fmt(totalBillIncome);
-    if (pnlSpent)  pnlSpent.textContent  = fmt(totalSpent);
     if (pnlResult) {
         pnlResult.textContent = (isProfit ? '+' : '-') + fmt(profit);
         pnlResult.className = 'pnl-amount pnl-result ' + (isProfit ? 'is-profit' : 'is-loss');

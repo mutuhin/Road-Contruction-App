@@ -323,6 +323,12 @@
         <p>Road Construction Finance Management App — powered by Firebase</p>
     </footer>
 
+    <!-- Update Banner -->
+    <div id="updateBanner" class="update-banner">
+        <span class="update-banner-text">New version available!</span>
+        <button id="updateNowBtn" class="update-now-btn">Update Now</button>
+    </div>
+
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -331,7 +337,39 @@
     <script src="script.js"></script>
     <script>
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./sw.js');
+            let waitingWorker = null;
+
+            function showUpdateBanner(worker) {
+                waitingWorker = worker;
+                document.getElementById('updateBanner').classList.add('visible');
+            }
+
+            document.getElementById('updateNowBtn').addEventListener('click', () => {
+                if (waitingWorker) {
+                    waitingWorker.postMessage({ type: 'SKIP_WAITING' });
+                }
+            });
+
+            // When the new SW takes control, reload to get fresh content
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+                window.location.reload();
+            });
+
+            navigator.serviceWorker.register('./sw.js').then(reg => {
+                // New SW found while page is open
+                reg.addEventListener('updatefound', () => {
+                    const newWorker = reg.installing;
+                    newWorker.addEventListener('statechange', () => {
+                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                            showUpdateBanner(newWorker);
+                        }
+                    });
+                });
+                // SW already waiting when page loads (user had app open in background)
+                if (reg.waiting && navigator.serviceWorker.controller) {
+                    showUpdateBanner(reg.waiting);
+                }
+            });
         }
     </script>
 

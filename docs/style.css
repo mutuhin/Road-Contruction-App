@@ -1060,6 +1060,59 @@ footer {
     letter-spacing: 0.02em;
 }
 
+/* ── Update Banner ───────────────────────────────── */
+.update-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #0f766e;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    padding-top: calc(12px + env(safe-area-inset-top));
+    z-index: 1100;
+    gap: 12px;
+    transform: translateY(-110%);
+    transition: transform 0.35s cubic-bezier(.4,0,.2,1);
+    box-shadow: 0 4px 16px rgba(0,0,0,.2);
+}
+
+.update-banner.visible {
+    transform: translateY(0);
+}
+
+.update-banner-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+}
+
+.update-now-btn {
+    background: #fff;
+    color: #0f766e;
+    border: none;
+    border-radius: 5px;
+    padding: 7px 16px;
+    font-family: 'Hind Siliguri', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    white-space: nowrap;
+    box-shadow: none;
+    flex-shrink: 0;
+    transition: opacity 0.15s;
+}
+
+.update-now-btn:hover {
+    opacity: 0.85;
+    transform: none;
+    box-shadow: none;
+}
+
 /* ── Section Summary Cards ───────────────────────── */
 .section-cards {
     display: grid;

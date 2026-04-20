@@ -179,12 +179,54 @@
         </div>
     </div>
     
+    <!-- Export Modal -->
+    <div id="exportModal" class="modal-overlay hidden">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Export Data</h3>
+                <button id="closeExportModal" class="close-btn" type="button">✕</button>
+            </div>
+
+            <div class="modal-section">
+                <p class="modal-label">Format</p>
+                <div class="format-btns">
+                    <button class="format-btn active" data-format="json">JSON</button>
+                    <button class="format-btn" data-format="csv">Sheet (CSV)</button>
+                    <button class="format-btn" data-format="pdf">PDF</button>
+                </div>
+            </div>
+
+            <div class="modal-section">
+                <p class="modal-label">Categories</p>
+                <div class="category-checks">
+                    <label><input type="checkbox" value="labour" checked> Labour</label>
+                    <label><input type="checkbox" value="materials" checked> Materials</label>
+                    <label><input type="checkbox" value="engineers" checked> Engineer Dowry</label>
+                    <label><input type="checkbox" value="expenses" checked> Expenses</label>
+                </div>
+            </div>
+
+            <div class="modal-section">
+                <p class="modal-label">Date Range <span class="modal-hint">(optional)</span></p>
+                <div class="date-range-row">
+                    <input type="date" id="exportFrom">
+                    <span>—</span>
+                    <input type="date" id="exportTo">
+                </div>
+            </div>
+
+            <button id="doExportBtn" class="export-go-btn">⬇ Export</button>
+        </div>
+    </div>
+
     <footer>
         <p>Road Construction Finance Management App — powered by Firebase</p>
     </footer>
-    
+
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
     <script src="firebase-config.js"></script>
     <script src="script.js"></script>
     <script>

@@ -777,6 +777,161 @@ li:last-child {
     }
 }
 
+/* ── Export Modal ────────────────────────────────── */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(26,35,50,.55);
+    backdrop-filter: blur(3px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal-box {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    box-shadow: 0 12px 40px rgba(26,35,50,.2);
+    width: 100%;
+    max-width: 420px;
+    padding: 22px;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.modal-header h3 {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 800;
+    font-size: 1.2em;
+    margin: 0;
+    border: none;
+    padding: 0;
+}
+
+.modal-section {
+    margin-bottom: 18px;
+}
+
+.modal-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin: 0 0 8px;
+}
+
+.modal-hint {
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+.format-btns {
+    display: flex;
+    gap: 8px;
+}
+
+.format-btn {
+    flex: 1;
+    padding: 9px 6px;
+    font-size: 12px;
+    font-weight: 700;
+    border: 1.5px solid var(--line);
+    background: var(--bg);
+    border-radius: 6px;
+    box-shadow: none;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.format-btn.active {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+    box-shadow: none;
+    transform: none;
+}
+
+.format-btn:hover:not(.active) {
+    border-color: var(--ink);
+    color: var(--ink);
+    transform: none;
+    box-shadow: none;
+}
+
+.category-checks {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.category-checks label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    cursor: pointer;
+}
+
+.category-checks input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--ink);
+    cursor: pointer;
+    padding: 0;
+    border: none;
+}
+
+.date-range-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.date-range-row input {
+    flex: 1;
+    font-size: 13px;
+}
+
+.date-range-row span {
+    color: var(--muted);
+    font-weight: 700;
+}
+
+.export-go-btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: 800;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    border-radius: 6px;
+    box-shadow: none;
+    cursor: pointer;
+    transition: opacity 0.15s;
+    margin-top: 4px;
+}
+
+.export-go-btn:hover {
+    opacity: 0.85;
+    transform: none;
+    box-shadow: none;
+}
+
 footer {
     text-align: center;
     margin-top: 40px;

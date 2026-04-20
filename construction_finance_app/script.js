@@ -125,10 +125,27 @@ document.addEventListener('DOMContentLoaded', function() {
         this.reset();
     });
 
-    // Export data button
-    document.getElementById('exportDataBtn').addEventListener('click', function() {
-        exportData();
+    // Export button → open modal
+    document.getElementById('exportDataBtn').addEventListener('click', () => {
+        document.getElementById('exportModal').classList.remove('hidden');
     });
+    document.getElementById('closeExportModal').addEventListener('click', () => {
+        document.getElementById('exportModal').classList.add('hidden');
+    });
+    document.getElementById('exportModal').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('exportModal'))
+            document.getElementById('exportModal').classList.add('hidden');
+    });
+
+    // Format toggle buttons
+    document.querySelectorAll('.format-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.format-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+
+    document.getElementById('doExportBtn').addEventListener('click', runExport);
 
     // Dashboard stat cards
     const totalSpentCard = document.getElementById('totalSpentCard');
@@ -239,17 +256,135 @@ function saveData() {
     }
 }
 
-function exportData() {
-    const json = JSON.stringify(data, null, 2);
-    const blob = new Blob([json], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'road_construction_data.json';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+function getFilteredData() {
+    const categories = Array.from(document.querySelectorAll('.category-checks input:checked')).map(i => i.value);
+    const from = document.getElementById('exportFrom').value;
+    const to   = document.getElementById('exportTo').value;
+
+    const filterDates = (arr, dateKey) => arr.filter(item => {
+        if (from && item[dateKey] < from) return false;
+        if (to   && item[dateKey] > to)   return false;
+        return true;
+    });
+
+    return {
+        categories,
+        labour:    categories.includes('labour')    ? filterDates(data.labour,    'date') : [],
+        materials: categories.includes('materials') ? filterDates(data.materials, 'date') : [],
+        engineers: categories.includes('engineers') ? filterDates(data.engineers, 'date') : [],
+        expenses:  categories.includes('expenses')  ? filterDates(data.expenses,  'date') : [],
+    };
+}
+
+function downloadFile(content, filename, mime) {
+    const blob = new Blob([content], { type: mime });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click();
+    document.body.removeChild(a); URL.revokeObjectURL(url);
+}
+
+function runExport() {
+    const format = document.querySelector('.format-btn.active').dataset.format;
+    const fd = getFilteredData();
+    if (format === 'json') exportJSON(fd);
+    if (format === 'csv')  exportCSV(fd);
+    if (format === 'pdf')  exportPDF(fd);
+    document.getElementById('exportModal').classList.add('hidden');
+}
+
+function exportJSON(fd) {
+    const out = {};
+    if (fd.labour.length)    out.labour    = fd.labour;
+    if (fd.materials.length) out.materials = fd.materials;
+    if (fd.engineers.length) out.engineers = fd.engineers;
+    if (fd.expenses.length)  out.expenses  = fd.expenses;
+    downloadFile(JSON.stringify(out, null, 2), 'road_construction.json', 'application/json');
+}
+
+function exportCSV(fd) {
+    let csv = '';
+    const row = (...cols) => cols.map(c => `"${String(c ?? '').replace(/"/g, '""')}"`).join(',') + '\n';
+
+    if (fd.labour.length) {
+        csv += 'LABOUR\n' + row('Name','Date','Amount');
+        fd.labour.forEach(i => { csv += row(i.name, i.date, i.money); });
+        csv += '\n';
+    }
+    if (fd.materials.length) {
+        csv += 'MATERIALS\n' + row('Buyer','Material','Date','Bill','Paid','Due','Method','Ref');
+        fd.materials.forEach(i => { csv += row(i.buyer, i.materialName, i.date, i.bill, i.paid, i.due, i.paymentType||'cash', i.paymentRef||''); });
+        csv += '\n';
+    }
+    if (fd.engineers.length) {
+        csv += 'ENGINEER DOWRY\n' + row('Name','Date','Amount','Payment');
+        fd.engineers.forEach(i => { csv += row(i.name, i.date, i.amount, i.paymentType); });
+        csv += '\n';
+    }
+    if (fd.expenses.length) {
+        csv += 'EXPENSES\n' + row('Description','Date','Amount');
+        fd.expenses.forEach(i => { csv += row(i.description, i.date, i.amount); });
+        csv += '\n';
+    }
+    downloadFile('\uFEFF' + csv, 'road_construction.csv', 'text/csv;charset=utf-8');
+}
+
+function exportPDF(fd) {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    const from = document.getElementById('exportFrom').value;
+    const to   = document.getElementById('exportTo').value;
+    let y = 18;
+
+    doc.setFontSize(16); doc.setFont('helvetica', 'bold');
+    doc.text('Road Construction Finance Report', 14, y); y += 7;
+
+    doc.setFontSize(9); doc.setFont('helvetica', 'normal');
+    if (from || to) { doc.text(`Period: ${from || 'Start'} — ${to || 'End'}`, 14, y); y += 5; }
+    doc.text(`Generated: ${new Date().toLocaleDateString()}`, 14, y); y += 8;
+
+    const section = (title, head, body, color) => {
+        if (!body.length) return;
+        doc.setFontSize(12); doc.setFont('helvetica', 'bold');
+        doc.text(title, 14, y); y += 2;
+        doc.autoTable({
+            startY: y, head: [head], body,
+            styles: { fontSize: 8, cellPadding: 3 },
+            headStyles: { fillColor: color, textColor: 255, fontStyle: 'bold' },
+            alternateRowStyles: { fillColor: [248, 245, 236] },
+            margin: { left: 14, right: 14 },
+        });
+        y = doc.lastAutoTable.finalY + 8;
+    };
+
+    const $ = n => '$' + Number(n).toLocaleString();
+
+    section('Labour',        ['Name','Date','Amount'],
+        fd.labour.map(i => [i.name, i.date, $(i.money)]), [45,106,79]);
+
+    section('Materials',     ['Buyer','Material','Date','Bill','Paid','Due','Method'],
+        fd.materials.map(i => [i.buyer, i.materialName, i.date, $(i.bill), $(i.paid), $(i.due), i.paymentType||'cash']), [26,78,140]);
+
+    section('Engineer Dowry',['Name','Date','Amount','Payment'],
+        fd.engineers.map(i => [i.name, i.date, $(i.amount), i.paymentType]), [93,63,211]);
+
+    section('Expenses',      ['Description','Date','Amount'],
+        fd.expenses.map(i => [i.description, i.date, $(i.amount)]), [214,78,31]);
+
+    // Totals
+    let spent = 0, due = 0;
+    fd.labour.forEach(i => spent += i.money);
+    fd.materials.forEach(i => { spent += i.paid; due += i.due; });
+    fd.engineers.forEach(i => spent += i.amount);
+    fd.expenses.forEach(i => spent += i.amount);
+
+    doc.setDrawColor(200); doc.line(14, y, 196, y); y += 6;
+    doc.setFontSize(11); doc.setFont('helvetica', 'bold');
+    doc.text(`Total Spent: ${$(spent)}`, 14, y); y += 6;
+    doc.text(`Total Due:   ${$(due)}`,   14, y);
+
+    doc.save('road_construction_report.pdf');
 }
 
 function calculateDue(bill, paid) {

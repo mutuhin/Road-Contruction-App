@@ -913,7 +913,7 @@ function displayBills() {
                 <div class="bill-info">
                     <span class="bill-party">${bill.party || '—'}</span>
                     <span class="bill-desc">${bill.description}</span>
-                    ${bill.tenderValue ? `<span class="bill-tender-meta">${fmtTaka(bill.tenderValue)} − ${toBn(bill.tenderPct)}%</span>` : ''}
+                    ${bill.tenderValue ? `<span class="bill-tender-meta">${fmtTaka(bill.tenderValue)} − ${bill.tenderPct}%</span>` : ''}
                     <span class="bill-due-date" style="color:${overdue ? 'var(--red)' : 'var(--muted)'}">শেষ তারিখ: ${bill.dueDate}</span>
                 </div>
                 <span class="bill-amount">${fmtTaka(bill.amount)}</span>

@@ -32,7 +32,7 @@ html, body {
     background-image: linear-gradient(rgba(26,35,50,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(26,35,50,.04) 1px, transparent 1px);
     background-size: 24px 24px;
     min-height: 100vh;
-    padding: calc(24px + env(safe-area-inset-top)) 24px calc(24px + env(safe-area-inset-bottom));
+    padding: calc(24px + env(safe-area-inset-top)) 24px calc(84px + env(safe-area-inset-bottom));
 }
 
 .app-header {
@@ -735,7 +735,7 @@ li:last-child {
 /* Responsive Design */
 @media (max-width: 768px) {
     body {
-        padding: 18px 14px 100px;
+        padding: 18px 14px calc(84px + env(safe-area-inset-bottom));
     }
     
     #sections {
@@ -1055,4 +1055,65 @@ footer {
     font-size: 14px;
     font-family: 'JetBrains Mono', monospace;
     letter-spacing: 0.02em;
+}
+
+/* ── Bottom Navigation ───────────────────────────── */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--ink);
+    display: flex;
+    overflow-x: auto;
+    padding: 6px 4px env(safe-area-inset-bottom);
+    z-index: 900;
+    border-top: 2px solid rgba(255,255,255,.1);
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+}
+
+.bottom-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.bnav-btn {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 16px;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    color: rgba(250,246,236,.55);
+    cursor: pointer;
+    min-width: 72px;
+    transition: color 0.15s, background 0.15s;
+    white-space: nowrap;
+    border-radius: 6px;
+    margin: 2px 1px;
+}
+
+.bnav-btn:hover {
+    color: var(--paper);
+    transform: none;
+    box-shadow: none;
+    background: rgba(255,255,255,.08);
+}
+
+.bnav-btn.active {
+    color: var(--paper);
+    background: rgba(255,255,255,.14);
+    transform: none;
+    box-shadow: none;
+}
+
+.bnav-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    line-height: 1;
 }

@@ -45,7 +45,7 @@
     </div>
     
     <div id="sections">
-        <div class="section">
+        <div class="section" id="secLabour">
             <h3>Labour</h3>
             <form id="labourForm">
                 <div class="form-group">
@@ -65,7 +65,7 @@
             <ul id="labourList"></ul>
         </div>
         
-        <div class="section">
+        <div class="section" id="secMaterials">
             <h3>Materials</h3>
             <div class="subsection">
                 <h4>Raw Materials</h4>
@@ -119,7 +119,7 @@
             </div>
         </div>
         
-        <div class="section">
+        <div class="section" id="secEngineer">
             <h3>Engineer Dowry</h3>
             <form id="engineerForm">
                 <div class="form-group">
@@ -146,7 +146,7 @@
             <ul id="engineerList"></ul>
         </div>
         
-        <div class="section">
+        <div class="section" id="secExpenses">
             <h3>Expenses</h3>
             <form id="expenseForm">
                 <div class="form-group">
@@ -165,7 +165,7 @@
             </form>
             <ul id="expenseList"></ul>
         </div>
-        <div class="section">
+        <div class="section" id="secBills">
             <h3>Bills to Pay</h3>
             <form id="billForm">
                 <div class="form-group">
@@ -212,7 +212,7 @@
             </form>
             <ul id="billList"></ul>
         </div>
-        <div class="section">
+        <div class="section" id="secPeople">
             <h3>People & Materials</h3>
             <p class="entity-help"><a href="#entityList" id="entityHelpLink">Click any name below to view all related details.</a></p>
             <ul id="entityList"></ul>
@@ -281,5 +281,29 @@
             navigator.serviceWorker.register('./sw.js');
         }
     </script>
+
+    <nav class="bottom-nav" id="bottomNav">
+        <button class="bnav-btn" data-target="dashboard">
+            <span class="bnav-label">Dashboard</span>
+        </button>
+        <button class="bnav-btn" data-target="secLabour">
+            <span class="bnav-label">Labour</span>
+        </button>
+        <button class="bnav-btn" data-target="secMaterials">
+            <span class="bnav-label">Materials</span>
+        </button>
+        <button class="bnav-btn" data-target="secEngineer">
+            <span class="bnav-label">Engineer</span>
+        </button>
+        <button class="bnav-btn" data-target="secExpenses">
+            <span class="bnav-label">Expenses</span>
+        </button>
+        <button class="bnav-btn" data-target="secBills">
+            <span class="bnav-label">Bills</span>
+        </button>
+        <button class="bnav-btn" data-target="secPeople">
+            <span class="bnav-label">People</span>
+        </button>
+    </nav>
 </body>
 </html>

@@ -152,6 +152,16 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Bottom navigation
+    document.querySelectorAll('.bnav-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const el = document.getElementById(this.dataset.target);
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            document.querySelectorAll('.bnav-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+
     // Close detail panel
     const closeDetailsBtn = document.getElementById('closeDetailsBtn');
     if (closeDetailsBtn) {

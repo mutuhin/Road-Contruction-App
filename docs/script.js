@@ -312,6 +312,7 @@ function displayMaterials() {
 
 function displayPayments() {
     const list = document.getElementById('paymentList');
+    if (!list) return;
     list.innerHTML = '';
     data.payments.forEach((item, index) => {
         const li = document.createElement('li');

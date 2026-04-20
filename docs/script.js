@@ -155,12 +155,18 @@ document.addEventListener('DOMContentLoaded', function() {
     // Bottom navigation
     document.querySelectorAll('.bnav-btn').forEach(btn => {
         btn.addEventListener('click', function() {
-            const el = document.getElementById(this.dataset.target);
-            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            document.querySelectorAll('.bnav-btn').forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
+            openSection(this.dataset.target);
         });
     });
+
+    // Section summary cards on dashboard
+    document.querySelectorAll('.sec-card').forEach(card => {
+        card.addEventListener('click', function() {
+            openSection(this.dataset.target);
+        });
+    });
+
+    initSections();
 
     // Close detail panel
     const closeDetailsBtn = document.getElementById('closeDetailsBtn');
@@ -592,6 +598,7 @@ function updateDashboard() {
 
     document.getElementById('totalSpent').textContent = totalSpent.toFixed(2);
     document.getElementById('totalDue').textContent = totalDue.toFixed(2);
+    updateSectionCards();
 }
 
 function showLabourDetails(name) {
@@ -898,4 +905,76 @@ function showDetails(title, content) {
     } else {
         alert(`${title}\n\n${content}`);
     }
+}
+
+const SECTION_IDS = ['secLabour', 'secMaterials', 'secEngineer', 'secExpenses', 'secBills', 'secPeople'];
+
+function initSections() {
+    SECTION_IDS.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.classList.add('hidden');
+
+        const h3 = el.querySelector('h3');
+        if (h3 && !h3.querySelector('.sec-close-btn')) {
+            const btn = document.createElement('button');
+            btn.className = 'close-btn sec-close-btn';
+            btn.type = 'button';
+            btn.innerHTML = '✕';
+            btn.setAttribute('aria-label', 'Close section');
+            btn.addEventListener('click', () => {
+                el.classList.add('hidden');
+                document.querySelectorAll('.bnav-btn').forEach(b => b.classList.remove('active'));
+                document.querySelector('.bnav-btn[data-target="dashboard"]')?.classList.add('active');
+            });
+            h3.appendChild(btn);
+        }
+    });
+    document.querySelector('.bnav-btn[data-target="dashboard"]')?.classList.add('active');
+}
+
+function openSection(id) {
+    if (id === 'dashboard') {
+        document.getElementById('dashboard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        document.querySelectorAll('.bnav-btn').forEach(b => b.classList.remove('active'));
+        document.querySelector('.bnav-btn[data-target="dashboard"]')?.classList.add('active');
+        return;
+    }
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.classList.remove('hidden');
+    document.querySelectorAll('.bnav-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector(`.bnav-btn[data-target="${id}"]`)?.classList.add('active');
+    setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 40);
+}
+
+function updateSectionCards() {
+    const labourTotal = data.labour.reduce((s, i) => s + (i.money || 0), 0);
+    const matPaid = data.materials.reduce((s, i) => s + (i.paid || 0), 0);
+    const matDue = data.materials.reduce((s, i) => s + (i.due || 0), 0);
+    const engTotal = data.engineers.reduce((s, i) => s + (i.amount || 0), 0);
+    const expTotal = data.expenses.reduce((s, i) => s + (i.amount || 0), 0);
+    const pendingBills = (data.bills || []).filter(b => b.status !== 'paid');
+    const billsTotal = pendingBills.reduce((s, b) => s + (b.amount || 0), 0);
+    const peopleCount = new Set([
+        ...data.labour.map(i => i.name),
+        ...data.engineers.map(i => i.name),
+        ...data.materials.map(i => i.buyer)
+    ]).size;
+
+    const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+    const $ = n => '$' + Number(n).toLocaleString();
+
+    set('dashLabourTotal', $(labourTotal));
+    set('dashLabourSub', data.labour.length + ' entries');
+    set('dashMatTotal', $(matPaid));
+    set('dashMatSub', matDue > 0 ? 'Due ' + $(matDue) : 'No due');
+    set('dashEngTotal', $(engTotal));
+    set('dashEngSub', data.engineers.length + ' entries');
+    set('dashExpTotal', $(expTotal));
+    set('dashExpSub', data.expenses.length + ' entries');
+    set('dashBillsTotal', pendingBills.length + ' pending');
+    set('dashBillsSub', $(billsTotal));
+    set('dashPeopleTotal', peopleCount + ' people');
+    set('dashPeopleSub', data.materials.length + ' materials');
 }

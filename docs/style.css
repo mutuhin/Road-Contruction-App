@@ -401,6 +401,9 @@ h1 {
     background: var(--paper);
     border-bottom: 1px dashed var(--line);
     cursor: default;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 form {
@@ -1055,6 +1058,70 @@ footer {
     font-size: 14px;
     font-family: 'JetBrains Mono', monospace;
     letter-spacing: 0.02em;
+}
+
+/* ── Section Summary Cards ───────────────────────── */
+.section-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    padding: 0 16px 20px;
+}
+
+@media (max-width: 480px) {
+    .section-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.sec-card {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 12px 10px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    text-align: center;
+    transition: transform 0.12s, box-shadow 0.12s;
+    border-top: 3px solid transparent;
+}
+
+.sec-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(26,35,50,.12);
+}
+
+.sec-labour   { border-top-color: var(--green); }
+.sec-materials { border-top-color: var(--blue); }
+.sec-engineer  { border-top-color: #7c3aed; }
+.sec-expenses  { border-top-color: var(--red); }
+.sec-bills     { border-top-color: var(--amber); }
+.sec-people    { border-top-color: var(--muted); }
+
+.sec-card-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+}
+
+.sec-card-total {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 900;
+    font-size: 1.1em;
+    color: var(--ink);
+    line-height: 1.1;
+}
+
+.sec-card-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
 }
 
 /* ── Bottom Navigation ───────────────────────────── */

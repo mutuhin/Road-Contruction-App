@@ -1113,6 +1113,64 @@ footer {
     box-shadow: none;
 }
 
+/* ── P&L Summary Card ────────────────────────────── */
+.pnl-card {
+    margin: 0 16px 18px;
+    background: var(--ink);
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: 0 4px 16px rgba(26,35,50,.18);
+}
+
+.pnl-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pnl-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(250,246,236,.55);
+}
+
+.pnl-amount {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 900;
+    font-size: 1.15em;
+    letter-spacing: -0.02em;
+}
+
+.pnl-income  { color: #6ee7b7; }
+.pnl-expense { color: #fca5a5; }
+
+.pnl-divider {
+    height: 1px;
+    background: rgba(250,246,236,.15);
+    margin: 2px 0;
+}
+
+.pnl-result-row {
+    padding-top: 4px;
+}
+
+.pnl-result-label.is-profit { color: #6ee7b7; }
+.pnl-result-label.is-loss   { color: #fca5a5; }
+
+.pnl-result {
+    font-size: 1.6em;
+    letter-spacing: -0.03em;
+}
+
+.pnl-result.is-profit { color: #6ee7b7; }
+.pnl-result.is-loss   { color: #fca5a5; }
+
 /* ── Section Summary Cards ───────────────────────── */
 .section-cards {
     display: grid;

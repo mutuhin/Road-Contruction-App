@@ -169,22 +169,32 @@
             <h3>Bills to Pay</h3>
             <form id="billForm">
                 <div class="form-group">
-                    <label for="billCategory">Category</label>
+                    <label for="billCategory">Phase / Category</label>
                     <select id="billCategory">
-                        <option value="material">Material</option>
-                        <option value="labour">Labour</option>
-                        <option value="engineer">Engineer</option>
                         <option value="tender">Tender Drop</option>
+                        <option value="p0">Phase 0 — Pre-construction & Paperwork</option>
+                        <option value="p1">Phase 1 — Site Setup & Mobilization</option>
+                        <option value="p2">Phase 2 — Clearing & Stripping</option>
+                        <option value="p3">Phase 3 — Earth Work</option>
+                        <option value="p4">Phase 4 — Old Material Removal</option>
+                        <option value="p5">Phase 5 — Widening</option>
+                        <option value="p6">Phase 6 — Hard Bed Preparation</option>
+                        <option value="p7">Phase 7 — Edge Breaking Repair</option>
+                        <option value="p8">Phase 8 — Culvert Approach</option>
+                        <option value="p9">Phase 9 — End Edging 125mm</option>
+                        <option value="p10">Phase 10 — Sand Binding</option>
+                        <option value="p11">Phase 11 — Brick Sub-Base</option>
+                        <option value="p12">Phase 12 — WBM</option>
+                        <option value="p13">Phase 13 — Bituminous Work</option>
+                        <option value="p14">Phase 14 — RCC Palisading</option>
+                        <option value="p15">Phase 15 — Road Safety</option>
+                        <option value="p16">Phase 16 — Finishing & Handover</option>
                         <option value="other">Other</option>
                     </select>
                 </div>
-                <div class="form-group" id="billPartySelectGroup">
-                    <label for="billPartySelect">Party / Name</label>
-                    <select id="billPartySelect"></select>
-                </div>
-                <div class="form-group hidden" id="billPartyInputGroup">
-                    <label for="billPartyInput">Party / Name</label>
-                    <input type="text" id="billPartyInput" placeholder="Enter name">
+                <div class="form-group">
+                    <label for="billPartyInput">Party / Vendor</label>
+                    <input type="text" id="billPartyInput" placeholder="Name or company">
                 </div>
                 <div class="form-group">
                     <label for="billDescription">Description</label>

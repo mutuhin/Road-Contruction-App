@@ -115,42 +115,15 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('doExportBtn').addEventListener('click', runExport);
 
     // Bills to Pay form
-    const billCategoryEl = document.getElementById('billCategory');
-    const billPartySelectGroup = document.getElementById('billPartySelectGroup');
-    const billPartyInputGroup  = document.getElementById('billPartyInputGroup');
-    const billPartySelect = document.getElementById('billPartySelect');
-    const billPartyInput  = document.getElementById('billPartyInput');
-
-    function populateBillParty() {
-        const cat = billCategoryEl.value;
-        const freeText = cat === 'tender' || cat === 'other';
-        billPartySelectGroup.classList.toggle('hidden', freeText);
-        billPartyInputGroup.classList.toggle('hidden', !freeText);
-        if (freeText) return;
-
-        let names = [];
-        if (cat === 'material') names = [...new Set(data.materials.map(i => i.buyer))];
-        if (cat === 'labour')   names = [...new Set(data.labour.map(i => i.name))];
-        if (cat === 'engineer') names = [...new Set(data.engineers.map(i => i.name))];
-
-        billPartySelect.innerHTML = names.length
-            ? names.map(n => `<option value="${n}">${n}</option>`).join('')
-            : '<option value="">— no entries yet —</option>';
-    }
-
-    billCategoryEl.addEventListener('change', populateBillParty);
-    populateBillParty();
-
     document.getElementById('billForm').addEventListener('submit', function(e) {
         e.preventDefault();
-        const cat = billCategoryEl.value;
-        const freeText = cat === 'tender' || cat === 'other';
-        const party = freeText ? billPartyInput.value.trim() : billPartySelect.value;
+        const cat         = document.getElementById('billCategory').value;
+        const party       = document.getElementById('billPartyInput').value.trim();
         const description = document.getElementById('billDescription').value.trim();
-        const amount = parseFloat(document.getElementById('billAmountInput').value);
-        const dueDate = document.getElementById('billDueDate').value;
-        if (!description || !amount || !dueDate || (!party && !freeText)) {
-            alert('Please fill all fields.');
+        const amount      = parseFloat(document.getElementById('billAmountInput').value);
+        const dueDate     = document.getElementById('billDueDate').value;
+        if (!description || !amount || !dueDate) {
+            alert('Please fill all required fields.');
             return;
         }
         data.bills.push({ cat, party, description, amount, dueDate, status: 'pending', created: new Date().toISOString().slice(0,10) });
@@ -158,7 +131,6 @@ document.addEventListener('DOMContentLoaded', function() {
         displayBills();
         updateDashboard();
         this.reset();
-        populateBillParty();
     });
 
     // Dashboard stat cards
@@ -726,8 +698,23 @@ function showMaterialNameDetails(name) {
 }
 
 
-const BILL_CAT_LABELS = { material: 'Material', labour: 'Labour', engineer: 'Engineer', tender: 'Tender Drop', other: 'Other' };
-const BILL_CAT_COLORS = { material: 'var(--blue)', labour: 'var(--green)', engineer: '#7c3aed', tender: 'var(--amber)', other: 'var(--muted)' };
+const BILL_CAT_LABELS = {
+    tender:'Tender Drop',
+    p0:'Phase 0 — Paperwork', p1:'Phase 1 — Site Setup', p2:'Phase 2 — Clearing',
+    p3:'Phase 3 — Earth Work', p4:'Phase 4 — Salvage', p5:'Phase 5 — Widening',
+    p6:'Phase 6 — Hard Bed', p7:'Phase 7 — Edge Repair', p8:'Phase 8 — Culvert',
+    p9:'Phase 9 — End Edging', p10:'Phase 10 — Sand Binding', p11:'Phase 11 — Sub-Base',
+    p12:'Phase 12 — WBM', p13:'Phase 13 — Bituminous', p14:'Phase 14 — Palisading',
+    p15:'Phase 15 — Road Safety', p16:'Phase 16 — Handover', other:'Other'
+};
+const BILL_CAT_COLORS = {
+    tender:'var(--amber)', other:'var(--muted)',
+    p0:'#7c3aed', p1:'var(--blue)', p2:'var(--green)', p3:'#b45309',
+    p4:'var(--muted)', p5:'var(--blue)', p6:'#0f766e', p7:'var(--red)',
+    p8:'#7c3aed', p9:'var(--green)', p10:'#b45309', p11:'var(--blue)',
+    p12:'#0f766e', p13:'var(--red)', p14:'#7c3aed', p15:'var(--amber)',
+    p16:'var(--green)'
+};
 
 function displayBills() {
     const list = document.getElementById('billList');

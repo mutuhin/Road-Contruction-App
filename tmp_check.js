@@ -1,0 +1,682 @@
+
+const D={
+  phases:[
+  {id:'p0',num:'PHASE 0',title:'প্রস্তুতি ও কাগজপত্র',en:'Pre-construction & paperwork',cost:null,tasks:[
+    {t:'Work Order ও Contract স্বাক্ষর',d:'LGED অনুমোদিত কাগজপত্র',tag:'DOCS',
+     det:{pur:'LGED কর্তৃক Issue করা Work Order সংগ্রহ করে legal stamp paper-এ contract স্বাক্ষর। এটা ছাড়া সাইটে কাজ শুরু করা যাবে না।',
+      specs:[['Package No.','CAFDRIRP/Khulna/ER/VR/W-40/2025-26'],['Estimate Cost','৳ 1,67,89,027.00'],['Scheme Code','24753-26-10001 (Part-1)'],['Road Code','247534057'],['FY','2025–2026'],['Issuing Officer','Executive Engineer, LGED Khulna'],['Payment term','Running bill এ'],['DLP','12 months']],
+      steps:['LGED office থেকে Work Order originals সংগ্রহ','সব ৫টি section এর BOQ items নিজে verify করুন','Legal stamp paper-এ contract print ও sign','Original contract + 2 certified copies LGED জমা','Site Commencement Notice জমা'],
+      note:'চুক্তির আগে নিজে সব rate ও quantity cross-check করুন।',
+      eq:[],mat:[]}},
+    {t:'Bank Guarantee (Security Deposit) জমা',d:'Contract value এর 5% = ৳8,39,451',tag:'DOCS',
+     det:{pur:'Project security। কাজে গাফিলতি হলে LGED এই BG encash করবে।',
+      specs:[['Amount','৳ 8,39,451 (5% of ৳1.67 Cr)'],['Type','Bank Guarantee বা Pay Order'],['Bank','যেকোনো scheduled bank'],['Validity','Contract period + 1 year DLP'],['Payable to','Executive Engineer, LGED Khulna'],['Submission','Contract sign এর সাথে সাথে']],
+      steps:['Bank-এ BG request করুন','Bank charge: ৳1,000-3,000/month (approx)','Original BG + 2 copy তৈরি','LGED Accounts Section-এ জমা','Receipt সংগ্রহ করুন'],
+      tip:'BG validity সবসময় DLP শেষ পর্যন্ত রাখুন। Expire হলে সমস্যা।'}},
+    {t:'VAT + Income Tax Registration verify',d:'BIN + TIN current year valid রাখুন',tag:'DOCS',
+     det:{pur:'Bill payment-এর সময় LGED source এ VAT + AIT কেটে রাখে।',
+      specs:[['VAT rate','7.5% (deducted at source)'],['AIT (Income Tax)','7% (approx, NBR circular অনুযায়ী)'],['Required docs','BIN certificate (current), TIN certificate'],['Verify via','NBR website'],['Annual Return','Due date-এর আগে জমা']],
+      warn:'BIN/TIN invalid থাকলে bill payment আটকে যাবে।'}},
+    {t:'Joint Site Visit (Engineer সাথে)',d:'UE Md. Abul Fazel + SAE Md. Afzal Hossain',tag:'FIELD',
+     det:{pur:'কাজ শুরুর আগে সমস্ত সাইট দেখে engineer-দের সাথে common understanding। Later এ "এটা বলা হয়নি" বলতে না পারেন।',
+      specs:[['Upazila Engineer','Md. Abul Fazel (Addl. Duty), Koira'],['Sub-Asst. Eng.','Md. Afzal Hossain, Koira'],['Supervisor Eng.','Khalifa Md. Abul Kalam Azad (CAFDRIRP)'],['Total chainage','0+00 → 3+000 (3 km)'],['Key locations','11 Palisading + 1 Culvert + Widening zone'],['Output','Joint Inspection Report']],
+      steps:['উভয় পক্ষের convenient date ঠিক করুন','Motorbike/vehicle তৈরি রাখুন','Notebook + camera নিয়ে যান','১১টি palisading location চিহ্নিত করুন','Ch 0+530-1+000 widening zone দেখুন','কালভার্ট (Ch 1+278-1+288) inspect করুন','Joint inspection report তৈরি ও সাক্ষর করুন'],
+      tip:'Inspector দের সাথে যেকোনো অস্পষ্ট বিষয় এখনই clear করুন।'}},
+    {t:'"Before" Photos — পুরো ৩ কি.মি.',d:'প্রতি 100m উভয় পাশ থেকে',tag:'PHOTO',
+     det:{pur:'Final bill এবং DLP claim-এর সময় "before" evidence লাগবে। Court case হলেও কাজে আসে।',
+      specs:[['Frequency','প্রতি 100m (minimum)'],['Total frames','60-90 ছবি (minimum)'],['Angles','Left side, Right side, Center'],['Include in frame','Chainage board + date'],['Format','Chronological folder: ch_0000 → ch_3000'],['Storage','Cloud backup (Google Drive/iCloud)']],
+      steps:['Chainage board তৈরি করুন (cardboard + marker)','Ch 0+00 থেকে শুরু করুন','প্রতি 100m এ: L/S, R/S, center — 3 ছবি','GPS coordinates চালু রাখুন (phone)','১১টি palisading location এর ছবি আলাদা folder এ'],
+      note:'ছবিতে পানি, ভাঙা edge, সব damage clearly দেখানোর চেষ্টা করুন।'}},
+    {t:'Material Supplier Finalize',d:'ইট + বালু + chips + bitumen 60/70',tag:'PLAN',
+     det:{pur:'Material delay = project delay = penalty। আগে থেকে supplier lock করুন।',
+      specs:[['1st class brick','LAA ≤ 40, জামা/picked'],['Sand FM 0.50','Sub-grade, BFS, SBBC'],['Sand FM 0.80','Sand Binding (SB)'],['38mm Crusher run','SBBC sub-base, CWBM'],['Stone chips 16mm','Dense Carpeting aggregate'],['Stone chips 12mm','Dense Carpeting aggregate'],['Stone chips 6mm','Dense Carpeting filler'],['Bitumen 60/70','Penetration grade, ASTM/AASHTO'],['Cement','OPC 43 grade (Palisading concrete)'],['MS Rod 12mm','Palisading posts (4 nos per post)'],['MS Rod 10mm','Guide post, Sign foundation']],
+      warn:'Bitumen এর পরিমাণ আগেই confirm করুন। Stock না থাকলে আনতে ৭-১৫ দিন লাগে।'}},
+    {t:'Equipment Booking',d:'Roller 8-10 ton + compactor + truck',tag:'PLAN',
+     det:{pur:'Peak time-এ roller পাওয়া কঠিন। আগে থেকে book করুন।',
+      specs:[['Road Roller','8-10 MT (steel drum) — Earth + WBM compaction'],['Bitumen Roller (1st)','8-10 MT steel drum'],['Bitumen Roller (2nd)','3-5 tons pneumatic tire'],['Vibro compactor','Narrow area + edge'],['Concrete Mixer','7 CFT — Palisading concrete'],['Dump Truck','2-3 nos — earth + chips carriage'],['Water Bowser','500-1000 L — WBM sprinkling'],['Level Machine','Auto level + 4m staff + tripod'],['Generator','For night work if needed']],
+      tip:'Roller operator এর license check করুন। BRTA license থাকা বাধ্যতামূলক।'}},
+    {t:'Labour Team Hire',d:'Mason + rigger + roller operator + helpers',tag:'PLAN',
+     det:{pur:'Phase wise labour plan করুন। সব একসাথে রাখলে idle cost বাড়বে।',
+      specs:[['Earth work gang','10-15 helpers + 1 supervisor (Phase 3)'],['Brick mason','5-8 + helpers (Phase 9, 14)'],['Bitumen gang','11 experienced crew (Phase 13)'],['Roller operator','Licensed, 8-10 ton'],['Surveyor','1 experienced (level book reading)'],['Guard','1-2 (material storage)'],['Unskilled labour','Daily wage basis']],
+      note:'Bitumen gang specialist — তাদের আগে থেকে confirm করুন। ভুল temperature এ laying করলে ক্যারপেটিং ফেটে যাবে।'}}
+  ]},
+
+  {id:'p1',num:'PHASE 1',title:'সাইট Setup ও Mobilization',en:'Site establishment',cost:null,tasks:[
+    {t:'TBM (Temporary Bench Mark) স্থাপন',d:'RL = 10.00 — Ex-UZR BC Road Top C/C',tag:'SURVEY',
+     det:{pur:'পুরো project এর elevation reference point। এটা ভুল হলে সব calculation ভুল হবে।',
+      specs:[['TBM Location','Ex-UZR BC Road Top, Center line'],['RL (Assumed)','10.00 m'],['Datum Reference','Scheme Code 24753-11-0008 Level Book'],['Formation Level range','9.71 m → 9.85 m (বিভিন্ন চেইনেজে)'],['Instrument','Auto Level (EVCS software compatible)'],['TBM construction','Concrete pillar + brass plate with RL stamped']],
+      steps:['Suitable concrete pillar fix করুন','Brass plate লাগান ও RL = 10.00 লিখুন','Instrument test করুন (closing error ≤ ±2mm/km)','Starting BM থেকে all chainage RL আঁকুন','Level Book update করুন প্রতিদিন'],
+      warn:'TBM কেউ যেন disturb না করে। চারপাশে barricade দিন।'}},
+    {t:'Centerline ও Chainage Pegs',d:'প্রতি 100m peg, 3km total',tag:'SURVEY',
+     det:{pur:'Alignment maintain না হলে road curved/crooked হবে।',
+      specs:[['Peg interval','100 m'],['Total pegs','31 nos (Ch 0+00 to 3+000)'],['Top Width design','5.00 m (Formation level)'],['Crest width','3.0 m (carpeted)'],['End Edging','125mm × 2 side'],['Slope both sides','1:1 (V:H)'],['Widening zone','Ch 530-1000 R/S: +0.525m']],
+      steps:['Compass/theodolite দিয়ে centerline set','প্রতি 100m এ 2ft wooden peg drive','Nylon string দিয়ে line verify','Formation width markers L/S + R/S','Palisading zones flag করুন'],
+      mat:['31 wooden pegs','50m nylon string','Red paint','Stakes']}},
+    {t:'Site Office ও Material Store',d:'Temporary shed, drawings, register',tag:'SETUP',
+     det:{pur:'কাগজপত্র ও material safe রাখার জন্য।',
+      specs:[['Location','Ch 1+500 কাছাকাছি (central)'],['Size','Minimum 12ft × 10ft'],['Contents','Drawing board, BOQ file, attendance register, safety kit'],['Lock','Padlock — material store'],['Signboard','Project name + contractor name + LGED logo']],
+      mat:['Corrugated tin sheet 20 pcs','Wooden frame','Padlock 2 nos','Signboard']}},
+    {t:'Safety Equipment Setup',d:'Helmet, shoes, first aid, cones',tag:'SAFETY',
+     det:{pur:'LGED requirement এবং worker protection।',
+      specs:[['Hard hat','10 nos minimum'],['Safety shoes','5 pair'],['Safety vest','10 nos'],['First aid box','Complete — bandage, burn cream, dettol'],['Traffic cones','20 nos'],['Caution sign','"কাজ চলছে" 5 nos'],['Flagmen','2 nos (both ends)'],['Fire extinguisher','1 × 5kg ABC (Bitumen work)']],
+      warn:'Bitumen কাজে fire extinguisher mandatory। গরম bitumen গায়ে পড়লে immediately cold water।'}},
+    {t:'Water Source + Pump Arrange',d:'WBM + compaction এর জন্য',tag:'SETUP',
+     det:{pur:'Compaction আর WBM wet rolling এর জন্য পানি লাগবে।',
+      specs:[['Source','নিকটস্থ পুকুর/নদী/tube well'],['Pump capacity','Minimum 3 HP'],['Water tank','2000 L plastic storage'],['Hose','2-inch, 50m length'],['Daily requirement','~500-1500 L (peak WBM day)']],
+      tip:'Bitumen prime coat এর পরে পানি একদম নিষিদ্ধ — road wet হলে bitumen উঠে যাবে।'}}
+  ]},
+
+  {id:'p2',num:'PHASE 2',title:'জঙ্গল পরিষ্কার ও Stripping',en:'Jungle clearance — full 3km',cost:null,tasks:[
+    {t:'Ch 0+000 → 0+500 Clearing (500m)',d:'ঝোপ + stump + 200mm stripping',tag:'500m',
+     det:{pur:'Earth work এর আগে surface পরিষ্কার করা বাধ্যতামূলক।',
+      specs:[['Chainage','0+000 → 0+500'],['Length','500 m'],['Tree stump','Up to 200mm girth remove'],['Stripping depth','200 mm (top soil)'],['Sides','Both L/S and R/S'],['Clod max size','100 mm']],
+      steps:['Jungle/scrub cutting (machete/chainsaw)','Root/stump removal up to 200mm girth','Top 200mm organic soil stripping','Debris + roots dump truck এ load','Site পরিষ্কার করুন'],
+      note:'Koira area clay & silty soil। Stripping করার পর surface কিছুটা soft লাগবে — normal।'}},
+    {t:'Ch 0+500 → 1+000 Clearing (500m)',d:'Widening R/S এ extra attention',tag:'500m',
+     det:{pur:'Widening zone (Ch 0+530-1+000 R/S) এ extra clearance দরকার।',
+      specs:[['Chainage','0+500 → 1+000'],['Widening zone','0+530 → 1+000 R/S'],['Extra width','0.525 m R/S এ clear করুন'],['Obstruction at','4.00 m from center'],['L/S Note','বসত বাড়ি — সেই পাশে ঢোকা নিষেধ'],['Palisading nearby','Ch 0+581-0+845 R/S']],
+      warn:'L/S এ বসত বাড়ি থাকায় Technical Report অনুযায়ী শুধু R/S এ widening। L/S তে কাজ করবেন না।'}},
+    {t:'Ch 1+000 → 1+500 Clearing (500m)',d:'Box Culvert area carefully',tag:'500m',
+     det:{pur:'কালভার্ট এর কাছে extra careful।',
+      specs:[['Chainage','1+000 → 1+500'],['Culvert location','Ch 1+278 → 1+288'],['Span','5.50 m RCC Box'],['Approach','Ch 1+268-1+278 & 1+288-1+298'],['Clearing','Culvert structure disturb করবেন না'],['Nearby palisading','Ch 1+402-1+417, 1+496-1+511']]}},
+    {t:'Ch 1+500 → 2+000 Clearing (500m)',d:'৪টি Palisading location',tag:'500m',
+     det:{pur:'Multiple palisading zones — সেগুলো আলাদাভাবে flag করুন।',
+      chainTable:{headers:['Palisading','Side','Length'],rows:[['Ch 1537-1551','L/S','14 m'],['Ch 1708-1760','L/S','52 m'],['Ch 1807-1829','L/S','22 m'],['Ch 1862-1880','L/S','18 m']]}}},
+    {t:'Ch 2+000 → 2+500 Clearing (500m)',d:'Standard stretch',tag:'500m',
+     det:{pur:'Middle section, no critical works।',
+      specs:[['Chainage','2+000 → 2+500'],['Length','500 m'],['Palisading','None in this zone'],['Standard','Full jungle + stripping']]}},
+    {t:'Ch 2+500 → 3+000 Clearing (500m)',d:'শেষ section — ৩টি palisading',tag:'500m',
+     det:{pur:'শেষ 500m এ তিনটি palisading।',
+      chainTable:{headers:['Palisading','Side','Length'],rows:[['Ch 2602-2642','L/S','40 m'],['Ch 2812-2836','R/S','24 m'],['Ch 2960-3000','L/S','40 m']]},
+      note:'Ch 2960-3000 L/S এর D = 5.05m — এটা junction area। Extra clearing লাগবে।'}}
+  ]},
+
+  {id:'p3',num:'PHASE 3',title:'Earth Work — মাটি ভরাট',en:'Section 1 — EFW(CE) — ৳14,43,385',cost:'৳ 14,43,385',tasks:[
+    {t:'Borrow Pit ও Access Road Prepare',d:'200m ROW বাইরে থেকে Clay & Silty মাটি',tag:'PLAN',
+     det:{pur:'BOQ Item 2.02.3.01 EFW(CE) এর জন্য মাটি source prepare।',
+      specs:[['BOQ Item','2.02.3.01 — EFW(CE)'],['Source condition','200m beyond Right-of-Way'],['Soil type','Clay & Silty (match করতে হবে)'],['Moisture','±2% of OMC at time of compaction'],['Royalty','Local rate — জমির মালিককে pay'],['Access road','Dump truck চলার জন্য গ্রামীণ পথ prepare'],['Borrow pit depth','Max 1.5-2m (waterlogging avoid)'],['Compaction','85% MDD outside municipal area']],
+      steps:['নিকটবর্তী upland খুঁজুন যেখানে Clay & Silty soil আছে','জমির মালিকের সাথে rate negotiate করুন','Access road প্রয়োজনে minor repair করুন','Borrow pit boundary mark করুন','Dug balling / scraper setup করুন','Moisture test করুন (OMC test)'],
+      note:'Payment on compacted volume। বেশি moisture থাকলে aeration দরকার, কম moisture থাকলে water sprinkle।',
+      mat:['Borrow pit royalty payment receipt','Moisture test kit']}},
+    {t:'Ch 0+000 → 0+500 Earth Filling (500m)',d:'Layer 150mm vertical, 600mm horizontal',tag:'500m',
+     det:{pur:'প্রথম 500m segment। EFW(CE) specification এ।',
+      specs:[['Chainage','0+000 → 0+500'],['Applicable length','500 m'],['Pre-work x-sec (avg)','~18-20 sqm (from level book)'],['Design x-sec (avg)','~20-22 sqm'],['Net design area/m','~2-3 sqm/m'],['Volume approx','500 × 2.5 = 1,250 cum (approx)'],['Vertical layer max','150 mm (loose)'],['Horizontal layer max','600 mm'],['Moisture target','OMC ±2%'],['Compaction','95% MDD (mid embankment)'],['Slope','1:1 both sides'],['Camber','150 mm at crest center']],
+      steps:['Earth dump করুন loose layer 150mm করে','Clod break করুন (max 100mm)','Water sprinkle করুন (moisture check)','Roller দিয়ে compact করুন','Field density test করুন','Approval নিন, তারপর পরের layer'],
+      eq:['Dump truck (2-3 nos)','8-10 MT road roller','Water bowser','Vibro compactor (edge areas)'],
+      warn:'এক layer এর বেশি একসাথে dump করবেন না। Compaction fail হবে।'}},
+    {t:'Ch 0+500 → 1+000 Earth Filling (widening সহ)',d:'Widening Ch 0+530-1+000 R/S',tag:'500m',
+     det:{pur:'Widening zone এ earth filling — R/S এ extra 0.525m।',
+      specs:[['Chainage','0+500 → 1+000'],['Normal width L/S','Existing ~2.4m'],['Widening R/S','Extra 0.525m'],['Box cutting vol.','470 × 0.525 × 0.350 = 86.363 cum (deducted from BOQ)'],['Compaction widening','98% MDD (higher requirement)'],['Benching','Existing slope এ 100mm benching'],['Obstruction','4.00m from center (L/S structure)']],
+      tip:'Widening এর মাটি ভালো করে compact করুন — কারণ DC overlay তার উপরে যাবে।'}},
+    {t:'Ch 1+000 → 1+500 Earth Filling (culvert gap বাদ)',d:'Ch 1378-1388 (10m) — No Earthwork',tag:'500m',
+     det:{pur:'কালভার্ট gap বাদে 490m earth filling।',
+      specs:[['Chainage','1+000 → 1+500'],['Effective length','490 m (500-10 culvert gap)'],['Culvert gap','Ch 1+378 → 1+388 — 10m NO earthwork'],['Note in Level Book','"No Earthwork Required" — page 17 of 17'],['Formation Level','~9.75 m (this zone)'],['Palisading nearby','Ch 1402-1417 L/S']],
+      note:'BOQ calculation এ 10m culvert gap deduct করা হয়েছে। Site এ also এই 10m বাদ দিন।'}},
+    {t:'Ch 1+500 → 2+000 Earth Filling (500m)',d:'Multiple palisading locations পাশে',tag:'500m',
+     det:{pur:'Standard 500m — ৪টি palisading area এর কাছে।',
+      specs:[['Chainage','1+500 → 2+000'],['Formation Level','9.75-9.77 m avg'],['Palisading zones','Ch 1537-1551, 1708-1760, 1807-1829, 1862-1880']],
+      tip:'Palisading location গুলোতে earth ভরাটের সময় extra careful — wall foundation disturb করবেন না।'}},
+    {t:'Ch 2+000 → 2+500 Earth Filling (500m)',d:'Straightforward section',tag:'500m',
+     det:{pur:'Standard stretch — no special feature।',
+      specs:[['Chainage','2+000 → 2+500'],['Formation Level','9.73-9.79 m']]}},
+    {t:'Ch 2+500 → 3+000 Earth Filling (500m)',d:'শেষ section',tag:'500m',
+     det:{pur:'শেষ 500m।',
+      specs:[['Chainage','2+500 → 3+000'],['Formation Level at 2960','9.79 m'],['Palisading areas','2602-2642, 2812-2836, 2960-3000']]}},
+    {t:'Side Slope Dressing (1:1 both sides)',d:'পুরো 3km, design: 1:1 V:H',tag:'FINISH',
+     det:{pur:'Embankment stability এবং water runoff।',
+      specs:[['R-Slope design','1:1.00 (V:H)'],['L-Slope design','1:1.00 (V:H)'],['Turfing on Top','0.00 m (এই project এ নেই)'],['Design Turfing Length','2.53 – 4.67 m (zone অনুযায়ী)'],['Benching','100mm clod, horizontal 600mm, vertical 300mm']],
+      steps:['Roller দিয়ে slope rough compact করুন','Template (template board) দিয়ে 1:1 check করুন','Hand dressing করুন','Water runoff path clear করুন']}},
+    {t:'Camber 150mm at Center Crest',d:'পুরো 3000m — center এ 150mm উঁচু',tag:'FINISH',
+     det:{pur:'পানি রাস্তার মাঝে জমা না হয়ে দুই পাশে নামবে।',
+      specs:[['Camber height','150 mm (at center line)'],['Crest width','3.0 m carpeted portion'],['Cross slope %','~3% from center outward'],['Method','Profile board দিয়ে check করুন'],['Note','Hard bed preparation এর আগেই camber ঠিক করুন']]}},
+    {t:'Compaction Test (Engineer সামনে)',d:'85/95/98% MDD — প্রতি 500m এ test',tag:'QC',
+     det:{pur:'LGED quality requirement। Test ছাড়া measurement নেবে না।',
+      specs:[['Test standard','AASHTO T-99 (Standard Proctor)'],['Zone-1 requirement','85% MDD (আমাদের spec — outside municipal)'],['Zone-2 requirement','95% MDD'],['Zone-3 (subgrade)','98% MDD'],['Frequency','প্রতি 500m এ minimum 1 test'],['Who witnesses','Sub-Asst. Engineer + contractor supervisor'],['Lab','LGED approved test lab']],
+      steps:['Sample collect করুন (প্রতি layer)','Lab এ Proctor test করুন','Field density test করুন','Compare করুন — ≥ required %','Report sign করুন এবং MB তে attach করুন'],
+      warn:'Test fail হলে recompact করুন এবং re-test। কোনো shortcut নেই।'}},
+    {t:'Earth Work Final BOQ Measurement',d:'Target: 4,589.897 cum',tag:'QC',
+     det:{pur:'Actual vs BOQ quantity verify।',
+      specs:[['Pre-work volume','4,837.540 cum (from level book)'],['End Edging deduction','−161.280 cum (3000×0.112×0.240×2 sides)'],['Widening box deduction','−86.363 cum (470×0.525×0.350)'],['Net BOQ volume','4,589.897 cum'],['Unit Rate','৳ 314.47/cum'],['Total Amount','৳ 14,43,384.91'],['Rounded in BOQ','৳ 14,43,385.00']],
+      note:'EVCS Software দিয়ে Engineer volume calculate করেছেন। Site এ measurement নেওয়ার সময় same formula use করুন।'}}
+  ]},
+
+  {id:'p4',num:'PHASE 4',title:'পুরাতন Material তোলা ও Salvage',en:'Picking & stacking — Phase before laying',cost:'৳ ~72,000',tasks:[
+    {t:'PIEE 75mm — Ch 0+00 → 2+000 (3,542m)',d:'উভয় পাশ থেকে তুলে stack',tag:'3,542m',
+     det:{pur:'BOQ Item 3.04.1.1। পুরাতন ৭৫mm EE তুলে salvage করা — পরে B&SBC তে use হবে।',
+      specs:[['BOQ Item Code','3.04.1.1 — PIEE(75mm)'],['Unit','m (linear)'],['Gross length','2000m × 2 sides = 4000m'],['Deductions (missing)','−458 m (various chainages)'],['Net quantity','3,542.000 m'],['Unit Rate','৳ 8.83/m'],['Total Amount','৳ 31,275.86'],['Brick width','75mm across road']],
+      chainTable:{headers:['Missing Chainage','Length','Side'],rows:[['0+048-0+050','2m','R/S'],['0+074-0+076','2m','L/S'],['0+160-0+166','6m','R/S'],['0+355-0+360','5m','R/S'],['0+423-0+427','4m','R/S'],['0+513-0+537','24m','R/S'],['0+581-0+845','264m','R/S (Palisading zone)'],['1+100-1+113','13m','R/S'],['1+237-1+246','9m','R/S'],['1+398-1+417','19m','L/S'],['1+436-1+447','11m','R/S'],['+ more...','~100m','various']]},
+      steps:['Chainage marking করুন','Brick manually pick করুন (দুই পাশ থেকে)','Broken bricks separate করুন','Specified distance এ neat stack করুন','Engineer সামনে count করুন'],
+      note:'Ch 0+581-0+845 R/S Palisading zone — এখানে EE already damaged/missing।'}},
+    {t:'PIEE 125mm — Ch 2+000 → 3+000 (1,918m)',d:'শেষ 1km — 125mm EE উভয় পাশ',tag:'1,918m',
+     det:{pur:'BOQ Item 3.04.1.2। 125mm wide EE তোলা।',
+      specs:[['BOQ Item Code','3.04.1.2 — PIEE(125mm)'],['Gross length','1000m × 2 = 2000m'],['Deductions','−82 m (various)'],['Net quantity','1,918.000 m'],['Unit Rate','৳ 17.03/m'],['Total Amount','৳ 32,663.54'],['Brick width','125mm across road']],
+      chainTable:{headers:['Missing CH','Length','Side'],rows:[['2+015-2+017','2m','L/S'],['2+622-2+654','32m','L/S'],['2+820-2+836','16m','R/S'],['2+910-2+920','10m','L/S'],['2+978-3+00','22m','L/S']]}}},
+    {t:'PIHBB — Culvert Approach (152.24 sqm)',d:'Ch 1+268-1+278 ও 1+288-1+298',tag:'152 sqm',
+     det:{pur:'BOQ Item 3.08.1.2। কালভার্টের দুই পাশের HBB (Herring Bone Bond) তোলা।',
+      specs:[['BOQ Item Code','3.08.1.2 — PIHBB'],['Location 1','Ch 1+268 → 1+278 (10m)'],['Location 2','Ch 1+288 → 1+298 (10m)'],['Width formula','(10.0 + 5.5) / 2 = 7.75 m avg'],['Area each','77.500 sqm'],['Missing deduction','−2.760 sqm (2.3×1.2)'],['Net total','152.240 sqm'],['Unit Rate','৳ 31.53/sqm'],['Total Amount','৳ 4,800.13']],
+      note:'Trapezoid shape — কালভার্ট span 5.5m, approach এ 10m wide। Carefully তুলুন — RCC culvert structure disturb করবেন না।'}},
+    {t:'PIBFS — Culvert Approach BFS (152.24 sqm)',d:'Same location এর BFS layer',tag:'152 sqm',
+     det:{pur:'BOQ Item 3.08.1.1। HBB নিচে BFS (Brick Flat Soling) তোলা।',
+      specs:[['BOQ Item Code','3.08.1.1 — PIBFS'],['Same two locations','Ch 1+268-1+278, 1+288-1+298'],['Net quantity','152.240 sqm'],['Unit Rate','৳ 20.81/sqm'],['Total Amount','৳ 3,168.11']]}},
+    {t:'Salvaged Brick Count ও Volume Calculation',d:'Total salvage = 226.079 cum',tag:'COUNT',
+     det:{pur:'Salvaged material BOQ এ B&SBC হিসেবে credit হয়েছে।',
+      chainTable:{headers:['Source','Calculation','Volume'],rows:[['75mm EE picking','3542 × 8 / 300','94.453 cum'],['125mm EE picking','1918 × 14 / 300','89.507 cum'],['BFS (Culvert)','152.24 × 31 / 300','15.731 cum'],['HBB (Culvert)','152.24 × 52 / 300','26.388 cum'],['TOTAL','—','226.079 cum']]},
+      note:'এই 226.079 cum salvage material পরে B&SBC (downgraded 50mm) হিসেবে use হবে। Salvage Certificate (project পাতা ১২) অনুযায়ী।'}},
+    {t:'Salvage Certificate Engineer কে দেওয়া',d:'পাতা ১২ অনুযায়ী দ্বৈততা প্রত্যয়ন পত্র',tag:'DOCS',
+     det:{pur:'WBM quantity থেকে salvage bricks deduct করার জন্য official certificate।',
+      specs:[['Document','স্যালভেজ এবং দ্বৈততা প্রত্যয়ন পত্র'],['Signatories','SAE Md. Afzal Hossain + UE Md. Abul Fazel'],['Statement','Salvaged EE bricks Overlay WBM থেকে বাদ দেওয়া হয়েছে'],['Effect','কোনো quantity loss নেই — পরে reuse হবে'],['Reference','Project document page 12']],
+      warn:'এই certificate ছাড়া BOQ এর B&SBC item payment পাবেন না।'}}
+  ]},
+
+  {id:'p5',num:'PHASE 5',title:'Widening — Ch 0+530–1+000 R/S',en:'470m Right Side only',cost:null,tasks:[
+    {t:'Box Cutting 300mm deep × 525mm wide',d:'Ch 0+530-1+000 R/S — 470m',tag:'470m',
+     det:{pur:'BOQ Item 3.01.3.2.01 BCSSGC(300mm)। Widening এর জন্য existing road R/S এ cut করা।',
+      specs:[['BOQ Item Code','3.01.3.2.01 — BCSSGC(300mm)'],['Location','Ch 0+530 → 1+000, Right Side only'],['Length','470 m'],['Width','0.525 m (525mm)'],['Depth','0.300 m (300mm)'],['Area','470 × 0.525 = 246.750 sqm'],['Unit Rate','৳ 73.01/sqm'],['Total Amount','৳ 18,015.22'],['Soil type','Clay & Silty'],['Super elevation','Curves অনুযায়ী']],
+      steps:['Alignment marking right side 525mm mark করুন','Box cut করুন true to level','Remove excavated earth','Grade, camber, alignment maintain করুন','Super elevation on curves','Watering to bring moisture ±2% OMC','Compact subgrade 98% MDD (Standard Proctor)'],
+      eq:['Backhoe/manual excavation','Dump truck','Vibro compactor'],
+      warn:'Left Side এ বসত বাড়ি — শুধু Right Side cut করবেন।'}},
+    {t:'Sand FM 0.50 Sub-grade (30.844 cum)',d:'125mm thick — widening strip',tag:'SUB-GRADE',
+     det:{pur:'BOQ Item 3.02.1.1। Widening lane এর sub-grade layer।',
+      specs:[['BOQ Item Code','3.02.1.1 — Sand(FM0.50)'],['Location','Ch 530-1000 R/S widening + culvert approach'],['Volume breakdown','470×0.525×0.125 = 30.844 cum (widening)'],['+ Culvert approach','Ch 1+268-1+278: 11.625 cum'],['+ Culvert approach','Ch 1+288-1+298: 11.625 cum'],['Total (with culvert)','64.714 cum'],['Unit Rate','৳ 964.89/cum'],['Total Amount','৳ 62,441.89'],['Sand FM','Minimum FM 0.50'],['Free from','Dust, earth, vegetable growth'],['Compaction','98% of MDD (Modified Proctor)'],['CBR required','Minimum 8% soaked']],
+      mat:['Sand FM 0.50 — 65 cum (approx, with wastage)']}},
+    {t:'SBBC Sub-base 150mm (33.870 cum)',d:'38mm Crusher run + FM 0.50, ratio 1:1',tag:'SUB-BASE',
+     det:{pur:'BOQ Item 3.03.3.1। Widening + edge breaking sub-base।',
+      specs:[['BOQ Item Code','3.03.3.1 — SBBC(FM-0.5)'],['Aggregate','38mm down Crusher run, 1st class bricks'],['LAA value','≤ 40'],['Sand FM','Minimum 0.50'],['Mix ratio','1:1 by volume (brick chips:sand)'],['Layer max','100mm loose per pass'],['Roller','8-10 tonne road roller'],['CBR (soaked)','Minimum 30%'],['Compaction','98% MDD (Modified Proctor)'],['Volume (widening+edge+culvert)','11.625+11.625+10.620 = 33.870 cum'],['Unit Rate','৳ 4,301.91/cum'],['Total Amount','৳ 1,45,705.69']],
+      mat:['38mm crusher run chips — 17 cum','Sand FM 0.50 — 17 cum'],
+      steps:['Chips + sand 1:1 ratio mix করুন','150mm loose layer spread','8-10 MT roller দিয়ে compact','Rolling: edge → center → edge','Choking material যদি দরকার হয়','CBR test']}},
+    {t:'SBFS — Brick Flat Soling (246.750 sqm)',d:'1st class brick, single layer, FM 0.50 fill',tag:'246 sqm',
+     det:{pur:'BOQ Item 3.08.4.1 — SBFS(FM-0.50)। Widening portion এ brick soling।',
+      specs:[['BOQ Item Code','3.08.4.1 — SBFS(FM-0.50)'],['Location','Ch 0+530 → 1+000 R/S widening'],['Area','246.750 sqm'],['Unit Rate','৳ 536.58/sqm'],['Total Amount','৳ 1,32,401.12'],['Brick','1st class / picked'],['Sand cushion','FM 0.50'],['Laying','True to level, grade, camber, super-elevation'],['Fill','Interstices tightly with FM 0.50 sand']],
+      mat:['1st class bricks — ~17,000 nos (approx @ 65 bricks/sqm)','Sand FM 0.50 — 5 cum']}},
+    {t:'SHBB — Herring Bone Bond (247.750 sqm)',d:'25mm sand cushion + HBB pattern',tag:'247 sqm',
+     det:{pur:'BOQ Item 3.08.5.1 — SHBB(FM-0.50)। BFS এর উপরে HBB layer।',
+      specs:[['BOQ Item Code','3.08.5.1 — SHBB(FM-0.50)'],['Location','Ch 0+530-1+000 R/S + 1.0 sqm'],['Area','247.750 sqm'],['Unit Rate','৳ 916.98/sqm'],['Total Amount','৳ 2,27,181.80'],['Pattern','Herring Bone Bond (HBB)'],['Sand cushion','25mm over BFS'],['Brick grade','1st class / picked'],['Sand fill','FM 0.50 — interstices tightly'],['Camber','Maintain']],
+      mat:['1st class bricks — ~17,000 nos (HBB layer)','Sand FM 0.50 — 6 cum'],
+      note:'HBB pattern এ brick diagonal বিছানো হয় (45° angle)। Extra care লাগে।'}},
+    {t:'EE 75mm — Widening R/S (470m)',d:'Ch 0+530-1+000 R/S — BC side edging',tag:'470m',
+     det:{pur:'BOQ Item 3.04.3.3 — EE(75mm)। Widening lane এর R/S end edging।',
+      specs:[['BOQ Item Code','3.04.3.3 [PWD 24.7.1]'],['Location','Ch 0+530 → 1+000.0, R/S'],['Length','470 m'],['Width','75mm across road'],['Unit Rate','৳ 239.64/m'],['Total Amount','৳ 1,12,630.80'],['Brick','1st class / picked jhama'],['Sand fill','FM 0.80 — gaps'],['Foundation','Cutting trench + earth ramming']],
+      steps:['Trench cut (true to level)','Brick on end lay','Fine sand FM 0.80 fill','Earth refilling ও ramming','Level check']}}
+  ]},
+
+  {id:'p6',num:'PHASE 6',title:'Hard Bed Preparation (HBP)',en:'Scarify existing BC — ৳3,05,029',cost:'৳ 3,05,029',tasks:[
+    {t:'HBP — Ch 0+00 → 0+010 Junction (50 sqm)',d:'Width = (7.0+5.0+3.0)/3 = 5.0m',tag:'JUNCTION',
+     det:{pur:'BOQ Item 3.10.01.2। Hatiardanga culvert end junction এ flare portion।',
+      specs:[['Chainage','0+00 → 0+010'],['Length','10 m'],['Width','(7.0+5.0+3.0)/3 = 5.0 m avg'],['Area','50.000 sqm'],['Scarify depth','75mm minimum'],['Unit Rate','৳ 35.89/sqm'],['Road type','Wide mouth — narrows to 3m']]}},
+    {t:'HBP — Ch 0+010 → 0+530 (1,560 sqm)',d:'520m × 3.0m — regular stretch',tag:'520m',
+     det:{pur:'Existing BC surface loosen করা new overlay এর জন্য bond।',
+      specs:[['Chainage','0+010 → 0+530'],['Length','520 m'],['Width','3.0 m'],['Area','1,560.000 sqm'],['Scarify depth','75mm minimum'],['Method','Mechanical scarifying বা manual breaking'],['Fresh material','If required — additional supply (excluded from rate)']]}},
+    {t:'HBP — Ch 0+530 → 1+000 (1,128 sqm)',d:'470m × 2.4m — existing crest width',tag:'470m',
+     det:{pur:'Widening zone এ existing crest প্রস্থ 2.4m।',
+      specs:[['Chainage','0+530 → 1+000'],['Length','470 m'],['Width','2.4 m (existing crest)'],['Area','1,128.000 sqm']]}},
+    {t:'HBP — Ch 1+000 → 3+000 (6,000 sqm)',d:'2000m × 3.0m — main stretch',tag:'2,000m',
+     det:{pur:'সবচেয়ে বড় HBP block।',
+      specs:[['Chainage','1+000 → 3+000'],['Length','2,000 m'],['Width','3.0 m'],['Area','6,000.000 sqm']]}},
+    {t:'HBP Deductions — Edge + WBM + Culvert',d:'মোট −239 sqm বাদ',tag:'DEDUCT',
+     det:{pur:'Already separately treated zones HBP থেকে বাদ।',
+      chainTable:{headers:['Location','Dimension','Area Deducted'],rows:[['Ch 0+609-0+845 R/S (Edge)','236m × 0.300m','−70.800 sqm'],['Ch 0+728-0+754 (WBM zone)','26m × 2.400m','−62.400 sqm'],['Ch 0+820-0+827 (WBM zone)','7m × 2.400m','−16.800 sqm'],['Ch 1+268-1+298 (Culvert)','30m × 3.000m','−90.000 sqm'],['TOTAL DEDUCTION','—','−240.000 sqm']]}}},
+    {t:'Rolling 100% MDD + Grade Check',d:'8-10 MT roller — Standard Proctor',tag:'QC',
+     det:{pur:'HBP এর পরে surface uniform grade এ আনা।',
+      specs:[['Roller weight','8-10 MT (steel drum)'],['Compaction target','100% MDD (Standard Proctor)'],['Method','Spread-Level-Roll'],['Grade check','Camber + cross fall'],['Water','If needed for moisture'],['Final','Net 8,499 sqm — verify with engineer']],
+      specs_extra:[['Gross HBP','8,738 sqm'],['Total deductions','~239 sqm'],['Net quantity','8,499.000 sqm'],['Unit Rate','৳ 35.89/sqm'],['Total Amount','৳ 3,05,029.11']]}}
+  ]},
+
+  {id:'p7',num:'PHASE 7',title:'Edge Breaking Repair (Ch 609-845 R/S)',en:'Pond-side 236m repair',cost:null,tasks:[
+    {t:'Sand Sub-grade 150mm (10.620 cum)',d:'236m × 0.300m × 0.150m',tag:'EDGE',
+     det:{pur:'Ch 0+609-0+845 R/S — pond এর দিকে edge ভেঙে গেছে। Sub-grade repair।',
+      specs:[['Location','Ch 0+609 → 0+845 R/S'],['Length','236 m'],['Width','0.300 m'],['Thickness','0.150 m'],['Volume','10.620 cum'],['Sand FM','0.50 minimum'],['Compaction','98% MDD']],
+      note:'Road Condition Survey sheet অনুযায়ী এই 236m জায়গায় "0.3m width Edge Breaking — Need ISG + ASAT WBM" লেখা আছে।'}},
+    {t:'SBBC Sub-base 150mm (10.620 cum)',d:'38mm crusher run, CBR 30%',tag:'EDGE',
+     det:{pur:'Edge repair এ SBBC sub-base।',
+      specs:[['Volume','10.620 cum'],['Aggregate','38mm crusher run'],['LAA','≤ 40'],['CBR','≥ 30% soaked'],['Compaction','98% Modified Proctor']]}}
+  ]},
+
+  {id:'p8',num:'PHASE 8',title:'Culvert Approach Re-laying',en:'Ch 1+268-1+298 both sides',cost:null,tasks:[
+    {t:'Sand Sub-grade — Approach 1 (Ch 1+268-1+278)',d:'11.625 cum, 150mm thick',tag:'CULVERT',
+     det:{pur:'RCC Box Culvert (5.50m span) এর approach 1 এ sand sub-grade।',
+      specs:[['Location','Ch 1+268 → 1+278'],['Length','10 m'],['Width avg','(10.0+5.5)/2 = 7.75 m'],['Thickness','0.150 m'],['Volume','11.625 cum'],['Shape','Trapezoid (road 10m → culvert 5.5m)']]}},
+    {t:'Sand Sub-grade — Approach 2 (Ch 1+288-1+298)',d:'11.625 cum, অপর পাশ',tag:'CULVERT',
+     det:{pur:'Approach 2 — same dimensions।',
+      specs:[['Location','Ch 1+288 → 1+298'],['Volume','11.625 cum']]}},
+    {t:'SBBC Sub-base — Approach 1 (11.625 cum)',d:'38mm chips + FM 0.50, 1:1',tag:'CULVERT',
+     det:{pur:'SBBC layer for approach 1।',
+      specs:[['Volume','11.625 cum'],['CBR','≥ 30% soaked'],['Combined total (with edge+culvert)','33.870 cum'],['Total Amount','৳ 1,45,705.69']]}},
+    {t:'SBBC Sub-base — Approach 2 (11.625 cum)',d:'অপর পাশ',tag:'CULVERT',
+     det:{pur:'SBBC for approach 2।',
+      specs:[['Volume','11.625 cum']]}},
+    {t:'BFS Re-lay — Approach 1 (77.50 sqm)',d:'Salvaged bricks দিয়ে',tag:'CULVERT',
+     det:{pur:'Salvaged PIBFS bricks পুনরায় BFS হিসেবে বিছানো।',
+      specs:[['Area','77.500 sqm'],['Brick','Salvaged from PIBFS (15.731 cum)'],['Level','True to road level'],['Grade','Maintain approach slope']]}},
+    {t:'BFS Re-lay — Approach 2 (77.50 sqm)',d:'অপর পাশ salvaged bricks',tag:'CULVERT',
+     det:{pur:'BFS approach 2।',
+      specs:[['Area','77.500 sqm']]}},
+    {t:'HBB Re-lay — Approach 1 (77.50 sqm)',d:'Herring Bone Bond pattern',tag:'CULVERT',
+     det:{pur:'Salvaged HBB bricks পুনরায় HBB pattern এ।',
+      specs:[['Area','77.500 sqm'],['Pattern','Herring Bone Bond (45° diagonal)'],['Brick','Salvaged from PIHBB (26.388 cum)'],['Sand cushion','25mm FM 0.50']]}},
+    {t:'HBB Re-lay — Approach 2 (77.50 sqm)',d:'অপর পাশ',tag:'CULVERT',
+     det:{pur:'HBB approach 2।',
+      specs:[['Area','77.500 sqm'],['Both approaches total','152.240 sqm']]}}
+  ]},
+
+  {id:'p9',num:'PHASE 9',title:'New End Edging 125mm — দুই পাশে 3km',en:'BOQ Item 3.04.3.2 — ৳14,72,874',cost:'৳ 14,72,874',tasks:[
+    {t:'EE 125mm — Ch 0+00→1+000 Left Side (1,000m)',d:'1st class brick, 125mm across, local sand',tag:'1,000m L',
+     det:{pur:'BOQ Item 3.04.3.2 — EE(125mm) new end edging। রাস্তার সীমানা এবং pavement edge protection।',
+      specs:[['BOQ Item Code','3.04.3.2 — EE(125mm)'],['Side','Left Side (L/S)'],['Chainage','0+00 → 1+000'],['Length','1,000 m'],['Width','125 mm (across road)'],['Brick grade','1st class / picked'],['Sand','Local sand fill (interstices)'],['Earth refill','Sides properly'],['Ramming','Sides'],['Level','True to level + grade']],
+      steps:['Chainage marking করুন','Trench cut করুন (cutting trenches)','Brick on end lay করুন','Sand fill interstices tightly','Earth refilling ও ramming'],
+      mat:['1st class bricks — 1000m × 8 bricks/m = 8,000 nos','Local sand — 0.5 cum/100m = 5 cum']}},
+    {t:'EE 125mm — Ch 0+00→1+000 Right Side (1,000m)',d:'Widening side সহ',tag:'1,000m R',
+     det:{pur:'R/S — widening zone integrate করুন।',
+      specs:[['Side','Right Side (R/S)'],['Length','1,000 m'],['Note','Widening (0+530-1+000) portion EE widened lane edge এ বসবে']],
+      mat:['1st class bricks — 8,000 nos','Local sand — 5 cum']}},
+    {t:'EE 125mm — Ch 1+000→2+000 Left Side (1,000m)',d:'Standard stretch',tag:'1,000m L',
+     det:{pur:'Standard section।',specs:[['Length','1,000 m'],['Side','L/S']]}},
+    {t:'EE 125mm — Ch 1+000→2+000 Right Side (1,000m)',d:'Standard stretch',tag:'1,000m R',
+     det:{pur:'Standard section।',specs:[['Length','1,000 m'],['Side','R/S']]}},
+    {t:'EE 125mm — Ch 2+000→3+000 Left Side (~990m)',d:'Bridge gap deduction বাদে',tag:'990m L',
+     det:{pur:'শেষ 1km L/S।',
+      specs:[['Length gross','1,000 m'],['Bridge gap deduction','−10 m (culvert zone)'],['Net','990 m (approx)']]}},
+    {t:'EE 125mm — Ch 2+000→3+000 Right Side (~990m)',d:'Bridge gap deduction বাদে',tag:'990m R',
+     det:{pur:'শেষ 1km R/S।',
+      specs:[['Length','990 m (approx)'],['Total EE 125mm','5,980 m gross'],['Unit Rate','৳ 246.30/m'],['Total Amount','৳ 14,72,874.00'],['Deduction','−20m at culvert gap (Ch 1278-1288 zone, 2 sides)']],
+      note:'BOQ তে EE এর length = 5,980m। 3000m × 2 side = 6000m থেকে 20m (culvert) deduct = 5,980m।'}}
+  ]},
+
+  {id:'p10',num:'PHASE 10',title:'Sand Binding (SB)',en:'FM 0.80 @ 0.005 cum/sqm — ৳30,457',cost:'৳ 30,457',tasks:[
+    {t:'SB — Ch 0+010→0+530 (1,560 sqm)',d:'520m × 3.0m',tag:'520m',
+     det:{pur:'BOQ Item 3.10.02। HBP এর উপর, DC laying এর আগে sand blinding layer।',
+      specs:[['BOQ Item Code','3.10.02 — SB'],['Sand FM','Minimum 0.80'],['Rate','0.005 cum/sqm'],['Area','520m × 3.0m = 1,560 sqm'],['Volume','1560 × 0.005 = 7.80 cum'],['Method','Uniform spreading'],['Purpose','HBP voids fill + prime coat আগে surface']]}},
+    {t:'SB — Ch 0+530→1+000 (1,128 sqm)',d:'Widening zone',tag:'470m',
+     det:{pur:'Widening zone SB।',
+      specs:[['Area','470m × 2.4m = 1,128 sqm'],['Volume','5.64 cum']]}},
+    {t:'SB — Ch 1+298→2+100 (2,406 sqm)',d:'802m × 3.0m',tag:'802m',
+     det:{pur:'Post-culvert section।',
+      specs:[['Chainage','1+298 → 2+100'],['Area','2,406 sqm'],['Volume','12.03 cum']]}},
+    {t:'SB — Ch 2+812→3+000 (564 sqm)',d:'188m × 3.0m',tag:'188m',
+     det:{pur:'শেষ section।',
+      specs:[['Area','564 sqm'],['Volume','2.82 cum'],['Gross total','5,558 sqm'],['Sand FM 0.80 total','5558×0.005 = 27.79 cum'],['Unit Rate','৳ 5.48/sqm'],['Total Amount','৳ 30,457.84']]}}
+  ]},
+
+  {id:'p11',num:'PHASE 11',title:'Brick Sub-Base — B&SBC + S&SBC',en:'৳19,86,388',cost:'৳ 19,86,388',tasks:[
+    {t:'B&SBC 50mm downgraded — 226.079 cum',d:'Salvaged bricks from Phase 4',tag:'SALVAGE',
+     det:{pur:'BOQ Item 3.05.2.3। Phase 4 এ salvage করা bricks এখন downgraded chips এ ভেঙে sub-base বানানো।',
+      specs:[['BOQ Item Code','3.05.2.3 — B&SBC (50mm downgraded)'],['Source','Salvaged bricks (Phase 4)'],['Volume','226.079 cum'],['Unit Rate','৳ 346.81/cum'],['Total Amount','৳ 78,406.46'],['Process','Break + Screen + Spread + Roll'],['Layer max','100mm loose per pass']],
+      chainTable:{headers:['Source','Calculation','Volume'],rows:[['75mm EE','3542×8/300','94.453 cum'],['125mm EE','1918×14/300','89.507 cum'],['BFS culvert','152.24×31/300','15.731 cum'],['HBB culvert','152.24×52/300','26.388 cum'],['TOTAL','—','226.079 cum']]},
+      steps:['Salvaged bricks downgrade করুন (50mm chips size এ)','Screen করুন (50mm through)','Road surface এ uniform spread','Camber maintain করুন','8-10 ton roller দিয়ে compact করুন']}},
+    {t:'S&SBC 50mm — 389.180 cum',d:'New supply — LAA ≤ 40, 1st class',tag:'NEW',
+     det:{pur:'BOQ Item 3.05.1.3। New supply brick chips (salvage supplement করতে)।',
+      specs:[['BOQ Item Code','3.05.1.3 — S&SBC (50mm downgraded)'],['Brick grade','1st class / picked'],['LAA value','≤ 40'],['Volume calculation base','Existing bed: 5558 × 0.075 × 1.33 = 554.411 cum'],['Edge breaking add','+14.125 cum (Ch 609-845)'],['Wash out add','+12.449 + 3.352 + 3.352 cum'],['Culvert approach add','+31 cum'],['Old Edging salvage deduct','−226.079 cum'],['Final net volume','389.180 cum'],['Unit Rate','৳ 4,902.57/cum'],['Total Amount','৳ 19,07,982.19']],
+      mat:['1st class bricks — ~100,000 nos (for chipping)','Crusher/manual breaking'],
+      warn:'এই item সবচেয়ে expensive (৳19 lakh)। Quantity over নিলে cost blow up হবে।'}}
+  ]},
+
+  {id:'p12',num:'PHASE 12',title:'WBM — Water Bound Macadam',en:'BOQ 3.05.6.01 — ৳2,76,585',cost:'৳ 2,76,585',tasks:[
+    {t:'CWBM(ISSM) — 462.601 cum',d:'Compacted WBM with crusher run, 150mm thick',tag:'462 cum',
+     det:{pur:'BOQ Item 3.05.6.01। Sub-base এর উপর water-bound macadam base course।',
+      specs:[['BOQ Item Code','3.05.6.01 — CWBM(ISSM)'],['Volume formula','(WBM Qty + Salvage)/1.33'],['Calculation','(389.180 + 226.079) / 1.33 = 462.601 cum'],['Unit Rate','৳ 597.89/cum'],['Total Amount','৳ 2,76,584.51'],['Aggregate','1st class brick chips/picked chips'],['Soaked CBR','Minimum 80%'],['Compaction','98% MDD (Modified Proctor)'],['Choking material','0.012 cum/sqm'],['Note','Rate excludes cost of brick aggregate (paid in B&SBC)']],
+      steps:['Aggregate (brick chips) spread uniformly','Dry rolling প্রথম pass (8-10 ton)','Choking material spread (0.012 cum/sqm)','Water sprinkle continuously','Wet rolling — roll until grout/slurry flushes ahead of roller','Continue rolling until wave visible','Final dry rolling pass','Compaction test: ≥ 98% MDD'],
+      eq:['8-10 MT steel drum roller','Water bowser + hand pump'],
+      tip:'Grout wave দেখলে বুঝবেন proper seating হয়েছে। ঐ সময় rolling বন্ধ করবেন না।'}},
+    {t:'Compaction Test — 98% Modified Proctor',d:'Engineer সামনে sample নিন',tag:'QC',
+     det:{pur:'WBM quality verify।',
+      specs:[['Test','Modified Proctor (AASHTO T-180)'],['Target','98% MDD'],['Soaked CBR','≥ 80%'],['Frequency','প্রতি 500m minimum 1 test'],['Temperature','Normal temp — no hot work']]}}
+  ]},
+
+  {id:'p13',num:'PHASE 13',title:'Bituminous Work — Prime + Tack + 25mm DC',en:'BOQ ৳71,50,053 — সবচেয়ে গুরুত্বপূর্ণ',cost:'৳ 71,50,053',tasks:[
+    {t:'Surface Cleaning (Broom + Air)',d:'Zero dust/debris — bitumen আগে',tag:'PREP',
+     det:{pur:'Bitumen surface এ বা base এ কোনো loose material থাকলে bond হবে না। Prime coat ভেসে যাবে।',
+      specs:[['Method','Wire broom + compressed air blowing'],['Target','Absolutely clean, dry surface'],['Timing','Prime coat এর 1 ঘন্টা আগে'],['Weather','Dry weather — rain এ কাজ নয়'],['Temperature','Ambient > 10°C']],
+      warn:'ভেজা বা dusty surface এ কোনো bituminous কাজ করবেন না। Bond fail হবে।'}},
+    {t:'Prime Coat (PC@DB) @ 1.2 L/sqm — 8,803 sqm',d:'Bitumen 60/70, surface absorption',tag:'PRIME',
+     det:{pur:'BOQ Item 3.06.1.1। WBM surface এ primer coat যাতে DC overlay ভালো bond করে।',
+      specs:[['BOQ Item Code','3.06.1.1 — PC@DB 1.2 liter/sqm'],['Bitumen grade','60/70 penetration'],['Dilution','Cut-back: Kerosene 1:100 by volume'],['Application rate','1.2 litre/sqm'],['Total area','8,803.000 sqm'],['Unit Rate','৳ 159.77/sqm'],['Total Amount','৳ 14,06,455.31'],['Spray temp','100-120°C'],['Equipment','Hand lance / mechanical sprayer'],['Curing','24 hours — no traffic']],
+      chainTable:{headers:['Chainage','Length','Width'],rows:[['0+00-0+010','10m','5.0m (junction)'],['0+010-0+530','520m','3.0m'],['0+530-1+000','470m','2.4m'],['1+000-1+268','268m','3.0m'],['1+268-1+278 Culvert','10m','7.75m avg'],['1+288-1+298 Culvert','10m','7.75m avg'],['1+298-3+000','1702m','3.0m']]},
+      steps:['Bitumen heating করুন 100-120°C','Kerosene mix করুন (1:100)','Spray uniformly 1.2 L/sqm','Edge coverage check করুন','Traffic সম্পূর্ণ বন্ধ করুন','24 hours curing — দেখুন absorbed হয়েছে কিনা'],
+      warn:'Over-application করলে bitumen bleeding হবে। Under-application করলে overlay bond করবে না।'}},
+    {t:'Prime Coat 24 Hours Curing — Traffic Off',d:'ধৈর্য্য ধরুন — skip করবেন না',tag:'WAIT',
+     det:{pur:'Prime coat পুরোপুরি absorb হতে 24 hours লাগে।',
+      specs:[['Time','Minimum 24 hours'],['Traffic','সম্পূর্ণ বন্ধ'],['Check','Surface matte দেখাচ্ছে — absorbed'],['If not absorbed','Extra 12-24 hours অপেক্ষা করুন'],['Rain','যদি rain আসে — extra curing time']],
+      tip:'Prime coat absorb হয়েছে কিনা বোঝার উপায়: Surface touch করলে tar হাতে লাগবে না।'}},
+    {t:'Tack Coat (TC@DB) @ 0.5 kg/sqm — 55 sqm',d:'কালভার্ট top area',tag:'TACK',
+     det:{pur:'BOQ Item 3.06.2.1। Culvert top এ DC overlay এর bond strength বাড়ানো।',
+      specs:[['BOQ Item Code','3.06.2.1 — TC@DB 0.5 kg/sqm'],['Application rate','0.5 kg/sqm'],['Total area','55.000 sqm (culvert top area)'],['Unit Rate','৳ 67.44/sqm'],['Total Amount','৳ 3,709.20'],['Bitumen grade','60/70 penetration'],['Method','Hand spray / brush']]}},
+    {t:'Job Mix Design (JMD) Approval',d:'Bitumen % + aggregate gradation',tag:'MIX',
+     det:{pur:'Dense Carpeting এর জন্য approved mix design ছাড়া laying শুরু করা যাবে না।',
+      specs:[['Standard','ASTM/AASHTO'],['Aggregate sizes','16mm, 12mm, 6mm stone chips'],['Bitumen content','5.0-5.5% by weight of total mix'],['VMA (Voids)','Min 14-15%'],['Flow','2-4mm Marshall'],['Stability','Min 8.0 kN Marshall'],['Approval','Engineer-in-charge থেকে'],['Lab','LGED approved']],
+      warn:'JMD approve না হলে DC laying শুরু করবেন না।'}},
+    {t:'Bitumen Heating 175-185°C',d:'60/70 penetration grade',tag:'MIX',
+     det:{pur:'Proper viscosity এর জন্য correct temperature।',
+      specs:[['Bitumen grade','60/70'],['Heating temperature','175-185°C'],['Max temperature','Do NOT exceed 185°C (cracking হবে)'],['Equipment','Boiler with calibrated thermometer'],['Check','Penetration test before use']],
+      warn:'185°C এর বেশি গরম করলে bitumen burn হয়ে brittle হয়। Overlay ফেটে যাবে।'}},
+    {t:'Aggregate Heating 160-170°C',d:'16mm + 12mm + 6mm stone chips',tag:'MIX',
+     det:{pur:'Aggregate দিয়ে bitumen ভালো coat হওয়ার জন্য।',
+      specs:[['Aggregate temperature','160-170°C'],['Mix temperature','140-155°C (after mixing)'],['Equipment','Drum dryer বা hot plate'],['LAA value','≤ 30 (DC stone chips)'],['Water absorption','≤ 2%'],['Flakiness Index','≤ 35%'],['Elongation Index','≤ 35%']]}},
+    {t:'25mm Dense Carpeting Laying — 8,858 sqm',d:'সবচেয়ে critical কাজ — ৳57,84,540',tag:'8,858 sqm',
+     det:{pur:'BOQ Item 3.06.4.2.01। পুরো ৩ কি.মি. এর উপর 25mm thick wearing course। এটাই main surface।',
+      specs:[['BOQ Item Code','3.06.4.2.01 — 25mmDC'],['Total area','8,858.000 sqm'],['Unit Rate','৳ 653.03/sqm'],['Total Amount','৳ 57,84,539.74'],['Thickness','25 mm compacted'],['Aggregate','Stone chips 16mm, 12mm, 6mm (crushed)'],['Bitumen content','5.0-5.5% by weight'],['Laying temperature','140°C minimum'],['Rolling start temp','Not below 90°C'],['Width','3.0 m carpeted + 125mm EE each side']],
+      chainTable:{headers:['Section','Length','Width','Area'],rows:[['Junction (0+00-0+10)','10m','5.0m','50 sqm'],['0+010-0+530','520m','3.0m','1,560 sqm'],['0+530-1+000','470m','2.4m','1,128 sqm'],['1+000-1+268','268m','3.0m','804 sqm'],['Culvert apps','20m','7.75m','155 sqm'],['1+298-3+000','1702m','3.0m','5,106 sqm'],['TOTAL','—','—','8,803 sqm approx']]},
+      steps:['Tack coat set হয়েছে confirm করুন','Hot mix transport covered trucks (140°C)','Lay uniformly — paver বা manual raking','Thickness check: 25mm (template use করুন)','Immediate first rolling (steel drum)','Intermediate rolling (pneumatic)','Final rolling (steel drum) — no roller marks'],
+      eq:['8-10 MT steel drum roller (first + final)','3-5 tons pneumatic tire roller (intermediate)','Thermometer (surface temp check)','Raker, shovel, tamper'],
+      warn:'Rolling temperature 90°C নিচে নামলে rolling বন্ধ করুন। ঠান্ডা mix rolling করলে crack হবে।'}},
+    {t:'Steel Drum Roller — First Pass (8-10 tons)',d:'Edge → center, temp ≥ 90°C',tag:'ROLL',
+     det:{pur:'Initial compaction — maximum density achieve।',
+      specs:[['Roller type','Steel drum'],['Weight','8-10 tons'],['Speed','5-8 km/h max'],['Pattern','Edge to center, then back'],['Overlap','300mm previous track'],['Temp when rolling','≥ 90°C surface'],['Passes','2-3 passes']]}},
+    {t:'Pneumatic Tire Roller — Intermediate',d:'3-5 tons, knead compaction',tag:'ROLL',
+     det:{pur:'Pneumatic tire kneading action voids কমায়।',
+      specs:[['Roller type','Pneumatic tire'],['Weight','3-5 tons'],['Tire pressure','Uniform'],['Pattern','Full width coverage'],['Passes','2-3 passes']]},},
+    {t:'Final Steel Roller Pass',d:'Smooth, no roller marks',tag:'ROLL',
+     det:{pur:'Surface finish।',
+      specs:[['Roller type','Steel drum (same)'],['Target','No roller marks, no roughness'],['Check','Walk on surface — no give'],['Time','Before complete cooling']]}},
+    {t:'Core Sample Test — Marshall Density ≥ 95%',d:'প্রতি 500m এ 1 core',tag:'QC',
+     det:{pur:'Final compaction quality verification।',
+      specs:[['Sample interval','প্রতি 500m এ 1 core (minimum 6 cores)'],['Method','Diamond core cutter'],['Target density','≥ 95% of Marshall density'],['Thickness check','25 mm ± 2mm'],['Lab','LGED approved lab'],['Report','Engineer সামনে sign']],
+      warn:'Core sample fail হলে defective area cold milling করে re-lay করতে হবে — cost আপনার।'}}
+  ]},
+
+  {id:'p14',num:'PHASE 14',title:'RCC Palisading — ১১টি Location (521m)',en:'Section 4 — ৳31,83,409',cost:'৳ 31,83,409',tasks:[
+    {section:'LOCATION 1 — Ch 450-467 L/S · 17m · D=1.75m · ht=1.50m'},
+    {t:'Loc-1: Trench + Post + Wall + Backfill (17m)',d:'Complete palisading set',tag:'17m',
+     det:{pur:'BOQ Item 3.11.15.2 — RCC(P+DP)-PW। Pond/water side slope protection।',
+      specs:[['Location','Ch 0+450 → 0+467, Left Side'],['Length','17 m'],['D (road edge to water)','1.75 m'],['Height (ht)','1.50 m'],['Posts needed','17/0.9 + 1 = ~20 posts'],['Rate portion','17 × ৳6,110.19 = ৳1,03,873'],['Trench depth','1.0 m (1000mm)'],['Trench width','250mm wall + 150mm backfill']],
+      steps:['Trench excavation 1m deep, 400mm wide','RCC posts (150×150×3m) drive 2/3 into ground (2m)','Pre-cast plates (1050×600×75mm) fix between posts with bolts','250mm brick wall build (1:1.5:3 cement mortar)','Pointing all exposed joints','150mm layer-by-layer backfill','95% compaction each layer'],
+      mat:['RCC posts 150×150×3000mm: 20 nos','Pre-cast plates 1050×600×75mm: ~34 nos','1st class bricks: ~1200 nos (17m wall)','Cement: ~4 bags','Sand FM 0.50: 0.5 cum','Backfill soil: ~4 cum'],
+      note:'Site photos (PDF পাতা ৬): road এর L/S এ clear water body দেখা যাচ্ছে।'}},
+
+    {section:'LOCATION 2 — Ch 581-845 R/S · 264m · D=1.50m · ht=1.60m · ★ সবচেয়ে বড়'},
+    {t:'Loc-2: Trench (264m)',d:'প্রতিদিন ~30m progress target',tag:'264m',
+     det:{pur:'সবচেয়ে বড় palisading — ২৬৪ মিটার। পুকুর/খাল একেবারে road এর পাশে।',
+      specs:[['Location','Ch 0+581 → 0+845, Right Side'],['Length','264 m'],['D','1.50 m'],['Height','1.60 m (tallest water level)'],['Posts needed','264/0.9 = ~294 posts'],['Rate portion','264 × ৳6,110.19 = ৳16,13,090'],['Trench','264m × 400mm × 1000mm deep'],['Water in trench','Likely — bailing needed']],
+      steps:['Trench excavate in sections (30-50m at a time)','Bailing out water continuously','Rapid post installation before re-flooding','Plates + wall without delay'],
+      mat:['RCC posts 150×150×3000mm: 294 nos','Pre-cast plates 1050×600×75mm: ~528 nos','1st class bricks: ~19,000 nos','Cement: ~55 bags','Sand: 5 cum','Backfill soil: ~63 cum'],
+      warn:'এটা সবচেয়ে risky location। Water seepage হতে পারে। Pumping equipment ready রাখুন।'}},
+    {t:'Loc-2: Post Installation (294 nos)',d:'150×150×3m @ 900mm c/c — 2/3 driven',tag:'POST',
+     det:{pur:'RCC Palisading post specification।',
+      specs:[['Post dimensions','150 mm × 150 mm × 3000 mm'],['Vertical rods','4 nos × 12mm dia MS, length 1085mm'],['Horizontal rings','12 nos round shaped binder'],['Stirrups','10mm dia MS @ 150mm c/c'],['Concrete grade','20mm down chips, 1:1.5:3'],['Driven depth','2/3 of 3m = 2.0 m into ground'],['Above ground','1.0 m exposed'],['c/c spacing','900 mm'],['Pre-cast','Factory made or site cast'],['Cure','Minimum 28 days before driving'],['Plate fixing','RCC plate fitted with bolts']],
+      note:'Posts factory-made হলে quality better। Site-cast করলে 28 days curing mandatory।'}},
+    {t:'Loc-2: Pre-cast Plates (528 nos)',d:'1050×600×75mm between posts',tag:'PLATE',
+     det:{pur:'Pre-cast plate specification।',
+      specs:[['Plate size','1050 mm × 600 mm × 75 mm'],['Mix','RCC (1:1.5:3) with 20mm brick chips'],['Reinforcement','M.S. plate, nuts, bolts fitting'],['Placement','Horizontal stacking between posts'],['Bond','RCC post fixed with nuts and bolts'],['Alignment','Continuous check every 10m'],['Tolerance','±5mm']]}},
+    {t:'Loc-2: 250mm Brick Wall (264m)',d:'1:1.5:3 mortar + pointing',tag:'WALL',
+     det:{pur:'Behind plates and posts — retaining wall।',
+      specs:[['Thickness','250 mm'],['Length','264 m'],['Height','Up to ht = 1.60 m'],['Brick','1st class'],['Mortar','1:1.5:3 (cement:sand:chips)'],['Pointing','All exposed joints'],['Brick count','~19,000 nos (264m × 1.6m / 0.022)'],['Cement','~55 bags'],['Curing','21 days']],
+      tip:'প্রতিদিন maximum 1.0m height পর্যন্ত brick lay করুন। More than that — green wall collapse risk।'}},
+    {t:'Loc-2: Layer-wise Backfill (95% compaction)',d:'150mm per layer, Clay & Silty',tag:'BACKFILL',
+     det:{pur:'Wall এর পিছনে proper backfill।',
+      specs:[['Layer thickness','150 mm loose'],['Compaction','95% MDD'],['Soil','Clay & Silty (local)'],['Total volume','~63 cum'],['Method','Manual tamping বা vibro compactor'],['Water','OMC ±2%']],
+      warn:'Backfill না করলে wall collapse হবে। প্রতি layer compaction mandatory।'}},
+
+    {section:'LOCATION 3 — Ch 1402-1417 L/S · 15m · D=1.75m · ht=1.50m'},
+    {t:'Loc-3: Complete Palisading (15m)',d:'Full set: Trench→Post→Plate→Wall→Backfill',tag:'15m',
+     det:{pur:'Standard 15m location।',
+      specs:[['Location','Ch 1+402 → 1+417, L/S'],['Length','15 m'],['D','1.75 m'],['ht','1.50 m'],['Posts','~17 nos'],['Rate portion','15 × ৳6,110.19 = ৳91,653']]}},
+
+    {section:'LOCATION 4 — Ch 1496-1511 L/S · 15m · D=1.75m · ht=1.50m'},
+    {t:'Loc-4: Complete Palisading (15m)',d:'Full set standard spec',tag:'15m',
+     det:{pur:'Standard 15m।',
+      specs:[['Location','Ch 1+496 → 1+511, L/S'],['Posts','~17 nos'],['Rate portion','৳91,653']]}},
+
+    {section:'LOCATION 5 — Ch 1537-1551 L/S · 14m · D=1.50m · ht=1.50m'},
+    {t:'Loc-5: Complete Palisading (14m)',d:'D=1.50m (পানি কাছে)',tag:'14m',
+     det:{pur:'14m — D slightly smaller।',
+      specs:[['Location','Ch 1+537 → 1+551, L/S'],['D','1.50 m'],['ht','1.50 m'],['Posts','~16 nos'],['Rate portion','৳85,543']]}},
+
+    {section:'LOCATION 6 — Ch 1708-1760 L/S · 52m · D=1.82m · ht=1.55m'},
+    {t:'Loc-6: Complete Palisading (52m)',d:'D=1.82m — widest water margin',tag:'52m',
+     det:{pur:'52m — D সবচেয়ে বড় এই zone এ (1.82m)।',
+      specs:[['Location','Ch 1+708 → 1+760, L/S'],['Length','52 m'],['D','1.82 m'],['ht','1.55 m'],['Posts','~58 nos'],['Rate portion','52 × ৳6,110.19 = ৳3,17,730']]}},
+
+    {section:'LOCATION 7 — Ch 1807-1829 L/S · 22m · D=1.57m · ht=1.55m'},
+    {t:'Loc-7: Complete Palisading (22m)',d:'22m standard',tag:'22m',
+     det:{pur:'22m location।',
+      specs:[['Location','Ch 1+807 → 1+829, L/S'],['Posts','~25 nos'],['Rate portion','৳1,34,424']]}},
+
+    {section:'LOCATION 8 — Ch 1862-1880 L/S · 18m · D=1.67m · ht=1.45m (shortest)'},
+    {t:'Loc-8: Complete Palisading (18m)',d:'ht=1.45m — lowest height',tag:'18m',
+     det:{pur:'18m, shortest height।',
+      specs:[['Location','Ch 1+862 → 1+880, L/S'],['D','1.67 m'],['ht','1.45 m'],['Posts','~20 nos'],['Rate portion','৳1,09,984']]}},
+
+    {section:'LOCATION 9 — Ch 2602-2642 L/S · 40m · D=1.75m · ht=1.50m'},
+    {t:'Loc-9: Complete Palisading (40m)',d:'40m standard location',tag:'40m',
+     det:{pur:'40m medium location।',
+      specs:[['Location','Ch 2+602 → 2+642, L/S'],['Posts','~45 nos'],['Rate portion','৳2,44,408']]}},
+
+    {section:'LOCATION 10 — Ch 2812-2836 R/S · 24m · D=1.60m · ht=1.40m'},
+    {t:'Loc-10: Complete Palisading (24m)',d:'Right Side — D=1.60m',tag:'24m',
+     det:{pur:'Right Side 24m।',
+      specs:[['Location','Ch 2+812 → 2+836, R/S'],['D','1.60 m'],['ht','1.40 m'],['Posts','~27 nos'],['Rate portion','৳1,46,645']]}},
+
+    {section:'LOCATION 11 — Ch 2960-3000 L/S · 40m · D=5.05m ★ JUNCTION'},
+    {t:'Loc-11: Complete Palisading (40m)',d:'D=5.05m — junction area ★',tag:'40m',
+     det:{pur:'শেষ location। D = 5.05m অন্য সব location এর থেকে অনেক বড়। Via road junction কাছে।',
+      specs:[['Location','Ch 2+960 → 3+000, L/S'],['Length','40 m'],['D','5.05 m (★ significantly wider)'],['ht','1.30 m'],['Posts','~45 nos'],['Rate portion','৳2,44,408'],['RCC Post special','2m long (shorter than standard 3m) as ht less']],
+      note:'D=5.05m মানে রাস্তা থেকে পানির edge অনেক দূরে। Probably junction/road mouth area। Extra earth ভরাট হতে পারে।'}},
+
+    {section:'— PALISADING FINAL CHECK —'},
+    {t:'Total 521m Verify + Engineer Measurement',d:'৳6,110.19/m × 521 = ৳31,83,409',tag:'TOTAL',
+     det:{pur:'Section 4 এর final quantity verification।',
+      chainTable:{headers:['Location','Length','Rate/m','Amount'],rows:[['Ch 450-467 L/S','17m','৳6,110.19','৳1,03,873'],['Ch 581-845 R/S','264m','৳6,110.19','৳16,13,090'],['Ch 1402-1417 L/S','15m','৳6,110.19','৳91,653'],['Ch 1496-1511 L/S','15m','৳6,110.19','৳91,653'],['Ch 1537-1551 L/S','14m','৳6,110.19','৳85,543'],['Ch 1708-1760 L/S','52m','৳6,110.19','৳3,17,730'],['Ch 1807-1829 L/S','22m','৳6,110.19','৳1,34,424'],['Ch 1862-1880 L/S','18m','৳6,110.19','৳1,09,984'],['Ch 2602-2642 L/S','40m','৳6,110.19','৳2,44,408'],['Ch 2812-2836 R/S','24m','৳6,110.19','৳1,46,645'],['Ch 2960-3000 L/S','40m','৳6,110.19','৳2,44,408'],['TOTAL','521m','৳6,110.19','৳31,83,409']]},
+      note:'সব ১১টি location এর joint measurement engineer সামনে নিন। Photos mandatory।'}}
+  ]},
+
+  {id:'p15',num:'PHASE 15',title:'Road Safety কাজ',en:'Section 5 — ৳1,25,910',cost:'৳ 1,25,910',tasks:[
+    {t:'Road Name Plate — 1 nos (৳7,476)',d:'Ch 0+00 এ, RCC (1:2:4), enamel paint',tag:'৳7,476',
+     det:{pur:'BOQ Item 3.12.01.2 — RNPlate। Project identification plate।',
+      specs:[['BOQ Item Code','3.12.01.2 — RNPlate'],['Quantity','1 nos'],['Unit Rate','৳ 7,475.54'],['Location','Ch 0+00 (starting point)'],['Type','Rectangular, Appendix-6 design'],['Concrete','RCC (1:2:4) with 20mm chips'],['Reinforcement (vertical)','7 nos × 12mm dia × 1125mm length'],['Reinforcement (horizontal)','8 nos × 10mm dia × 970mm length'],['Mortar','1:4 cement mortar'],['Plaster','6mm thick (1:4) all exposed'],['Paint','Synthetic enamel, 2 coats'],['Foundation','1st class bricks work']],
+      steps:['Foundation dig করুন','Bricks foundation','RCC plate cast করুন','28 days cure','Letters + numbers print করুন','2 coat enamel paint']}},
+    {t:'KM Post — 4 nos (৳15,803)',d:'প্রতি 1km এ, ৳3,951 each',tag:'৳15,803',
+     det:{pur:'BOQ — KMP। Kilometer marker posts।',
+      specs:[['Quantity','4 nos'],['Locations','Ch 0+00, 1+000, 2+000, 3+000'],['Unit Rate','৳ 3,950.80/each'],['Total Amount','৳ 15,803.20'],['Material','RCC + bricks'],['Rods (V)','4 nos 12mm dia MS, 1085mm'],['Rods (H)','10mm dia'],['Paint','White base + black text'],['Content','KM number + route']]}},
+    {t:'RCC Guide Post — 30 nos (৳56,095)',d:'200mm dia × 1.70m, @ culvert approach',tag:'৳56,095',
+     det:{pur:'BOQ Item 3.12.02 — RCGPost। Culvert approach এ vehicle guidance।',
+      specs:[['BOQ Item Code','3.12.02 — RCGPost'],['Quantity','30 nos'],['Locations','Both ends + both approaches of culvert'],['Unit Rate','৳ 1,869.82/each'],['Total Amount','৳ 56,094.60'],['Diameter','200 mm round'],['Length','1.70 m total'],['Ground depth','Minimum 800 mm'],['Above ground','900 mm'],['Concrete','RCC (1:2:4) with 20mm chips'],['Rods (V)','4 nos 12mm dia, 1085mm length'],['Horizontal rings','12 nos round'],['Paint','White + yellow bands alternate'],['Band height','300mm each']]}},
+    {t:'CS-Plate Traffic Sign — 7 nos (৳46,537)',d:'Retro-reflective, 600mm triangle',tag:'৳46,537',
+     det:{pur:'BOQ Item 3.12.04.1 — CS-Plate। Cautionary + Mandatory + Informatory signs।',
+      specs:[['BOQ Item Code','3.12.04.1 — CS-Plate'],['Quantity','7 nos'],['Unit Rate','৳ 6,648.12/each'],['Total Amount','৳ 46,536.84'],['Main plate size','600mm equilateral triangle'],['Supplementary','671mm × 202mm rectangular'],['Sheet','18 BWG MS (galvanized)'],['Frame','25mm × 25mm × 3mm MS angle'],['MS plates','2.50mm thick, welded'],['Anchor bars','4 nos × 12mm dia × 200mm'],['Pipe','MS 50mm dia × 2.50mm thick'],['Foundation','600mm deep, 1:2:4 concrete'],['Foundation strength','Min 17.0 MPa @ 28 days'],['Paint','Synthetic enamel, retro-reflective, 2 coats'],['Varieties','Cautionary + Mandatory + Informatory']],
+      steps:['Foundation dig 600mm','Anchor bars set করুন','Concrete pour (1:2:4)','28 days cure করুন','Post + sign panel install করুন','Retro-reflective paint করুন']}}
+  ]},
+
+  {id:'p16',num:'PHASE 16',title:'Finishing ও Handover',en:'Project closeout',cost:null,tasks:[
+    {t:'Final Surface Dressing ও Cleanup',d:'Rough spots fix + debris remove',tag:'FINISH',
+     det:{pur:'Handover এর আগে সব defect ঠিক করুন।',
+      specs:[['Surface check','Walking survey — সব 3km'],['Defects','Pot-hole, rough patch, uneven edge'],['Repair method','Cold patching বা cut-and-patch'],['Edge','EE tightly packed + no loose bricks'],['Slope','1:1 maintained all sides'],['Palisading','All joints pointed + backfill complete']]}},
+    {t:'"After" Photos — প্রতি 100m',d:'Before/After comparison documentation',tag:'PHOTO',
+     det:{pur:'Final documentation for bill + DLP.',
+      specs:[['Photos','Same angles as "before" photos'],['Include','Chainage board + date + your name'],['Palisading','All 11 locations fully visible'],['Road Safety','All signs + posts installed'],['DC surface','Smooth uniform finish visible'],['Store','Cloud backup immediately']]}},
+    {t:'Material Test Reports Compile',d:'Bitumen, aggregate, brick, compaction',tag:'DOCS',
+     det:{pur:'সব test certificates এক জায়গায় compile করুন।',
+      specs:[['Bitumen pen. test','60/70 grade confirmed'],['Aggregate LAA','≤ 40 (sub-base), ≤ 30 (DC)'],['Brick strength','1st class — crush test'],['Proctor (earth)','All chainage-wise reports'],['Core sample (DC)','≥ 95% Marshall'],['Marshall stability','≥ 8.0 kN'],['CBR (sub-base)','≥ 30%'],['CBR (sub-grade)','≥ 8%'],['WBM CBR','≥ 80%'],['Report format','Tabular + lab letterhead + signature']]}},
+    {t:'As-Built Drawings তৈরি',d:'Actual measurement অনুযায়ী drawing',tag:'DOCS',
+     det:{pur:'Final record drawings — future reference এর জন্য।',
+      specs:[['Scale plan','1:1000 (plan view)'],['Scale cross-section','1:100 (cross section)'],['Content','All actual dimensions, chainages'],['Palisading','11 locations with actual lengths'],['Cross-sections','~40-50 as-built'],['Format','A1 paper + AutoCAD soft copy']]}},
+    {t:'Joint Measurement + MB Entry',d:'SAE + UE + EE সবাই site এ',tag:'DOCS',
+     det:{pur:'Official quantity verification — bill এর base।',
+      specs:[['Participants','Contractor + SAE Md. Afzal Hossain + UE Md. Abul Fazel'],['Document','Joint Measurement Sheet'],['Section-1 Earth','4,589.897 cum verified'],['Section-2 Pavement','All 19 items verified'],['Section-4 Palisading','521m all 11 locations'],['Section-5 Safety','4 items verified'],['Time required','2-3 days full site survey']]}},
+    {t:'Final Bill Submission (IPC)',d:'All supporting docs attached',tag:'DOCS',
+     det:{pur:'Payment collect করার জন্য।',
+      specs:[['Bill type','Final Interim Payment Certificate (IPC)'],['Attachments','MB + As-built drawings + Test reports + Photos'],['VAT','7.5% deducted'],['AIT','7% deducted'],['Retention','5% held until DLP completion'],['Submission to','Upazila Engineer, LGED Koira'],['Processing time','Typically 30-60 days']],
+      tip:'Bill এ কোনো over-claim করবেন না — Engineer verify করবেন। Deficiency পেলে delay হবে।'}},
+    {t:'Completion Certificate সংগ্রহ',d:'Executive Engineer, LGED Khulna থেকে',tag:'DOCS',
+     det:{pur:'Official project completion record।',
+      specs:[['Issuer','Md. Kamrul Islam Sardar, Executive Engineer, LGED Khulna'],['Content','Scope completed per contract + BOQ'],['Date','Official handover date'],['Copies','2 certified copies নিন'],['Use','Bank reference, future bidding']]}},
+    {t:'Defect Liability Period (DLP) — 12 Months',d:'Free repair obligation শুরু',tag:'WARRANTY',
+     det:{pur:'Contract clause — handover এর পর 12 months কোনো defect হলে free repair।',
+      specs:[['Duration','12 months from handover date'],['Your obligation','Free repair any structural/surface defect'],['Retention held','5% of contract value (~৳8.4L)'],['Release','Satisfactory DLP inspection'],['Common DLP issues','Bitumen cracking, palisading joint failure, EE shifting'],['Contact','Always available for emergency repair']],
+      warn:'DLP এ যদি পালিয়ে যান — retention money LGED নিজে repair করে। আপনার loss।'}}
+  ]}
+  ]
+};
+
+// Flatten + assign IDs
+let totalTasks=0;
+D.phases.forEach(p=>{
+  p.totalTasks=0;
+  p.tasks.forEach((t,i)=>{
+    if(t.section)return;
+    t.id=`${p.id}_${i}`;
+    p.totalTasks++;
+    totalTasks++;
+  });
+});
+
+// State
+let S={};
+const KEY='koiya_v3';
+async function load(){try{if(typeof window.storage!=='undefined'){const r=await window.storage.get(KEY);if(r&&r.value)return JSON.parse(r.value);}}catch(e){}return {};}
+async function save(){try{if(typeof window.storage!=='undefined')await window.storage.set(KEY,JSON.stringify(S));}catch(e){}}
+
+function toast(m){const e=document.getElementById('toast');e.textContent=m;e.classList.add('on');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('on'),1800);}
+
+function updProgress(){
+  let done=0;
+  D.phases.forEach(p=>{
+    const d=p.tasks.filter(t=>!t.section&&S[t.id]).length;
+    done+=d;
+    const pct=p.totalTasks?Math.round(d/p.totalTasks*100):0;
+    const el=document.getElementById(p.id);if(!el)return;
+    const ring=el.querySelector('.ring-fg'),txt=el.querySelector('.ring-txt');
+    const c=2*Math.PI*16;
+    if(ring){ring.style.strokeDasharray=c;ring.style.strokeDashoffset=c-(c*pct/100);}
+    if(txt)txt.textContent=pct+'%';
+    pct===100?el.classList.add('done'):el.classList.remove('done');
+  });
+  const pct=totalTasks?Math.round(done/totalTasks*100):0;
+  document.getElementById('oPct').textContent=pct+'%';
+  document.getElementById('oBar').style.width=pct+'%';
+  document.getElementById('oCnt').textContent=`${done} / ${totalTasks} tasks complete`;
+  if(pct===100){const s=document.getElementById('stamp');s.classList.add('on');setTimeout(()=>s.classList.remove('on'),2500);}
+}
+
+// MODAL
+function openModal(task,phase){
+  document.getElementById('moEy').textContent=`${phase.num} · ${phase.title}`;
+  document.getElementById('moTi').textContent=task.t;
+  document.getElementById('moBody').innerHTML='';
+  const det=task.det||{};
+  const summary=task.d?`<div class="mo-sub">${esc(task.d)}</div>`:'';
+  const sourceNote=(det.specs||det.chainTable||det.mat||det.eq||det.steps)?`<div class="mo-sub">Source: PDF-based detail and project specification.</div>`:'';
+  let h=summary+sourceNote;
+
+  if(det.pur){h+=`<div class="db"><h4>উদ্দেশ্য — PDF Reference</h4><div class="purpose-box">${esc(det.pur)}</div></div>`;}
+
+  if(det.specs&&det.specs.length){
+    h+=`<div class="db"><h4>Specification / Measurement / Rate — PDF Detail</h4><div class="spec-g">`;
+    det.specs.forEach(([k,v])=>{
+      const hi=/Amount|Total|Volume|Net quantity|Rate portion/.test(k);
+      const bn=/[\u0980-\u09FF]/.test(v);
+      h+=`<div class="spec-r"><div class="spec-k">${esc(k)}</div><div class="spec-v${hi?' h':''}${bn?' bn':''}">${esc(v)}</div></div>`;
+    });
+    h+=`</div></div>`;
+  }
+
+  if(det.chainTable){
+    h+=`<div class="db"><h4>Location Breakdown — PDF Details</h4><table class="ct"><thead><tr>${det.chainTable.headers.map(x=>`<th>${esc(x)}</th>`).join('')}</tr></thead><tbody>${det.chainTable.rows.map(r=>`<tr>${r.map(c=>`<td>${esc(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+  }
+
+  if(det.mat&&det.mat.length){
+    h+=`<div class="db"><h4>Material / Quantity — PDF Reference</h4><div class="pill-row">${det.mat.map(m=>`<div class="pill">${esc(m)}</div>`).join('')}</div></div>`;
+  }
+
+  if(det.eq&&det.eq.length){
+    h+=`<div class="db"><h4>Equipment / Tools — PDF Reference</h4><div class="pill-row">${det.eq.map(e=>`<div class="pill">${esc(e)}</div>`).join('')}</div></div>`;
+  }
+
+  if(det.steps&&det.steps.length){
+    h+=`<div class="db"><h4>Step-by-Step Work Plan — PDF Procedures</h4><ol class="ol">${det.steps.map(s=>`<li>${esc(s)}</li>`).join('')}</ol></div>`;
+  }
+
+  if(det.tip)h+=`<div class="tip"><strong>💡 টিপ:</strong> ${esc(det.tip)}</div>`;
+  if(det.note)h+=`<div class="note"><strong>📝 মন্তব্য:</strong> ${esc(det.note)}</div>`;
+  if(det.warn)h+=`<div class="warn"><strong>⚠ সাবধান:</strong> ${esc(det.warn)}</div>`;
+
+  if(!h)h=`<div style="padding:20px;text-align:center;color:var(--muted)">এই item এর detail এখনো নেই।</div>`;
+
+  document.getElementById('moBody').innerHTML=h;
+  document.getElementById('moBody').scrollTop=0;
+  document.getElementById('mb').classList.add('on');
+}
+function closeModal(){document.getElementById('mb').classList.remove('on');}
+document.getElementById('moX').addEventListener('click',closeModal);
+document.getElementById('mb').addEventListener('click',e=>{if(e.target.id==='mb')closeModal();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+function tagCls(tag){
+  if(!tag)return'';
+  if(/TOTAL|QC/.test(tag))return'g';
+  if(/WAIT|WARRANTY|DEDUCT/.test(tag))return'a';
+  if(/DOCS|PLAN|SETUP|SAFETY|PHOTO|FINISH|CLEAN|PAINT|SURVEY|PREP|MIX|ROLL|BACKFILL|WALL|POST|PLATE|LAY|SUB/.test(tag))return'm';
+  if(/\d/.test(tag))return'b';
+  return'';
+}
+
+function render(){
+  const wrap=document.getElementById('phases');
+  wrap.innerHTML='';
+  D.phases.forEach((p,pi)=>{
+    const done=p.tasks.filter(t=>!t.section&&S[t.id]).length;
+    const pct=p.totalTasks?Math.round(done/p.totalTasks*100):0;
+    const c=2*Math.PI*16;
+    let tasksH='';
+    p.tasks.forEach((t,ti)=>{
+      if(t.section){tasksH+=`<div class="sec-hdr">${esc(t.section)}</div>`;return;}
+      const chk=S[t.id]?'done':'';
+      tasksH+=`<div class="task ${chk}" data-id="${t.id}" data-ti="${ti}">
+        <div class="chk" data-a="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="tc" data-a="det">
+          <div class="tt">${esc(t.t)}</div>
+          ${t.d?`<div class="td">${esc(t.d)}</div>`:''}
+        </div>
+        ${t.tag?`<div class="tag ${tagCls(t.tag)}">${esc(t.tag)}</div>`:'<div></div>'}
+        <div class="ibtn" data-a="det" title="Detail">i</div>
+      </div>`;
+    });
+    const el=document.createElement('div');
+    el.className='phase'+(pi===0?' open':'');
+    el.id=p.id;
+    el.innerHTML=`<div class="ph-hdr">
+      <div class="ph-num">${esc(p.num)}</div>
+      <div><div class="ph-ti">${esc(p.title)}</div><div class="ph-en">${esc(p.en)}${p.cost?' · '+esc(p.cost):''}</div></div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <div class="ph-ring">
+          <svg viewBox="0 0 40 40"><circle class="ring-bg" cx="20" cy="20" r="16"/><circle class="ring-fg" cx="20" cy="20" r="16" stroke-dasharray="${c}" stroke-dashoffset="${c-(c*pct/100)}"/></svg>
+          <div class="ring-txt">${pct}%</div>
+        </div>
+        <div class="arrow"></div>
+      </div>
+    </div>
+    <div class="ph-body"><div class="ph-body-in">${tasksH}</div></div>`;
+    wrap.appendChild(el);
+    if(pct===100)el.classList.add('done');
+    el.querySelector('.ph-hdr').addEventListener('click',()=>el.classList.toggle('open'));
+    el.querySelectorAll('.task').forEach(te=>{
+      te.addEventListener('click',async e=>{
+        const a=e.target.closest('[data-a]');if(!a)return;
+        const id=te.dataset.id,ti=parseInt(te.dataset.ti),task=p.tasks[ti];
+        if(a.dataset.a==='tick'){
+          S[id]=!S[id];te.classList.toggle('done',S[id]);
+          if(navigator.vibrate)navigator.vibrate(15);
+          await save();updProgress();
+        } else if(a.dataset.a==='det'){
+          if(navigator.vibrate)navigator.vibrate(10);
+          openModal(task,p);
+        }
+      });
+    });
+  });
+}
+
+let allEx=false;
+document.getElementById('exBtn').addEventListener('click',()=>{
+  allEx=!allEx;
+  document.querySelectorAll('.phase').forEach(p=>p.classList.toggle('open',allEx));
+  document.getElementById('exBtn').textContent=allEx?'⇧ সব বন্ধ':'⇩ সব খুলুন';
+});
+document.getElementById('rstBtn').addEventListener('click',async()=>{
+  if(!confirm('সব progress reset করবেন?\nThis cannot be undone.'))return;
+  S={};await save();render();updProgress();toast('✓ Reset');
+});
+
+(async()=>{
+  S=await load();
+  render();updProgress();
+})();

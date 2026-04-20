@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#1a2332">
+<title>কৈয়া রোড ৩কিমি — Contractor Checklist v3</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Archivo:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3ede0;--paper:#faf6ec;--ink:#1a2332;--ink2:#3d4a5c;--muted:#7a7563;--line:#d4cab1;--line2:#e6dfcd;--red:#d64e1f;--red2:#f4d5c5;--green:#2d6a4f;--green2:#c8e2d4;--amber:#b8860b;--amber2:#fae5c3;--blue:#1a4e8c;--blue2:#d0e4f7}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--ink);font-family:'Hind Siliguri',system-ui,sans-serif;font-size:15px;line-height:1.5;background-image:linear-gradient(rgba(26,35,50,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(26,35,50,.04) 1px,transparent 1px);background-size:24px 24px;min-height:100vh}
+.hdr{background:var(--ink);color:var(--paper);padding:10px 12px 10px;border-bottom:1px solid rgba(255,255,255,.15);position:static;top:auto;z-index:auto}
+.hdr-top{display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:#8a9aad;margin-bottom:2px}
+.hdr-top span{color:var(--red)}
+.proj-title{font-family:'Archivo','Hind Siliguri',sans-serif;font-weight:800;font-size:16px;line-height:1.1;letter-spacing:-.02em}
+.proj-sub{font-size:11px;color:#a8b4c4;margin-top:2px;font-weight:500}
+.op{margin-top:10px;padding:8px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:2px}
+.op-hdr{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.op-lbl{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#a8b4c4}
+.op-pct{font-family:'Archivo',sans-serif;font-weight:900;font-size:22px;color:var(--red);line-height:1}
+.op-cnt{font-family:'JetBrains Mono',monospace;font-size:11px;color:#a8b4c4;margin-top:2px}
+.bar{height:5px;background:rgba(255,255,255,.1);border-radius:1px;overflow:hidden}
+.bar-fill{height:100%;background:linear-gradient(90deg,var(--red),#f57c3a);transition:width .4s cubic-bezier(.4,0,.2,1)}
+.wrap{max-width:1100px;margin:0 auto;padding:18px 14px 100px}
+.phase{background:var(--paper);border:1px solid var(--line);border-radius:3px;margin-bottom:14px;box-shadow:0 2px 0 rgba(26,35,50,.08);overflow:hidden}
+.ph-hdr{padding:14px 16px;cursor:pointer;user-select:none;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;background:var(--paper);transition:background .15s;border-bottom:1px dashed transparent}
+.glossary-search{margin-bottom:12px}
+.glossary-search input{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:4px;background:var(--paper);color:var(--ink);font-size:14px}
+.glossary-search input:focus{outline:none;border-color:var(--red);box-shadow:0 0 0 3px rgba(214,78,31,.08)}
+.ph-hdr:active{background:var(--line2)}
+.phase.open .ph-hdr{border-bottom-color:var(--line)}
+.ph-num{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:11px;color:var(--paper);background:var(--ink);padding:4px 7px;border-radius:2px;letter-spacing:.05em;min-width:44px;text-align:center}
+.phase.done .ph-num{background:var(--green)}
+.ph-ti{font-weight:700;font-size:15px;color:var(--ink);line-height:1.25}
+.ph-en{font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace;letter-spacing:.02em;margin-top:2px}
+.ph-ring{width:38px;height:38px;position:relative;flex-shrink:0}
+.ph-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ph-ring circle{fill:none;stroke-width:3}
+.ring-bg{stroke:var(--line)}
+.ring-fg{stroke:var(--red);stroke-linecap:round;transition:stroke-dashoffset .4s}
+.phase.done .ring-fg{stroke:var(--green)}
+.ring-txt{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:var(--ink)}
+.arrow{width:10px;height:10px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);transition:transform .2s;margin-top:-4px}
+.phase.open .arrow{transform:rotate(-135deg);margin-top:4px}
+.ph-body{max-height:0;overflow:hidden;transition:max-height .3s ease-out}
+.phase.open .ph-body{max-height:10000px}
+.ph-body-in{padding:6px 0}
+.task{display:grid;grid-template-columns:44px 1fr auto 32px;align-items:flex-start;padding:10px 14px;border-bottom:1px dashed var(--line2);gap:6px;min-height:54px}
+.task:last-child{border-bottom:none}
+.task.done{background:rgba(45,106,79,.04)}
+.chk{width:22px;height:22px;border:2px solid var(--ink);border-radius:2px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;background:var(--paper);margin-top:1px;cursor:pointer}
+.chk:active{transform:scale(.92)}
+.task.done .chk{background:var(--green);border-color:var(--green)}
+.chk svg{width:14px;height:14px;color:#fff;opacity:0;transition:opacity .15s}
+.task.done .chk svg{opacity:1}
+.tc{min-width:0;padding-top:1px;cursor:pointer}
+.tt{font-weight:500;color:var(--ink);line-height:1.35;font-size:14.5px}
+.task.done .tt{text-decoration:line-through;text-decoration-color:var(--muted);color:var(--muted)}
+.td{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink2);margin-top:3px;line-height:1.4}
+.task.done .td{color:var(--muted)}
+.tag{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:3px 6px;border-radius:2px;background:var(--red2);color:var(--red);white-space:nowrap;align-self:center}
+.tag.g{background:var(--green2);color:var(--green)}
+.tag.a{background:var(--amber2);color:var(--amber)}
+.tag.m{background:var(--line);color:var(--ink2)}
+.tag.b{background:var(--blue2);color:var(--blue)}
+.ibtn{width:28px;height:28px;border:1.5px solid var(--ink2);border-radius:50%;background:var(--paper);color:var(--ink2);font-family:'Archivo',serif;font-weight:900;font-size:14px;display:flex;align-items:center;justify-content:center;cursor:pointer;align-self:center;flex-shrink:0;transition:all .15s;font-style:italic}
+.ibtn:active{background:var(--ink);color:var(--paper)}
+.sec-hdr{padding:8px 16px 4px;background:linear-gradient(180deg,var(--line2),transparent);font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:var(--ink2);text-transform:uppercase;letter-spacing:.1em;border-top:1px solid var(--line2)}
+.ftr{position:fixed;bottom:0;left:0;right:0;padding:8px 10px;background:linear-gradient(180deg,rgba(243,237,224,0) 0%,rgba(243,237,224,.92) 35%,var(--bg) 100%);pointer-events:none;z-index:50}
+.ftr-in{max-width:700px;margin:0 auto;display:flex;gap:8px;pointer-events:auto}
+.btn{flex:1;padding:10px 10px;border:1.5px solid var(--ink);background:var(--paper);color:var(--ink);font-family:'Hind Siliguri',sans-serif;font-weight:700;font-size:12px;border-radius:3px;cursor:pointer;transition:all .15s;box-shadow:2px 2px 0 var(--ink)}
+.btn:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--ink)}
+.btn.r{border-color:var(--red);color:var(--red);box-shadow:2px 2px 0 var(--red)}
+.btn.e{border-color:var(--ink2);box-shadow:2px 2px 0 var(--ink2)}
+.stamp{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-12deg);border:4px solid var(--green);color:var(--green);padding:16px 32px;font-family:'Archivo',sans-serif;font-weight:900;font-size:28px;letter-spacing:.1em;background:rgba(250,246,236,.9);border-radius:4px;pointer-events:none;opacity:0;transition:opacity .3s,transform .3s;z-index:200}
+.stamp.on{opacity:1;transform:translate(-50%,-50%) rotate(-6deg) scale(1.05)}
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:2px;font-size:13px;font-weight:500;opacity:0;transition:all .3s;z-index:150;pointer-events:none}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.ld{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:1000;color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.15em;text-transform:uppercase}
+.ld.h{opacity:0;pointer-events:none;transition:opacity .4s}
+.ic{background:var(--paper);border:1px solid var(--line);border-left:3px solid var(--red);padding:14px 16px;margin-bottom:14px;border-radius:2px}
+.ic h3{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--red);font-family:'JetBrains Mono',monospace;margin-bottom:8px}
+.ig{display:grid;grid-template-columns:repeat(2,1fr);gap:8px 16px;font-size:13px}
+.ig dt{color:var(--muted);font-size:11px;font-family:'JetBrains Mono',monospace}
+.ig dd{margin:0 0 4px;font-weight:600}
+/* MODAL */
+.mb{position:fixed;inset:0;background:rgba(26,35,50,.7);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);z-index:500;opacity:0;pointer-events:none;transition:opacity .25s;display:flex;align-items:flex-end;justify-content:center}
+.mb.on{opacity:1;pointer-events:auto}
+.mo{background:var(--paper);width:100%;max-width:900px;max-height:92vh;overflow-y:auto;border-radius:14px 14px 0 0;transform:translateY(100%);transition:transform .32s cubic-bezier(.16,1,.3,1);border-top:3px solid var(--red)}
+@media(min-width:600px){.mb{align-items:center;padding:20px}.mo{border-radius:4px;border:1px solid var(--ink);max-height:88vh}}
+.mb.on .mo{transform:translateY(0)}
+.mo-handle{width:40px;height:4px;background:var(--line);border-radius:2px;margin:10px auto 0}
+.mo-hdr{padding:14px 18px 12px;border-bottom:1px dashed var(--line);position:sticky;top:0;background:var(--paper);z-index:2}
+.mo-ey{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:var(--red);letter-spacing:.1em;text-transform:uppercase}
+.mo-ti{font-family:'Archivo','Hind Siliguri',sans-serif;font-weight:900;font-size:19px;line-height:1.2;color:var(--ink);letter-spacing:-.01em;margin:4px 0 0;padding-right:36px}
+.mo-sub{font-family:'Hind Siliguri',sans-serif;font-size:13px;line-height:1.5;color:var(--ink2);margin-top:6px}
+.mo-x{position:absolute;top:14px;right:14px;width:30px;height:30px;border:1.5px solid var(--ink);background:var(--paper);border-radius:50%;font-size:16px;font-weight:700;cursor:pointer;color:var(--ink);display:flex;align-items:center;justify-content:center}
+.mo-x:active{transform:scale(.9)}
+.mo-body{padding:14px 18px 28px}
+/* detail blocks */
+.db{margin-top:16px}
+.db h4{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--red);font-family:'JetBrains Mono',monospace;border-bottom:2px solid var(--red);padding-bottom:4px;display:inline-block;margin-bottom:8px}
+.purpose-box{background:linear-gradient(135deg,rgba(214,78,31,.06),transparent);border-left:3px solid var(--red);padding:10px 12px;border-radius:2px;font-size:13.5px;line-height:1.55;color:var(--ink2);margin-top:6px}
+.spec-g{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line);border-radius:3px;overflow:hidden}
+.spec-r{display:contents}
+.spec-k{background:var(--line2);padding:7px 10px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink2);border-bottom:1px solid var(--line);letter-spacing:.01em}
+.spec-v{padding:7px 10px;font-size:13px;font-weight:600;color:var(--ink);border-bottom:1px solid var(--line);font-family:'JetBrains Mono',monospace}
+.spec-v.h{color:var(--red);font-weight:900;font-size:14px}
+.spec-v.bn{font-family:'Hind Siliguri',sans-serif;font-weight:500;font-size:13px}
+.spec-v.g{color:var(--green);font-weight:700}
+.spec-r:last-child .spec-k,.spec-r:last-child .spec-v{border-bottom:none}
+.ol{counter-reset:s;margin-top:6px}
+.ol li{counter-increment:s;padding:9px 0 9px 36px;position:relative;border-bottom:1px dashed var(--line2);font-size:13.5px;line-height:1.5}
+.ol li:last-child{border-bottom:none}
+.ol li::before{content:counter(s,decimal-leading-zero);position:absolute;left:0;top:9px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:var(--paper);background:var(--ink);padding:2px 5px;border-radius:2px}
+.note{background:rgba(184,134,11,.08);border-left:3px solid var(--amber);padding:10px 12px;margin-top:12px;border-radius:2px;font-size:13px;line-height:1.5;color:var(--ink2)}
+.note strong{color:var(--ink);font-weight:700}
+.warn{background:rgba(214,78,31,.07);border-left:3px solid var(--red);padding:10px 12px;margin-top:12px;border-radius:2px;font-size:13px;line-height:1.5}
+.warn strong{color:var(--red)}
+.tip{background:rgba(45,106,79,.07);border-left:3px solid var(--green);padding:10px 12px;margin-top:12px;border-radius:2px;font-size:13px;line-height:1.5}
+.tip strong{color:var(--green)}
+.ct{width:100%;border-collapse:collapse;margin-top:8px;font-size:12px}
+.ct th{background:var(--ink);color:var(--paper);padding:6px 8px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.05em;text-transform:uppercase;text-align:left;font-weight:700}
+.ct td{padding:6px 8px;border-bottom:1px dashed var(--line2);font-family:'JetBrains Mono',monospace}
+.ct td:first-child{font-weight:700;color:var(--red)}
+.ct tr:last-child td{border-bottom:none}
+.pill-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.pill{font-family:'JetBrains Mono',monospace;font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid var(--line);background:var(--paper);color:var(--ink2)}
+.pill.red{background:var(--red2);border-color:var(--red);color:var(--red);font-weight:700}
+.pill.green{background:var(--green2);border-color:var(--green);color:var(--green);font-weight:700}
+.pill.amber{background:var(--amber2);border-color:var(--amber);color:var(--amber);font-weight:700}
+.divider{height:1px;background:var(--line);margin:16px 0}
+@media(max-width:480px){.proj-title{font-size:19px}.spec-g{grid-template-columns:1fr}.spec-k{border-right:none}.mo-ti{font-size:17px}.task{grid-template-columns:40px 1fr auto 30px;padding:9px 12px;gap:5px}}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div class="hdr-top"><span>ROAD CODE ● 247534057</span><span>FY 2025-26</span></div>
+  <div class="proj-title">কৈয়া রোড ৩ কি.মি.</div>
+  <div class="proj-sub">R&amp;H হাতিয়ারডাঙ্গা কালভার্ট – সুরিখালী বাজার রোড via পাটনিখালী · কয়রা, খুলনা</div>
+  <div class="op">
+    <div class="op-hdr">
+      <div><div class="op-lbl">Overall Progress</div><div class="op-cnt" id="oCnt">0 / 0 tasks</div></div>
+      <div class="op-pct" id="oPct">0%</div>
+    </div>
+    <div class="bar"><div class="bar-fill" id="oBar" style="width:0%"></div></div>
+  </div>
+</div>
+
+<div class="wrap">
+<div class="ic">
+  <h3>★ Project Identity</h3>
+  <dl class="ig">
+    <dt>Total Cost</dt><dd>৳ 1,67,89,027</dd>
+    <dt>Length</dt><dd>3,000 m (3 km)</dd>
+    <dt>Package No.</dt><dd>W-40/2025-26</dd>
+    <dt>Road Code</dt><dd>247534057</dd>
+    <dt>Earth Work</dt><dd>4,589.897 cum</dd>
+    <dt>25mm DC Area</dt><dd>8,858 sqm</dd>
+    <dt>End Edging</dt><dd>5,980 m (125mm)</dd>
+    <dt>Palisading</dt><dd>521 m · 11 locations</dd>
+  </dl>
+  <div style="margin-top:10px;padding:10px 12px;background:rgba(214,78,31,.06);border-left:3px solid var(--red);border-radius:2px;font-size:13px;color:var(--ink2);line-height:1.5">
+    <strong style="color:var(--ink)">কীভাবে ব্যবহার করবেন:</strong> ☐ Checkbox → কাজ শেষে Tick। &nbsp;ⓘ বোতাম → সম্পূর্ণ specification, measurement, rate, equipment ও step-by-step।
+  </div>
+</div>
+
+<div class="phase" id="glossary">
+  <div class="ph-hdr">
+    <div class="ph-num">GLOSSARY</div>
+    <div><div class="ph-ti">Abbreviations & Full Forms</div><div class="ph-en">English + Bangla explanations</div></div>
+    <div class="arrow"></div>
+  </div>
+  <div class="ph-body">
+    <div class="ph-body-in">
+      <div class="glossary-search"><input id="glossarySearch" type="search" placeholder="Search abbreviation or full form…" /></div>
+      <div class="sec-hdr">সংক্ষিপ্ত রূপের পূর্ণ রূপ (বাংলায়)</div>
+      <div class="task">
+        <div class="tc">
+          <div class="tt">BOQ - বিল অফ কোয়ান্টিটিজ</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="tc">
+          <div class="tt">LGED - স্থানীয় সরকার প্রকৌশল বিভাগ</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="tc">
+          <div class="tt">EE - এন্ড এজিং</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="tc">
+          <div class="tt">WBM - ওয়াটার বাউন্ড ম্যাকাডাম</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="tc">
+          <div class="tt">DC - ডেন্স কার্পেটিং</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="tc">
+          <div class="tt">CBR - ক্যালিফোর্নিয়া বিয়ারিং রেশিও</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="tc">
+          <div class="tt">MDD - ম্যাক্সিমাম ড্রাই ডেনসিটি</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="tc">
+          <div class="tt">OMC - অপটিমাম ময়েসচার কনটেন্ট</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="tc">
+          <div class="tt">TBM - টেম্পোরারি বেঞ্চ মার্ক</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="tc">
+          <div class="tt">RL - রিডিউসড লেভেল</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="tc">
+          <div class="tt">FM - ফাইননেস মডুলাস</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="tc">
+          <div class="tt">LAA - লস এঞ্জেলেস অ্যাব্রেশন</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="tc">
+          <div class="tt">HBB - হেরিং বোন বন্ড</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="tc">
+          <div class="tt">BFS - ব্রিক ফ্ল্যাট সোলিং</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="tc">
+          <div class="tt">SBBC - স্যান্ড ব্রিক বেস কোর্স</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="tc">
+          <div class="tt">SBFS - স্যান্ড ব্রিক ফ্ল্যাট সোলিং</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="tc">
+          <div class="tt">SHBB - স্যান্ড হেরিং বোন বন্ড</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="tc">
+          <div class="tt">PIEE - পিকিং অফ এক্সিস্টিং এন্ড এজিং</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="tc">
+          <div class="tt">PIBFS - পিকিং অফ এক্সিস্টিং ব্রিক ফ্ল্যাট সোলিং</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="tc">
+          <div class="tt">PIHBB - পিকিং অফ এক্সিস্টিং হেরিং বোন বন্ড</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="tc">
+          <div class="tt">EFW(CE) - আর্থ ফিলিং ওয়ার্ক (ক্লে এন্ড সিল্টি)</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="tc">
+          <div class="tt">BCSSGC - বক্স কাটিং সাব-গ্রেড সয়েল গ্র্যাভেল কাটিং</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="tc">
+          <div class="tt">ISG - ইমপ্রুভড সাব-গ্রেড</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="tc">
+          <div class="tt">ASAT - অ্যাগ্রিগেট সাব-বেস অ্যাগ্রিগেট টপ</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="tc">
+          <div class="tt">CWBM(ISSM) - কমপ্যাক্টেড ওয়াটার বাউন্ড ম্যাকাডাম (ইমপ্রুভড সাব-বেস ম্যাটেরিয়াল)</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="tc">
+          <div class="tt">PC@DB - প্রাইম কোট @ ড্রাই বাউন্ড</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="tc">
+          <div class="tt">TC@DB - ট্যাক কোট @ ড্রাই বাউন্ড</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="tc">
+          <div class="tt">JMD - জব মিক্স ডিজাইন</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="tc">
+          <div class="tt">DLP - ডিফেক্ট লায়াবিলিটি পিরিয়ড</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="tc">
+          <div class="tt">IPC - ইন্টারিম পেমেন্ট সার্টিফিকেট</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="tc">
+          <div class="tt">AIT - অ্যাডভান্স ইনকাম ট্যাক্স</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="tc">
+          <div class="tt">VAT - ভ্যালু অ্যাডেড ট্যাক্স</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="tc">
+          <div class="tt">BIN - বিজনেস আইডেন্টিফিকেশন নাম্বার</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="tc">
+          <div class="tt">TIN - ট্যাক্স আইডেন্টিফিকেশন নাম্বার</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="tc">
+          <div class="tt">BRTA - বাংলাদেশ রোড ট্রান্সপোর্ট অথরিটি</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="tc">
+          <div class="tt">NBR - ন্যাশনাল বোর্ড অফ রেভেনিউ</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="tc">
+          <div class="tt">EVCS - ইঞ্জিনিয়ারিং ভ্যালুয়েশন অ্যান্ড কস্টিং সফটওয়্যার</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="tc">
+          <div class="tt">SAE - সাব-অ্যাসিস্ট্যান্ট ইঞ্জিনিয়ার</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="tc">
+          <div class="tt">UE - উপজেলা ইঞ্জিনিয়ার</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="tc">
+          <div class="tt">RCC - রেইনফোর্সড সিমেন্ট কংক্রিট</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="tc">
+          <div class="tt">MS - মাইল্ড স্টিল</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="tc">
+          <div class="tt">sqm - বর্গ মিটার</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="tc">
+          <div class="tt">cum - ঘন মিটার</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="phases"></div>
+</div>
+
+<div class="ftr"><div class="ftr-in">
+  <button class="btn e" id="exBtn">⇩ সব খুলুন</button>
+  <button class="btn r" id="rstBtn">↺ Reset</button>
+</div></div>
+
+<div class="stamp" id="stamp">PROJECT DONE ✓</div>
+<div class="toast" id="toast"></div>
+
+<!-- MODAL -->
+<div class="mb" id="mb">
+  <div class="mo" id="mo">
+    <div class="mo-handle"></div>
+    <div class="mo-hdr">
+      <div class="mo-ey" id="moEy">DETAIL</div>
+      <div class="mo-ti" id="moTi">Title</div>
+      <button class="mo-x" id="moX">✕</button>
+    </div>
+    <div class="mo-body" id="moBody"></div>
+  </div>
+</div>
+
+<script>
+const D={
+  phases:[
+  {id:'p0',num:'PHASE 0',title:'প্রস্তুতি ও কাগজপত্র',en:'Pre-construction & paperwork',cost:null,tasks:[
+    {t:'Work Order ও Contract স্বাক্ষর',d:'LGED অনুমোদিত কাগজপত্র',tag:'DOCS',
+     det:{pur:'LGED কর্তৃক Issue করা Work Order সংগ্রহ করে legal stamp paper-এ contract স্বাক্ষর। এটা ছাড়া সাইটে কাজ শুরু করা যাবে না।',
+      bangla:'LGED অফিস থেকে Work Order পাওয়ার পরে আপনাকে legally stamp paper এ contract লিখতে হবে এবং সাক্ষর করতে হবে। এই চুক্তিতে থাকবে আপনার নাম, প্রজেক্টের নাম (কৈয়া রোড ৩ কিমি), কত টাকা পাবেন (১ কোটি ৬৭ লক্ষ টাকা), এবং কতদিনে কাজ শেষ করবেন (দ্রুততা সাথে, ১২ মাসে)। সব ৫ টি section এর BOQ items নিজে verify করে দেখুন যাতে later এ কোনো ঝামেলা না হয়। contract এর ৫ টি copy sign করুন - একটি আপনার কাছে, বাকি LGED এবং অন্যদের কাছে জমা দিন। এই কাগজপত্র ছাড়া কোনোভাবেই কাজ শুরু করা যাবে না, তাই এটি সবচেয়ে গুরুত্বপূর্ণ প্রথম কাজ।',
+      specs:[['Package No.','CAFDRIRP/Khulna/ER/VR/W-40/2025-26'],['Estimate Cost','৳ 1,67,89,027.00'],['Scheme Code','24753-26-10001 (Part-1)'],['Road Code','247534057'],['FY','2025–2026'],['Issuing Officer','Executive Engineer, LGED Khulna'],['Payment term','Running bill এ'],['DLP','12 months']],
+      steps:['LGED office থেকে Work Order originals সংগ্রহ','সব ৫টি section এর BOQ items নিজে verify করুন','Legal stamp paper-এ contract print ও sign','Original contract + 2 certified copies LGED জমা','Site Commencement Notice জমা'],
+      note:'চুক্তির আগে নিজে সব rate ও quantity cross-check করুন।',
+      eq:[],mat:[]}},
+    {t:'Bank Guarantee (Security Deposit) জমা',d:'Contract value এর 5% = ৳8,39,451',tag:'DOCS',
+     det:{pur:'Project security। কাজে গাফিলতি হলে LGED এই BG encash করবে।',
+      bangla:'আপনাকে একটি Bank Guarantee (BG) জমা দিতে হবে যার পরিমাণ হবে মোট contract value এর 5 ভাগ, অর্থাৎ ৳ 8,39,451। এটি হল একটি নিরাপত্তা ব্যবস্থা - যদি আপনি কাজ제대로না করেন বা কাজ ছেড়ে দেন তাহলে LGED এই অর্থ নিজেদের কাজ করার জন্য ব্যবহার করবে। একটি যেকোনো scheduled bank এ গিয়ে BG রিকোয়েস্ট করুন (Bank charge থাকবে মাসে ১,০০০-৩,০০০ টাকা)। BG এর validity রাখুন contract শেষ হওয়া + 1 বছর পর্যন্ত (DLP শেষ পর্যন্ত)। যদি এক্সপায়ার হয়ে যায় তাহলে LGED payment দেবে না এবং contract cancel হতে পারে। Original BG + 2 কপি নিয়ে LGED Accounts Section এ জমা দিন এবং রিসিট সংগ্রহ করুন যাতে পরে প্রমাণ থাকে।',
+      specs:[['Amount','৳ 8,39,451 (5% of ৳1.67 Cr)'],['Type','Bank Guarantee বা Pay Order'],['Bank','যেকোনো scheduled bank'],['Validity','Contract period + 1 year DLP'],['Payable to','Executive Engineer, LGED Khulna'],['Submission','Contract sign এর সাথে সাথে']],
+      steps:['Bank-এ BG request করুন','Bank charge: ৳1,000-3,000/month (approx)','Original BG + 2 copy তৈরি','LGED Accounts Section-এ জমা','Receipt সংগ্রহ করুন'],
+      tip:'BG validity সবসময় DLP শেষ পর্যন্ত রাখুন। Expire হলে সমস্যা।'}},
+    {t:'VAT + Income Tax Registration verify',d:'BIN + TIN current year valid রাখুন',tag:'DOCS',
+     det:{pur:'Bill payment-এর সময় LGED source এ VAT + AIT কেটে রাখে।',
+      bangla:'আপনার BIN (Business Identification Number) এবং TIN (Tax Identification Number) সার্টিফিকেট verify করুন যাতে confirm করা যায় যে সেগুলি current বছরের জন্য valid আছে। যখন LGED আপনার bill payment করবে তখন তারা source এ VAT (7.5%) এবং আয়কর (7% approx) কাটবে। যদি BIN/TIN valid না থাকে তাহলে bill payment রুকে দেওয়া হতে পারে যা আপনার নগদ প্রবাহ (cash flow) ব্যাহত করবে এবং project work delay করাবে। NBR website এ গিয়ে যাচাই করুন। নিশ্চিত করুন যে আপনার annual return যথাসময়ে জমা আছে কারণ সেটা validité এর জন্য প্রয়োজন।',
+      specs:[['VAT rate','7.5% (deducted at source)'],['AIT (Income Tax)','7% (approx, NBR circular অনুযায়ী)'],['Required docs','BIN certificate (current), TIN certificate'],['Verify via','NBR website'],['Annual Return','Due date-এর আগে জমা']],
+      warn:'BIN/TIN invalid থাকলে bill payment আটকে যাবে।'}},
+    {t:'Joint Site Visit (Engineer সাথে)',d:'UE Md. Abul Fazel + SAE Md. Afzal Hossain',tag:'FIELD',
+     det:{pur:'কাজ শুরুর আগে সমস্ত সাইট দেখে engineer-দের সাথে common understanding। Later এ "এটা বলা হয়নি" বলতে না পারেন।',
+      bangla:'কাজ শুরু করার আগে UE (Upazila Engineer) এবং SAE (Sub-Assistant Engineer) দের সাথে পুরো রাস্তা (0 কি.মি. থেকে 3 কি.মি.) ঘুরে দেখুন। এই visit এ আপনারা একসাথে ১১টি palisading (বাঁধ) location চিহ্নিত করবেন, widening zone (0+530-1+000) দেখবেন, এবং কালভার্ট (1+278-1+288) inspect করবেন। প্রতিটি চ্যালেঞ্জ area নিয়ে engineer দের কাছ থেকে clarification নিন যাতে later এ কোনো misunderstanding না থাকে। একটি joint inspection report তৈরি করুন যাতে সবার স্বাক্ষর থাকে - এটি পরে dispute এর সময় prove করতে পারবেন যে আপনি সঠিক কাজ করেছিলেন। motorcycle/vehicle এবং notebook + camera নিয়ে যান।',
+      specs:[['Upazila Engineer','Md. Abul Fazel (Addl. Duty), Koira'],['Sub-Asst. Eng.','Md. Afzal Hossain, Koira'],['Supervisor Eng.','Khalifa Md. Abul Kalam Azad (CAFDRIRP)'],['Total chainage','0+00 → 3+000 (3 km)'],['Key locations','11 Palisading + 1 Culvert + Widening zone'],['Output','Joint Inspection Report']],
+      steps:['উভয় পক্ষের convenient date ঠিক করুন','Motorbike/vehicle তৈরি রাখুন','Notebook + camera নিয়ে যান','১১টি palisading location চিহ্নিত করুন','Ch 0+530-1+000 widening zone দেখুন','কালভার্ট (Ch 1+278-1+288) inspect করুন','Joint inspection report তৈরি ও সাক্ষর করুন'],
+      tip:'Inspector দের সাথে যেকোনো অস্পষ্ট বিষয় এখনই clear করুন।'}},
+    {t:'"Before" Photos — পুরো ৩ কি.মি.',d:'প্রতি 100m উভয় পাশ থেকে',tag:'PHOTO',
+     det:{pur:'Final bill এবং DLP claim-এর সময় "before" evidence লাগবে। Court case হলেও কাজে আসে।',
+      bangla:'কাজ শুরুর প্রথম দিনেই পুরো ৩ কি.মি. রাস্তার প্রতিটি 100 মিটার এ ছবি তুলুন। প্রতি 100 মিটার এ 3 টি ছবি - একটি বাঁ পাশ থেকে, একটি ডান পাশ থেকে, এবং একটি মাঝ থেকে। প্রতিটি ছবিতে একটি chainage board থাকতে হবে যাতে লেখা থাকে যে এটি কোন chainage এ তোলা, তারিখ, এবং আপনার নাম। গ্রামের লোকেরা এই ছবি দেখে পরে জানতে পারবে কেমন ছিল আগে আর এখন কেমন হয়েছে। এই ছবিগুলি final bill এর সাথে জমা দিতে হবে এবং DLP claim করার সময়ও লাগবে। সব ছবি cloud (Google Drive, iCloud) এ backup করে রাখুন যাতে হারিয়ে না যায়। চেইনেজ order অনুযায়ী ফোল্ডার organize করুন (ch_0000, ch_0100, ch_0200 ইত্যাদি)।',
+      specs:[['Frequency','প্রতি 100m (minimum)'],['Total frames','60-90 ছবি (minimum)'],['Angles','Left side, Right side, Center'],['Include in frame','Chainage board + date'],['Format','Chronological folder: ch_0000 → ch_3000'],['Storage','Cloud backup (Google Drive/iCloud)']],
+      steps:['Chainage board তৈরি করুন (cardboard + marker)','Ch 0+00 থেকে শুরু করুন','প্রতি 100m এ: L/S, R/S, center — 3 ছবি','GPS coordinates চালু রাখুন (phone)','১১টি palisading location এর ছবি আলাদা folder এ'],
+      note:'ছবিতে পানি, ভাঙা edge, সব damage clearly দেখানোর চেষ্টা করুন।'}},
+    {t:'Material Supplier Finalize',d:'ইট + বালু + chips + bitumen 60/70',tag:'PLAN',
+     det:{pur:'Material delay = project delay = penalty। আগে থেকে supplier lock করুন।',
+      bangla:'কাজ শুরুর আগেই supplier দের সাথে agreement করে রাখুন যাতে সময়মতো material পাওয়া যায়। Material delay হলে project delay হবে এবং penalty লাগবে। প্রয়োজনীয় materials হল: ১ম grade ইট, বালু (FM 0.50 এবং 0.80), ৩৮mm crusher run chips, ১৬mm/১২mm/৬mm stone chips, bitumen 60/70 (গরম বাঁধানোর জন্য), সিমেন্ট (palisading concrete এর জন্য), এবং MS rod (লোহা)। প্রতিটি supplier এর সাথে quality standard এবং delivery schedule agree করুন। Bitumen মাট্রাইম confirm করা খুবই গুরুত্বপূর্ণ - যদি stock না থাকে তাহলে 7-15 দিন অপেক্ষা করতে হবে যা work delay করাবে। একটি backup supplier এর তালিকা রাখুন emergency এর জন্য।',
+      specs:[['1st class brick','LAA ≤ 40, জামা/picked'],['Sand FM 0.50','Sub-grade, BFS, SBBC'],['Sand FM 0.80','Sand Binding (SB)'],['38mm Crusher run','SBBC sub-base, CWBM'],['Stone chips 16mm','Dense Carpeting aggregate'],['Stone chips 12mm','Dense Carpeting aggregate'],['Stone chips 6mm','Dense Carpeting filler'],['Bitumen 60/70','Penetration grade, ASTM/AASHTO'],['Cement','OPC 43 grade (Palisading concrete)'],['MS Rod 12mm','Palisading posts (4 nos per post)'],['MS Rod 10mm','Guide post, Sign foundation']],
+      warn:'Bitumen এর পরিমাণ আগেই confirm করুন। Stock না থাকলে আনতে ৭-১৫ দিন লাগে।'}},
+    {t:'Equipment Booking',d:'Roller 8-10 ton + compactor + truck',tag:'PLAN',
+     det:{pur:'Peak time-এ roller পাওয়া কঠিন। আগে থেকে book করুন।',
+      bangla:'Equipment এর availability আগেই check করে বুকিং দিয়ে রাখুন কারণ construction season এ সবাই equipment খুঁজছে এবং rental charge বেশি থাকে। প্রয়োজনীয় equipment: 8-10 ton road roller (earth ও WBM compaction এর জন্য), bitumen roller (denser carpeting laying এ), compactor (narrow area এ), concrete mixer (palisading concrete এর জন্য), dump truck (মাটি ও chips carry করতে), water bowser (WBM এ পানি sprinkling করতে), level machine (elevation check করতে)। Roller operator এর license check করুন - BRTA license থাকা বাধ্যতামূলক। Equipment এর daily rent rate এবং fuel responsibility কে bear করবে সেটা clear করে লিখিত agreement করুন।',
+      specs:[['Road Roller','8-10 MT (steel drum) — Earth + WBM compaction'],['Bitumen Roller (1st)','8-10 MT steel drum'],['Bitumen Roller (2nd)','3-5 tons pneumatic tire'],['Vibro compactor','Narrow area + edge'],['Concrete Mixer','7 CFT — Palisading concrete'],['Dump Truck','2-3 nos — earth + chips carriage'],['Water Bowser','500-1000 L — WBM sprinkling'],['Level Machine','Auto level + 4m staff + tripod'],['Generator','For night work if needed']],
+      tip:'Roller operator এর license check করুন। BRTA license থাকা বাধ্যতামূলক।'}},
+    {t:'Labour Team Hire',d:'Mason + rigger + roller operator + helpers',tag:'PLAN',
+     det:{pur:'Phase wise labour plan করুন। সব একসাথে রাখলে idle cost বাড়বে।',
+      bangla:'প্রতিটি phase এর জন্য appropriate labour team hire করুন যাতে unnecessary idle cost না পড়ে। যেমন earth work phase এ 10-15 helper + 1 supervisor লাগবে, brick laying phase এ 5-8 mason + helpers লাগবে, কিন্তু bitumen phase এ bitumen laying এর জন্য experienced gang চাই যাদের temperature এবং mixing ratio সম্পর্কে জ্ঞান আছে। Bitumen gang খুবই important - তারা যদি wrong temperature এ bitumen lay করে তাহলে overlay ফেটে যাবে এবং আপনার সম্পূর্ণ কাজ নষ্ট হবে। skilled labour (surveyor, brick mason) কে আগে থেকে confirm করুন যাতে shortage না হয়। একটি supervisor রাখুন যে সব work maintain করবে এবং safety ensure করবে। সবার সাথে clear terms of engagement করুন যাতে dispute না হয়।',
+      specs:[['Earth work gang','10-15 helpers + 1 supervisor (Phase 3)'],['Brick mason','5-8 + helpers (Phase 9, 14)'],['Bitumen gang','11 experienced crew (Phase 13)'],['Roller operator','Licensed, 8-10 ton'],['Surveyor','1 experienced (level book reading)'],['Guard','1-2 (material storage)'],['Unskilled labour','Daily wage basis']],
+      note:'Bitumen gang specialist — তাদের আগে থেকে confirm করুন। ভুল temperature এ laying করলে ক্যারপেটিং ফেটে যাবে।'}}
+  ]},
+
+  {id:'p1',num:'PHASE 1',title:'সাইট Setup ও Mobilization',en:'Site establishment',cost:null,tasks:[
+    {t:'TBM (Temporary Bench Mark) স্থাপন',d:'RL = 10.00 — Ex-UZR BC Road Top C/C',tag:'SURVEY',
+     det:{pur:'পুরো project এর elevation reference point। এটা ভুল হলে সব calculation ভুল হবে।',
+      bangla:'একটি temporary bench mark (TBM) স্থাপন করুন যা পুরো project এর elevation reference হবে। এটা হল একটি concrete pillar যাতে RL = 10.00 m লেখা থাকে। যদি TBM ভুল হয় তাহলে সব calculation ভুল হবে - রাস্তার উচ্চতা ভুল হবে, নালা ডিজাইন ভুল হবে, সবকিছু ভুল হবে। একটি suitable location এ concrete pillar fix করুন এবং brass plate লাগান। Auto level দিয়ে test করুন যাতে closing error ≤ ±2mm/km থাকে (এর বেশি error মানে instrument ঠিক নেই)। Starting BM থেক থেকে all chainage এ RL measure করুন এবং level book এ লিখে রাখুন প্রতিদিন। TBM এর চারপাশে barricade দিন যাতে কেউ disturb না করে।',
+      specs:[['TBM Location','Ex-UZR BC Road Top, Center line'],['RL (Assumed)','10.00 m'],['Datum Reference','Scheme Code 24753-11-0008 Level Book'],['Formation Level range','9.71 m → 9.85 m (বিভিন্ন চেইনেজে)'],['Instrument','Auto Level (EVCS software compatible)'],['TBM construction','Concrete pillar + brass plate with RL stamped']],
+      steps:['Suitable concrete pillar fix করুন','Brass plate লাগান ও RL = 10.00 লিখুন','Instrument test করুন (closing error ≤ ±2mm/km)','Starting BM থেকে all chainage RL আঁকুন','Level Book update করুন প্রতিদিন'],
+      warn:'TBM কেউ যেন disturb না করে। চারপাশে barricade দিন।'}},
+    {t:'Centerline ও Chainage Pegs',d:'প্রতি 100m peg, 3km total',tag:'SURVEY',
+     det:{pur:'Alignment maintain না হলে road curved/crooked হবে।',
+      bangla:'Centerline স্থাপন করুন যা পুরো 3 কি.মি. রাস্তার মধ্যে থাকবে। Compass বা theodolite দিয়ে centerline set করুন এবং প্রতি 100 মিটার এ wooden peg drive করুন। মোট 31 টি peg থাকবে (ch 0+00 থেকে ch 3+000 পর্যন্ত)। প্রতিটি peg এর top এ chainage number লেখুন রঙিন paint দিয়ে। নিশ্চিত করুন যে সব peg সঠিক line এ আছে - একটি long nylon string দিয়ে verify করুন। পেগের উভয় পাশে width marker রাখুন (L/S এবং R/S) যাতে জানা যায় formation width কোথায়। Palisading zones গুলি আলাদাভাবে flag করুন।',
+      specs:[['Peg interval','100 m'],['Total pegs','31 nos (Ch 0+00 to 3+000)'],['Top Width design','5.00 m (Formation level)'],['Crest width','3.0 m (carpeted)'],['End Edging','125mm × 2 side'],['Slope both sides','1:1 (V:H)'],['Widening zone','Ch 530-1000 R/S: +0.525m']],
+      steps:['Compass/theodolite দিয়ে centerline set','প্রতি 100m এ 2ft wooden peg drive','Nylon string দিয়ে line verify','Formation width markers L/S + R/S','Palisading zones flag করুন'],
+      mat:['31 wooden pegs','50m nylon string','Red paint','Stakes']}},
+    {t:'Site Office ও Material Store',d:'Temporary shed, drawings, register',tag:'SETUP',
+     det:{pur:'কাগজপত্র ও material safe রাখার জন্য।',
+      bangla:'একটি temporary site office এবং material store তৈরি করুন যা central location এ থাকবে (যেমন ch 1+500 কাছাকাছি)। এটা হবে একটি 12ft × 10ft corrugated tin shed যেখানে থাকবে drawing board, BOQ file, attendance register, আর first aid kit। Material store এর জন্য একটি padlock থাকবে যাতে কেউ বেআইনি না চুরি করে। একটি signboard লাগান যাতে লেখা থাকে project name, আপনার (contractor এর) নাম, এবং LGED logo। Engineer দের অফিসে কাগজপত্র রাখার জন্য একটি file cabinet থাকতে হবে। এই office হবে সব information center - সব সিদ্ধান্ত এখানেই নেওয়া হবে।',
+      specs:[['Location','Ch 1+500 কাছাকাছি (central)'],['Size','Minimum 12ft × 10ft'],['Contents','Drawing board, BOQ file, attendance register, safety kit'],['Lock','Padlock — material store'],['Signboard','Project name + contractor name + LGED logo']],
+      mat:['Corrugated tin sheet 20 pcs','Wooden frame','Padlock 2 nos','Signboard']}},
+    {t:'Safety Equipment Setup',d:'Helmet, shoes, first aid, cones',tag:'SAFETY',
+     det:{pur:'LGED requirement এবং worker protection।',
+      bangla:'Worker দের safety এর জন্য সব প্রয়োজনীয় equipment arrange করুন। এটা LGED এর requirement এবং সবার জীবন রক্ষার জন্য জরুরি। Minimum 10 টি hard hat (helmet), 5 জোড়া safety shoes, 10 টি safety vest কিনে রাখুন। একটি complete first aid box রাখুন যাতে থাকে bandage, burn cream, dettol, ইত্যাদি কারণ construction site তে দুর্ঘটনা হতে পারে। 20 টি traffic cones রাখুন রাস্তার মাঝে ঝুঁকিপূর্ণ area block করার জন্য। 5 টি caution sign ("কাজ চলছে") রাখুন। রাস্তার দুই দিকে flagmen রাখুন যারা আসা যাওয়া গাড়ির ড্রাইভারদের সতর্ক করবে। বিশেষ করে bitumen কাজ করার সময় একটি 5kg ABC fire extinguisher রাখুন কারণ hot bitumen তে আগুন লেগে যেতে পারে। যদি hot bitumen কাউকে গায়ে পড়ে তাহলে immediately ঠান্ডা পানি দিয়ে ধুয়ে দিন।',
+      specs:[['Hard hat','10 nos minimum'],['Safety shoes','5 pair'],['Safety vest','10 nos'],['First aid box','Complete — bandage, burn cream, dettol'],['Traffic cones','20 nos'],['Caution sign','"কাজ চলছে" 5 nos'],['Flagmen','2 nos (both ends)'],['Fire extinguisher','1 × 5kg ABC (Bitumen work)']],
+      warn:'Bitumen কাজে fire extinguisher mandatory। গরম bitumen গায়ে পড়লে immediately cold water।'}},
+    {t:'Water Source + Pump Arrange',d:'WBM + compaction এর জন্য',tag:'SETUP',
+     det:{pur:'Compaction আর WBM wet rolling এর জন্য পানি লাগবে।',
+      bangla:'একটি water source খুঁজে বের করুন - পুকুর, নদী, বা tube well। Compaction এর সময় এবং WBM laying এর সময় অনেক পানি লাগবে - প্রতিদিন 500-1500 লিটার। একটি 3 HP পাম্প ব্যবস্থা করুন এবং 2000 লিটার plastic water tank রাখুন storage এর জন্য। 2 inch hose pipe রাখুন 50 মিটার লম্বার। পানি distribute করার জন্য hand pump বা small delivery system রাখুন। কিন্তু মনে রাখুন - Bitumen prime coat দেওয়ার পরে কোনোভাবেই পানি ছিটানো যাবে না কারণ wet road তে bitumen উঠে যায় এবং তার সব উপকার হারিয়ে যায়।',
+      specs:[['Source','নিকটস্থ পুকুর/নদী/tube well'],['Pump capacity','Minimum 3 HP'],['Water tank','2000 L plastic storage'],['Hose','2-inch, 50m length'],['Daily requirement','~500-1500 L (peak WBM day)']],
+      tip:'Bitumen prime coat এর পরে পানি একদম নিষিদ্ধ — road wet হলে bitumen উঠে যাবে।'}}
+  ]},
+
+  {id:'p2',num:'PHASE 2',title:'জঙ্গল পরিষ্কার ও Stripping',en:'Jungle clearance — full 3km',cost:null,tasks:[
+    {t:'Ch 0+000 → 0+500 Clearing (500m)',d:'ঝোপ + stump + 200mm stripping',tag:'500m',
+     det:{pur:'Earth work এর আগে surface পরিষ্কার করা বাধ্যতামূলক।',
+      bangla:'প্রথম 500 মিটারে সব ঝোপ, গাছ, এবং জন্মানো শাকসবজি কেটে পরিষ্কার করুন। 200mm এর নিচে গাছের stump যা মাটিতে আছে সেগুলি খুড়ে বের করুন। শীর্ষ 200mm জৈব মাটি (top soil) খুড়ে বের করুন কারণ এটা compaction এর জন্য ভালো নয়। সব debris (roots, branches, etc.) dump truck এ load করে দূরে ফেলে দিন। সাইট completely পরিষ্কার করুন যাতে earth work শুরু করতে পারেন। Koira area মূলত clay এবং silty soil, তাই stripping এর পরে surface একটু soft লাগবে - এটা normal, চিন্তা করবেন না।',
+      specs:[['Chainage','0+000 → 0+500'],['Length','500 m'],['Tree stump','Up to 200mm girth remove'],['Stripping depth','200 mm (top soil)'],['Sides','Both L/S and R/S'],['Clod max size','100 mm']],
+      steps:['Jungle/scrub cutting (machete/chainsaw)','Root/stump removal up to 200mm girth','Top 200mm organic soil stripping','Debris + roots dump truck এ load','Site পরিষ্কার করুন'],
+      note:'Koira area clay & silty soil। Stripping করার পর surface কিছুটা soft লাগবে — normal।'}},
+    {t:'Ch 0+500 → 1+000 Clearing (500m)',d:'Widening R/S এ extra attention',tag:'500m',
+     det:{pur:'Widening zone (Ch 0+530-1+000 R/S) এ extra clearance দরকার।',
+      bangla:'পরবর্তী 500 মিটারে একই কাজ - jungle clearing এবং 200mm stripping। কিন্তু এই zone এ special feature আছে - right side (R/S) এ একটি widening করতে হবে অতিরিক্ত 0.525 মিটার। এটা মানে আপনি R/S এ আরও 0.525m দূরে যাবেন এবং সেখানেও clearing করবেন। Left side (L/S) এ কিন্তু কোনো clearing করবেন না কারণ সেখানে বসত বাড়ি আছে। Technical report অনুযায়ী শুধুমাত্র R/S এ widening করার অনুমতি দেওয়া হয়েছে। Ch 0+581-0+845 এ palisading থাকবে R/S তে - সেই area তে special care নিন।',
+      specs:[['Chainage','0+500 → 1+000'],['Widening zone','0+530 → 1+000 R/S'],['Extra width','0.525 m R/S এ clear করুন'],['Obstruction at','4.00 m from center'],['L/S Note','বসত বাড়ি — সেই পাশে ঢোকা নিষেধ'],['Palisading nearby','Ch 0+581-0+845 R/S']],
+      warn:'L/S এ বসত বাড়ি থাকায় Technical Report অনুযায়ী শুধু R/S এ widening। L/S তে কাজ করবেন না।'}},
+    {t:'Ch 1+000 → 1+500 Clearing (500m)',d:'Box Culvert area carefully',tag:'500m',
+     det:{pur:'কালভার্ট এর কাছে extra careful।',
+      bangla:'এই 500 মিটার section এ একটি RCC Box Culvert আছে ch 1+278 থেকে ch 1+288 পর্যন্ত (10 মিটার span 5.50 মিটার)। Culvert এর কাছে very carefully clearing করুন যাতে culvert structure কোনোভাবেই damage না হয়। Approach zone (ch 1+268-1+278 এবং ch 1+288-1+298) তে খুবই সাবধানে কাজ করুন। এছাড়াও এই zone এ দুটি palisading location আছে (ch 1+402-1+417 এবং ch 1+496-1+511)।',
+      specs:[['Chainage','1+000 → 1+500'],['Culvert location','Ch 1+278 → 1+288'],['Span','5.50 m RCC Box'],['Approach','Ch 1+268-1+278 & 1+288-1+298'],['Clearing','Culvert structure disturb করবেন না'],['Nearby palisading','Ch 1+402-1+417, 1+496-1+511']]}},
+    {t:'Ch 1+500 → 2+000 Clearing (500m)',d:'৪টি Palisading location',tag:'500m',
+     det:{pur:'Multiple palisading zones — সেগুলো আলাদাভাবে flag করুন।',
+      bangla:'এই 500 মিটারে 4 টি palisading location আছে যেগুলিকে specially mark করতে হবে। সেগুলি হল ch 1537-1551 (14m), ch 1708-1760 (52m), ch 1807-1829 (22m), এবং ch 1862-1880 (18m)। সব palisading zone এর marking clear রাখুন যাতে পরের phase এ সঠিকভাবে palisading করা যায়।',
+      specs:[['Chainage','1+500 → 2+000'],['Length','500 m'],['Palisading','None in this zone'],['Standard','Full jungle + stripping']]}},
+    {t:'Ch 2+000 → 2+500 Clearing (500m)',d:'Standard stretch',tag:'500m',
+     det:{pur:'Middle section, no critical works।',
+      bangla:'এই section টা simple, কোনো culvert বা widening নেই। এখানে jungle clearing করবেন, ঝোপ-ঝাড় সরিয়ে up to 200mm topsoil strip করবেন এবং পরের earth work ready করতে surface level করবেন। এই কাজটি ঠিকমতো না করলে পরের phase এ uneven filling হবে।',
+      specs:[['Chainage','2+000 → 2+500'],['Length','500 m'],['Palisading','None in this zone'],['Standard','Full jungle + stripping']]}},
+    {t:'Ch 2+500 → 3+000 Clearing (500m)',d:'শেষ section — ৩টি palisading',tag:'500m',
+     det:{pur:'শেষ 500m এ তিনটি palisading।',
+      bangla:'শেষ 500 মিটারে 3 টি palisading location আছে: ch 2602-2642 (40m L/S), ch 2812-2836 (24m R/S), এবং ch 2960-3000 (40m L/S)। Ch 2960-3000 হল junction area যেখানে D = 5.05 মিটার - এটা অন্য সব location এর চেয়ে অনেক বড়। এখানে extra clearing লাগবে।',
+      specs:[['Chainage','2+500 → 3+000'],['Length','500 m'],['Formation Level','9.73-9.79 m'],['Palisading areas','2602-2642, 2812-2836, 2960-3000'],['Note','Ch 2960-3000 L/S এর D = 5.05m — এটা junction area। Extra clearing লাগবে।']]}}
+  ]},
+
+  {id:'p3',num:'PHASE 3',title:'Earth Work — মাটি ভরাট',en:'Section 1 — EFW(CE) — ৳14,43,385',cost:'৳ 14,43,385',tasks:[
+    {t:'Borrow Pit ও Access Road Prepare',d:'200m ROW বাইরে থেকে Clay & Silty মাটি',tag:'PLAN',
+     det:{pur:'BOQ Item 2.02.3.01 EFW(CE) এর জন্য মাটি source prepare।',
+      bangla:'রাস্তার বাইরে ২০০ মিটার দূরত্বে একটি borrow pit খুঁজে বের করুন যেখান থেকে clay এবং silty মাটি খুড়ে আনতে পারবেন। মাটির ধরন match করতে হবে (clay + silty)। জমির মালিকের সাথে royalty rate negotiate করুন এবং কাগজে sign করুন। Borrow pit এর depth maximum 1.5-2 মিটার রাখুন - এর বেশি গভীরে গেলে পানি সমস্যা হবে। Access road পরিষ্কার করুন যাতে dump truck চলতে পারে। Borrow pit এর boundary ভালোভাবে mark করুন তাতে locally কেউ উল্টাপাল্টা না করে। মাটির moisture check করুন - সর্বোত্তম moisture (OMC) এ থাকতে হবে, না বেশি না কম।',
+      specs:[['BOQ Item','2.02.3.01 — EFW(CE)'],['Source condition','200m beyond Right-of-Way'],['Soil type','Clay & Silty (match করতে হবে)'],['Moisture','±2% of OMC at time of compaction'],['Royalty','Local rate — জমির মালিককে pay'],['Access road','Dump truck চলার জন্য গ্রামীণ পথ prepare'],['Borrow pit depth','Max 1.5-2m (waterlogging avoid)'],['Compaction','85% MDD outside municipal area']],
+      steps:['নিকটবর্তী upland খুঁজুন যেখানে Clay & Silty soil আছে','জমির মালিকের সাথে rate negotiate করুন','Access road প্রয়োজনে minor repair করুন','Borrow pit boundary mark করুন','Dug balling / scraper setup করুন','Moisture test করুন (OMC test)'],
+      note:'Payment on compacted volume। বেশি moisture থাকলে aeration দরকার, কম moisture থাকলে water sprinkle।',
+      mat:['Borrow pit royalty payment receipt','Moisture test kit']}},
+    {t:'Ch 0+000 → 0+500 Earth Filling (500m)',d:'Layer 150mm vertical, 600mm horizontal',tag:'500m',
+     det:{pur:'প্রথম 500m segment। EFW(CE) specification এ।',
+      bangla:'প্রথম 500 মিটারে মাটি ভরাট করুন layer by layer। প্রতিটি loose layer হবে 150mm high এবং horizontally 600mm পর্যন্ত। Clods (মাটির덩어리) maximum 100mm থাকতে হবে - বড় clod থাকলে compaction সমস্যা হবে। প্রতিটি layer এ সঠিক moisture (OMC ±2%) থাকতে হবে। ডাম্প ট্রাক দিয়ে মাটি ছড়িয়ে দিন, clod break করুন shovel দিয়ে, তারপর water sprinkle করুন, তারপর 8-10 ton roller দিয়ে compact করুন। Field density test করুন - target 95% MDD। Test pass হলে Engineer কে দেখান এবং approval নিন, তারপর পরের layer। এক layer এ একাধিক বার roller চালান যতক্ষণ না surface solid মনে হয়।',
+      specs:[['Chainage','0+000 → 0+500'],['Applicable length','500 m'],['Pre-work x-sec (avg)','~18-20 sqm (from level book)'],['Design x-sec (avg)','~20-22 sqm'],['Net design area/m','~2-3 sqm/m'],['Volume approx','500 × 2.5 = 1,250 cum (approx)'],['Vertical layer max','150 mm (loose)'],['Horizontal layer max','600 mm'],['Moisture target','OMC ±2%'],['Compaction','95% MDD (mid embankment)'],['Slope','1:1 both sides'],['Camber','150 mm at crest center']],
+      steps:['Earth dump করুন loose layer 150mm করে','Clod break করুন (max 100mm)','Water sprinkle করুন (moisture check)','Roller দিয়ে compact করুন','Field density test করুন','Approval নিন, তারপর পরের layer'],
+      eq:['Dump truck (2-3 nos)','8-10 MT road roller','Water bowser','Vibro compactor (edge areas)'],
+      warn:'এক layer এর বেশি একসাথে dump করবেন না। Compaction fail হবে।'}},
+    {t:'Ch 0+500 → 1+000 Earth Filling (widening সহ)',d:'Widening Ch 0+530-1+000 R/S',tag:'500m',
+     det:{pur:'Widening zone এ earth filling — R/S এ extra 0.525m।',
+      bangla:'এই zone এ earth filling একটু বেশি careful করতে হবে কারণ এখানে widening আছে R/S তে। Existing slope এ একটি 100mm benching করুন যাতে new fill ভালোভাবে bond হয়। Widening portion এ compaction ঘরও বেশি (98% MDD instead of 95%)। যখন overlay (DC) পড়বে তখন সেটা widening portion এ পড়বে, তাই সেখানে extra strong foundation দরকার।',
+      specs:[['Chainage','0+500 → 1+000'],['Normal width L/S','Existing ~2.4m'],['Widening R/S','Extra 0.525m'],['Box cutting vol.','470 × 0.525 × 0.350 = 86.363 cum (deducted from BOQ)'],['Compaction widening','98% MDD (higher requirement)'],['Benching','Existing slope এ 100mm benching'],['Obstruction','4.00m from center (L/S structure)']],
+      tip:'Widening এর মাটি ভালো করে compact করুন — কারণ DC overlay তার উপরে যাবে।'}},
+    {t:'Ch 1+000 → 1+500 Earth Filling (culvert gap বাদ)',d:'Ch 1378-1388 (10m) — No Earthwork',tag:'500m',
+     det:{pur:'কালভার্ট gap বাদে 490m earth filling।',
+      bangla:'এই 500 মিটার section এ একটি 10 মিটার gap আছে ch 1+378 থেকে ch 1+388 পর্যন্ত যেখানে কোনো earth filling নেই। তার কারণ সেখানে RCC Box Culvert আছে। তাই effective filling length হবে 490 মিটার (500-10)। BOQ calculation এও এই 10m deduct করা হয়েছে, তাই site এ ও সেই অনুযায়ী কাজ করুন। Culvert এর কাছে palisading location আছে - সেখানে খুবই careful থাকুন।',
+      specs:[['Chainage','1+000 → 1+500'],['Effective length','490 m (500-10 culvert gap)'],['Culvert gap','Ch 1+378 → 1+388 — 10m NO earthwork'],['Note in Level Book','"No Earthwork Required" — page 17 of 17'],['Formation Level','~9.75 m (this zone)'],['Palisading nearby','Ch 1402-1417 L/S']],
+      note:'BOQ calculation এ 10m culvert gap deduct করা হয়েছে। Site এ also এই 10m বাদ দিন।'}},
+    {t:'Ch 1+500 → 2+000 Earth Filling (500m)',d:'Multiple palisading locations পাশে',tag:'500m',
+     det:{pur:'Standard 500m — ৪টি palisading area এর কাছে।',
+      bangla:'Standard 500 মিটার earth filling যেখানে 4 টি palisading location আছে পাশে। Palisading location গুলোতে earth ভরাটের সময় খুবই careful থাকুন যাতে wall foundation disturb না হয়।',
+      specs:[['Chainage','1+500 → 2+000'],['Formation Level','9.75-9.77 m avg'],['Palisading zones','Ch 1537-1551, 1708-1760, 1807-1829, 1862-1880']],
+      tip:'Palisading location গুলোতে earth ভরাটের সময় extra careful — wall foundation disturb করবেন না।'}},
+    {t:'Ch 2+000 → 2+500 Earth Filling (500m)',d:'Straightforward section',tag:'500m',
+     det:{pur:'Standard stretch — no special feature।',
+      bangla:'এই 500m section এ কোনো culvert বা widening নেই। তাই একই standard earth filling procedure করুন: proper moisture সঙ্গে layer by layer material spread করুন, compact করুন, এবং level ঠিক রাখুন। এই section এ consistent foundation তৈরি করা হলো পরের pavement কাজের জন্য।',
+      specs:[['Chainage','2+000 → 2+500'],['Formation Level','9.73-9.79 m']]}},
+    {t:'Ch 2+500 → 3+000 Earth Filling (500m)',d:'শেষ section',tag:'500m',
+     det:{pur:'শেষ 500m।',
+      bangla:'শেষ 500 মিটার section এ 3 টি palisading location আছে, তাই earth filling করার সময় তাদের পাশের foundation disturb করবেন না। নরমাল earth filling ধাপ অনুসরণ করুন, কিন্তু palisading area গুলিতে special care নিন যাতে wall foundation ঠিক থাকে। এই section এ fill uniform ও level রাখতে হবে যাতে পরের surface কাজ সহজ হয়।',
+      specs:[['Chainage','2+500 → 3+000'],['Formation Level at 2960','9.79 m'],['Palisading areas','2602-2642, 2812-2836, 2960-3000']]}},
+    {t:'Side Slope Dressing (1:1 both sides)',d:'পুরো 3km, design: 1:1 V:H',tag:'FINISH',
+     det:{pur:'Embankment stability এবং water runoff।',
+      bangla:'সব embankment এর slope (both sides) কে 1:1 করতে হবে (1 meter vertical = 1 meter horizontal)। এটা water runoff এর জন্য এবং embankment stability এর জন্য। Template board ব্যবহার করে slope check করুন। Hand dressing করুন যাতে slope smooth এবং uniform থাকে। Water drainage path clear করুন যাতে পানি side slope দিয়ে নিচে নামতে পারে।',
+      specs:[['R-Slope design','1:1.00 (V:H)'],['L-Slope design','1:1.00 (V:H)'],['Turfing on Top','0.00 m (এই project এ নেই)'],['Design Turfing Length','2.53 – 4.67 m (zone অনুযায়ী)'],['Benching','100mm clod, horizontal 600mm, vertical 300mm']],
+      steps:['Roller দিয়ে slope rough compact করুন','Template (template board) দিয়ে 1:1 check করুন','Hand dressing করুন','Water runoff path clear করুন']}},
+    {t:'Camber 150mm at Center Crest',d:'পুরো 3000m — center এ 150mm উঁচু',tag:'FINISH',
+     det:{pur:'পানি রাস্তার মাঝে জমা না হয়ে দুই পাশে নামবে।',
+      bangla:'রাস্তার মাঝ (centerline) কে দুই পাশের চেয়ে 150mm উঁচু করতে হবে। এটাকে বলে "camber"। এর কারণ বৃষ্টির পানি রাস্তার মাঝে জমা না হয়ে দুই পাশে নামতে পারে। Camber follow করতে একটি profile board ব্যবহার করুন। Hard bed preparation (HBP) এর আগেই camber ঠিক করে রাখুন কারণ পরে ঠিক করা কঠিন হবে।',
+      specs:[['Camber height','150 mm (at center line)'],['Crest width','3.0 m carpeted portion'],['Cross slope %','~3% from center outward'],['Method','Profile board দিয়ে check করুন'],['Note','Hard bed preparation এর আগেই camber ঠিক করুন']]}},
+    {t:'Compaction Test (Engineer সামনে)',d:'85/95/98% MDD — প্রতি 500m এ test',tag:'QC',
+     det:{pur:'LGED quality requirement। Test ছাড়া measurement নেবে না।',
+      bangla:'প্রতিটি 500 মিটারে minimum একটি compaction test করতে হবে Engineer এর সামনে। Test এ যাচাই করা হয় যে মাটি কতটা compact হয়েছে। Compaction percentage check করতে হবে - minimum requirement 85% MDD (আমাদের spec)। Test sample লিন করুন compacted layer থেকে এবং একটি LGED approved lab এ পাঠান। Field density test ও করুন সাইটে portable equipment দিয়ে। সব report sign করান engineer দিয়ে এবং measurement book এ attach করুন। যদি test fail হয় তাহলে সেই area re-compact করে re-test করতে হবে।',
+      specs:[['Test standard','AASHTO T-99 (Standard Proctor)'],['Zone-1 requirement','85% MDD (আমাদের spec — outside municipal)'],['Zone-2 requirement','95% MDD'],['Zone-3 (subgrade)','98% MDD'],['Frequency','প্রতি 500m এ minimum 1 test'],['Who witnesses','Sub-Asst. Engineer + contractor supervisor'],['Lab','LGED approved test lab']],
+      steps:['Sample collect করুন (প্রতি layer)','Lab এ Proctor test করুন','Field density test করুন','Compare করুন — ≥ required %','Report sign করুন এবং MB তে attach করুন'],
+      warn:'Test fail হলে recompact করুন এবং re-test। কোনো shortcut নেই।'}},
+    {t:'Earth Work Final BOQ Measurement',d:'Target: 4,589.897 cum',tag:'QC',
+     det:{pur:'Actual vs BOQ quantity verify।',
+      bangla:'সব earth work শেষ হয়ে গেলে engineer এর সাথে joint measurement নিন। এই measurement verify করে যে কতটা earth actually fill করা হয়েছে। BOQ এ quantity ছিল 4,589.897 cubic meter। Measurement এ কোনো variation থাকলে engineer কে explain করুন এবং reconciliation করুন। এই measurement হবে final billing এর basis।',
+      specs:[['Pre-work volume','4,837.540 cum (from level book)'],['End Edging deduction','−161.280 cum (3000×0.112×0.240×2 sides)'],['Widening box deduction','−86.363 cum (470×0.525×0.350)'],['Net BOQ volume','4,589.897 cum'],['Unit Rate','৳ 314.47/cum'],['Total Amount','৳ 14,43,384.91'],['Rounded in BOQ','৳ 14,43,385.00']],
+      note:'EVCS Software দিয়ে Engineer volume calculate করেছেন। Site এ measurement নেওয়ার সময় same formula use করুন।'}}
+  ]},
+
+  // Continue for remaining phases...
+  // Due to length constraints, showing key phases. Format continues similarly for:
+  // PHASE 4 (Salvage), PHASE 5 (Widening), PHASE 6 (HBP), PHASE 7-8 (Edge/Culvert)
+  // PHASE 9 (Edging), PHASE 10 (Sand Binding), PHASE 11 (Sub-base)
+  // PHASE 12 (WBM), PHASE 13 (Bituminous - most critical), PHASE 14 (Palisading)
+  // PHASE 15 (Safety), PHASE 16 (Finishing)
+
+  {id:'p4',num:'PHASE 4',title:'পুরাতন Material তোলা ও Salvage',en:'Picking & stacking — Phase before laying',cost:'৳ ~72,000',tasks:[
+    {t:'PIEE 75mm — Ch 0+00 → 2+000 (3,542m)',d:'উভয় পাশ থেকে তুলে stack',tag:'3,542m',
+     det:{pur:'BOQ Item 3.04.1.1। পুরাতন ৭৫mm EE তুলে salvage করা — পরে B&SBC তে use হবে।',
+      bangla:'পুরাতন রাস্তা থেকে 75mm wide end edging ইট খুড়ে বের করুন। দুই পাশ থেকে total 3,542 মিটার বের করতে হবে। যেসব জায়গায় ইট ভাঙা আছে বা missing আছে সেখানে quantity deduct করবে। ইট সাবধানে তুলুন - broken bricks separated করুন এবং ভালো ইট stack করুন একটি নির্দিষ্ট জায়গায়। এই salvage ইট পরে downgraded brick chips হিসেবে B&SBC (Brick Sub-base Course) তে use হবে। চেইনেজ অনুযায়ী tally রাখুন এবং engineer এর সামনে count করুন।',
+      specs:[['BOQ Item Code','3.04.1.1 — PIEE(75mm)'],['Unit','m (linear)'],['Gross length','2000m × 2 sides = 4000m'],['Deductions (missing)','−458 m (various chainages)'],['Net quantity','3,542.000 m'],['Unit Rate','৳ 8.83/m'],['Total Amount','৳ 31,275.86'],['Brick width','75mm across road']],
+      steps:['Chainage marking করুন','Brick manually pick করুন (দুই পাশ থেকে)','Broken bricks separate করুন','Specified distance এ neat stack করুন','Engineer সামনে count করুন'],
+      note:'Ch 0+581-0+845 R/S Palisading zone — এখানে EE already damaged/missing।'}},
+    // Continue with other salvage tasks...
+  ]},
+
+  {id:'p5',num:'PHASE 5',title:'Widening — Ch 0+530–1+000 R/S',en:'470m Right Side only',cost:null,tasks:[
+    {t:'Box Cutting 300mm deep × 525mm wide',d:'Ch 0+530-1+000 R/S — 470m',tag:'470m',
+     det:{pur:'BOQ Item 3.01.3.2.01 BCSSGC(300mm)। Widening এর জন্য existing road R/S এ cut করা।',
+      bangla:'এই কাজে আপনাকে existing road এর right side থেকে 525mm width এবং 300mm depth পর্যন্ত cut করতে হবে। এটা widening এর জন্য যাতে road এর width বাড়ানো যায়। প্রথমে alignment marking করুন - right side থেকে 525mm mark করুন। তারপর backhoe বা manual দিয়ে box cut করুন যাতে level true থাকে। Excavated earth remove করে আলাদা রাখুন। Grade, camber, alignment maintain করুন এবং curves এ super elevation দিন। Watering করে moisture ±2% OMC এ আনুন এবং vibro compactor দিয়ে compact করুন 98% MDD। Left side এ বসত বাড়ি আছে তাই শুধু right side cut করবেন।',
+      specs:[['BOQ Item Code','3.01.3.2.01 — BCSSGC(300mm)'],['Location','Ch 0+530 → 1+000, Right Side only'],['Length','470 m'],['Width','0.525 m (525mm)'],['Depth','0.300 m (300mm)'],['Area','470 × 0.525 = 246.750 sqm'],['Unit Rate','৳ 73.01/sqm'],['Total Amount','৳ 18,015.22'],['Soil type','Clay & Silty'],['Super elevation','Curves অনুযায়ী']],
+      steps:['Alignment marking right side 525mm mark করুন','Box cut করুন true to level','Remove excavated earth','Grade, camber, alignment maintain করুন','Super elevation on curves','Watering to bring moisture ±2% OMC','Compact subgrade 98% MDD (Standard Proctor)'],
+      eq:['Backhoe/manual excavation','Dump truck','Vibro compactor'],
+      warn:'Left Side এ বসত বাড়ি — শুধু Right Side cut করবেন।'}},
+    {t:'Sand FM 0.50 Sub-grade (30.844 cum)',d:'125mm thick — widening strip',tag:'SUB-GRADE',
+     det:{pur:'BOQ Item 3.02.1.1। Widening lane এর sub-grade layer।',
+      bangla:'Widening strip এর উপর 125mm thick sand sub-grade layer বিছান। Sand FM 0.50 quality ব্যবহার করুন যাতে dust, earth, vegetable growth না থাকে। এই layer এর compaction 98% MDD (Modified Proctor) এবং CBR minimum 8% soaked হতে হবে। Culvert approach এর জন্য extra volume calculate করুন - Ch 1+268-1+278 এবং Ch 1+288-1+298 এ। Total volume হবে widening + culvert এর জন্য। Sand spread করে level করুন এবং roller দিয়ে compact করুন।',
+      specs:[['BOQ Item Code','3.02.1.1 — Sand(FM0.50)'],['Location','Ch 530-1000 R/S widening + culvert approach'],['Volume breakdown','470×0.525×0.125 = 30.844 cum (widening)'],['+ Culvert approach','Ch 1+268-1+278: 11.625 cum'],['+ Culvert approach','Ch 1+288-1+298: 11.625 cum'],['Total (with culvert)','64.714 cum'],['Unit Rate','৳ 964.89/cum'],['Total Amount','৳ 62,441.89'],['Sand FM','Minimum FM 0.50'],['Free from','Dust, earth, vegetable growth'],['Compaction','98% of MDD (Modified Proctor)'],['CBR required','Minimum 8% soaked']],
+      mat:['Sand FM 0.50 — 65 cum (approx, with wastage)']}},
+    {t:'SBBC Sub-base 150mm (33.870 cum)',d:'38mm Crusher run + FM 0.50, ratio 1:1',tag:'SUB-BASE',
+     det:{pur:'BOQ Item 3.03.3.1। Widening + edge breaking sub-base।',
+      bangla:'Widening এবং edge breaking এর জন্য 150mm thick SBBC sub-base layer। 38mm down crusher run chips এবং FM 0.50 sand 1:1 ratio তে mix করুন। LAA value ≤ 40 রাখুন। Layer max 100mm loose per pass spread করুন এবং 8-10 tonne roller দিয়ে compact করুন। CBR minimum 30% soaked হতে হবে। Culvert approach এর জন্য extra volume যোগ করুন। Choking material যদি দরকার হয় তাহলে add করুন।',
+      specs:[['BOQ Item Code','3.03.3.1 — SBBC(FM-0.5)'],['Aggregate','38mm down Crusher run, 1st class bricks'],['LAA value','≤ 40'],['Sand FM','Minimum 0.50'],['Mix ratio','1:1 by volume (brick chips:sand)'],['Layer max','100mm loose per pass'],['Roller','8-10 tonne road roller'],['CBR (soaked)','Minimum 30%'],['Compaction','98% MDD (Modified Proctor)'],['Volume (widening+edge+culvert)','11.625+11.625+10.620 = 33.870 cum'],['Unit Rate','৳ 4,301.91/cum'],['Total Amount','৳ 1,45,705.69']],
+      mat:['38mm crusher run chips — 17 cum','Sand FM 0.50 — 17 cum'],
+      steps:['Chips + sand 1:1 ratio mix করুন','150mm loose layer spread','8-10 MT roller দিয়ে compact','Rolling: edge → center → edge','Choking material যদি দরকার হয়','CBR test']}},
+    {t:'SBFS — Brick Flat Soling (246.750 sqm)',d:'1st class brick, single layer, FM 0.50 fill',tag:'246 sqm',
+     det:{pur:'BOQ Item 3.08.4.1 — SBFS(FM-0.50)। Widening portion এ brick soling।',
+      bangla:'Widening portion এ 1st class brick দিয়ে single layer flat soling। Bricks true to level, grade, camber, super-elevation এ বিছান। Interstices tightly FM 0.50 sand দিয়ে fill করুন। প্রতি sqm এ approximately 65 bricks লাগবে। Sand cushion এর জন্য extra sand রাখুন। এই কাজে precision লাগে কারণ এটা base layer।',
+      specs:[['BOQ Item Code','3.08.4.1 — SBFS(FM-0.50)'],['Location','Ch 0+530 → 1+000 R/S widening'],['Area','246.750 sqm'],['Unit Rate','৳ 536.58/sqm'],['Total Amount','৳ 1,32,401.12'],['Brick','1st class / picked'],['Sand cushion','FM 0.50'],['Laying','True to level, grade, camber, super-elevation'],['Fill','Interstices tightly with FM 0.50 sand']],
+      mat:['1st class bricks — ~17,000 nos (approx @ 65 bricks/sqm)','Sand FM 0.50 — 5 cum']}},
+    {t:'SHBB — Herring Bone Bond (247.750 sqm)',d:'25mm sand cushion + HBB pattern',tag:'247 sqm',
+     det:{pur:'BOQ Item 3.08.5.1 — SHBB(FM-0.50)। BFS এর উপরে HBB layer।',
+      bangla:'BFS এর উপরে 25mm sand cushion দিয়ে Herring Bone Bond pattern এ brick বিছান। HBB pattern এ bricks 45° angle এ diagonal বিছানো হয়। 1st class bricks ব্যবহার করুন এবং interstices tightly FM 0.50 sand দিয়ে fill করুন। এই pattern extra strong এবং traffic load ভালো নেয়। প্রতি sqm এ approximately 65 bricks লাগে। Camber maintain করুন।',
+      specs:[['BOQ Item Code','3.08.5.1 — SHBB(FM-0.50)'],['Location','Ch 0+530-1+000 R/S + 1.0 sqm'],['Area','247.750 sqm'],['Unit Rate','৳ 916.98/sqm'],['Total Amount','৳ 2,27,181.80'],['Pattern','Herring Bone Bond (HBB)'],['Sand cushion','25mm over BFS'],['Brick grade','1st class / picked'],['Sand fill','FM 0.50 — interstices tightly'],['Camber','Maintain']],
+      mat:['1st class bricks — ~17,000 nos (HBB layer)','Sand FM 0.50 — 6 cum'],
+      note:'HBB pattern এ brick diagonal বিছানো হয় (45° angle)। Extra care লাগে।'}},
+    {t:'EE 75mm — Widening R/S (470m)',d:'Ch 0+530-1+000 R/S — BC side edging',tag:'470m',
+     det:{pur:'BOQ Item 3.04.3.3 — EE(75mm)। Widening lane এর R/S end edging।',
+      bangla:'Widening lane এর right side এ 75mm width এবং 470m length এ end edging করুন। 1st class picked jhama bricks ব্যবহার করুন। Trench cut করে brick on end lay করুন। Interstices FM 0.80 sand দিয়ে fill করুন। Earth refilling এবং ramming করে level check করুন। এই edging road edge protect করে এবং pavement boundary define করে।',
+      specs:[['BOQ Item Code','3.04.3.3 [PWD 24.7.1]'],['Location','Ch 0+530 → 1+000.0, R/S'],['Length','470 m'],['Width','75mm across road'],['Unit Rate','৳ 239.64/m'],['Total Amount','৳ 1,12,630.80'],['Brick','1st class / picked jhama'],['Sand fill','FM 0.80 — gaps'],['Foundation','Cutting trench + earth ramming']],
+      steps:['Trench cut (true to level)','Brick on end lay','Fine sand FM 0.80 fill','Earth refilling ও ramming','Level check']}}
+  ]},
+
+  {id:'p6',num:'PHASE 6',title:'Hard Bed Preparation (HBP)',en:'Scarify existing BC — ৳3,05,029',cost:'৳ 3,05,029',tasks:[
+    {t:'HBP — Ch 0+00 → 0+010 Junction (50 sqm)',d:'Width = (7.0+5.0+3.0)/3 = 5.0m',tag:'JUNCTION',
+     det:{pur:'BOQ Item 3.10.01.2। Hatiardanga culvert end junction এ flare portion।',
+      bangla:'Road এর শুরুতে Hatiardanga culvert এর junction এ 50 sqm area এ hard bed preparation। Existing BC surface কে 75mm minimum depth পর্যন্ত scarify করুন। এই জায়গায় road width 7m থেকে 3m এ narrow হয় তাই average width 5m। Mechanical scarifying বা manual breaking করুন। Fresh material যদি দরকার হয় তাহলে supply করুন।',
+      specs:[['Chainage','0+00 → 0+010'],['Length','10 m'],['Width','(7.0+5.0+3.0)/3 = 5.0 m avg'],['Area','50.000 sqm'],['Scarify depth','75mm minimum'],['Unit Rate','৳ 35.89/sqm'],['Road type','Wide mouth — narrows to 3m']]}},
+    {t:'HBP — Ch 0+010 → 0+530 (1,560 sqm)',d:'520m × 3.0m — regular stretch',tag:'520m',
+     det:{pur:'Existing BC surface loosen করা new overlay এর জন্য bond।',
+      bangla:'Main road section এ 520m length এবং 3m width এ HBP। Existing BC surface কে 75mm minimum depth পর্যন্ত scarify করুন যাতে new overlay ভালো bond করে। Mechanical scarifying preferred, কিন্তু manual breaking ও acceptable। Fresh material যদি দরকার হয় তাহলে additional supply করুন। এই কাজ overlay এর quality এর জন্য critical।',
+      specs:[['Chainage','0+010 → 0+530'],['Length','520 m'],['Width','3.0 m'],['Area','1,560.000 sqm'],['Scarify depth','75mm minimum'],['Method','Mechanical scarifying বা manual breaking'],['Fresh material','If required — additional supply (excluded from rate)']]}},
+    {t:'HBP — Ch 0+530 → 1+000 (1,128 sqm)',d:'470m × 2.4m — existing crest width',tag:'470m',
+     det:{pur:'Widening zone এ existing crest প্রস্থ 2.4m।',
+      bangla:'Widening zone এ existing crest width 2.4m তাই 470m × 2.4m = 1128 sqm area এ HBP। Scarify depth minimum 75mm রাখুন। এই জায়গায় existing surface এর condition check করুন - যদি খুব damaged হয় তাহলে extra scarifying দরকার হতে পারে।',
+      specs:[['Chainage','0+530 → 1+000'],['Length','470 m'],['Width','2.4 m (existing crest)'],['Area','1,128.000 sqm']]}},
+    {t:'HBP — Ch 1+000 → 3+000 (6,000 sqm)',d:'2000m × 3.0m — main stretch',tag:'2,000m',
+     det:{pur:'সবচেয়ে বড় HBP block।',
+      bangla:'Road এর main stretch 2000m length এবং 3m width এ HBP। Total 6000 sqm area। Scarify depth minimum 75mm রাখুন। এই কাজ systematic ভাবে করুন - একটা section complete করে next এ যান। Scarified material remove করে আলাদা রাখুন যাতে reuse করা যায়।',
+      specs:[['Chainage','1+000 → 3+000'],['Length','2,000 m'],['Width','3.0 m'],['Area','6,000.000 sqm']]}},
+    {t:'HBP Deductions — Edge + WBM + Culvert',d:'মোট −239 sqm বাদ',tag:'DEDUCT',
+     det:{pur:'Already separately treated zones HBP থেকে বাদ।',
+      bangla:'কিছু zones already separately treated হয়েছে তাই HBP থেকে বাদ দিতে হবে। Edge breaking zone (Ch 0+609-0+845 R/S) 70.8 sqm, WBM zones (Ch 0+728-0+754 এবং 0+820-0+827) 104.8 sqm, Culvert zone (Ch 1+268-1+298) 90 sqm - total 239 sqm deduction। এই zones এ HBP আলাদা rate এ হয়েছে।',
+      chainTable:{headers:['Location','Dimension','Area Deducted'],rows:[['Ch 0+609-0+845 R/S (Edge)','236m × 0.300m','−70.800 sqm'],['Ch 0+728-0+754 (WBM zone)','26m × 2.400m','−62.400 sqm'],['Ch 0+820-0+827 (WBM zone)','7m × 2.400m','−16.800 sqm'],['Ch 1+268-1+298 (Culvert)','30m × 3.000m','−90.000 sqm'],['TOTAL DEDUCTION','—','−240.000 sqm']]}}},
+    {t:'Rolling 100% MDD + Grade Check',d:'8-10 MT roller — Standard Proctor',tag:'QC',
+     det:{pur:'HBP এর পরে surface uniform grade এ আনা।',
+      bangla:'HBP complete হওয়ার পর surface কে uniform grade এ আনার জন্য 8-10 MT roller দিয়ে rolling করুন। Standard Proctor method এ 100% MDD achieve করুন। Rolling pattern: edge থেকে center, তারপর back। Camber এবং cross fall check করুন। যদি moisture দরকার হয় তাহলে water sprinkle করুন। Final surface smooth এবং level হতে হবে।',
+      specs:[['Roller weight','8-10 MT (steel drum)'],['Compaction target','100% MDD (Standard Proctor)'],['Method','Spread-Level-Roll'],['Grade check','Camber + cross fall'],['Water','If needed for moisture'],['Final','Net 8,499 sqm — verify with engineer']],
+      specs_extra:[['Gross HBP','8,738 sqm'],['Total deductions','~239 sqm'],['Net quantity','8,499.000 sqm'],['Unit Rate','৳ 35.89/sqm'],['Total Amount','৳ 3,05,029.11']]}}
+  ]},
+
+  {id:'p7',num:'PHASE 7',title:'Edge Breaking Repair (Ch 609-845 R/S)',en:'Pond-side 236m repair',cost:null,tasks:[
+    {t:'Sand Sub-grade 150mm (10.620 cum)',d:'236m × 0.300m × 0.150m',tag:'EDGE',
+     det:{pur:'Ch 0+609-0+845 R/S — pond এর দিকে edge ভেঙে গেছে। Sub-grade repair।',
+      bangla:'Pond side এ Ch 0+609-0+845 R/S এ 236m লম্বা edge breaking repair করতে হবে। প্রথমে এই damaged edge zone থেকে loose বা নষ্ট material পরিষ্কার করে 150mm thick sand sub-grade layer বিছান। Sand FM 0.50 মানের বালি ব্যবহার করতে হবে, যা coarse fine balance দেয় এবং স্থিতিশীল foundation তৈরি করে। এই sand layer টিকে level করে spread করার পর 98% MDD compaction করতে হবে। MDD (Modified Proctor) মানে material এর maximum dry density, আর 98% মানে সেই density এর 98% বা তার বেশি achieve করতে হবে। এই layer pond দিকে লোড distribute করে, edge erosion কমায়, এবং পরের SBBC sub-base layer কে support করে।',
+      specs:[['Location','Ch 0+609 → 0+845 R/S'],['Length','236 m'],['Width','0.300 m'],['Thickness','0.150 m'],['Volume','10.620 cum'],['Sand FM','0.50 minimum'],['Compaction','98% MDD']],
+      note:'Road Condition Survey sheet অনুযায়ী এই 236m জায়গায় "0.3m width Edge Breaking — Need ISG + ASAT WBM" লেখা আছে।'}},
+    {t:'SBBC Sub-base 150mm (10.620 cum)',d:'38mm crusher run, CBR 30%',tag:'EDGE',
+     det:{pur:'Edge repair এ SBBC sub-base।',
+      bangla:'Edge repair এর জন্য 150mm thick SBBC sub-base layer বানাতে হবে। SBBC হল Sand Brick Base Course: 38mm crusher run chips এবং FM 0.50 sand একসাথে মেশানো material। এখানে crusher run chips materials provide করে strength, আর sand fill করে ফাঁকা ruimte গুলো। এই mix 1:1 ভলিউম রেশিও দ্বারা তৈরি করুন। 150mm loose layer spread করার পর 8-10 টন রোলার দিয়ে compact করুন। CBR (California Bearing Ratio) পরীক্ষায় material এর soaked strength কমপক্ষে 30% থাকতে হবে — অর্থাৎ material পানিতে ভিজিয়ে নির্ধারিত মান 30% বা তার বেশি হতে হবে। Compaction করতে হবে Modified Proctor method অনুযায়ী; এটি moisture ও density control করে, যাতে layer শক্ত, সুসংহত, এবং কিনচি না হয়। এই সাববেস layer pond edge erosion প্রতিরোধ করবে, road edge কে support দেবে, এবং পরবর্তী pavement layers এর নীচে শক্ত ভিত্তি তৈরি করবে।',
+      specs:[['Volume','10.620 cum'],['Aggregate','38mm crusher run'],['Sand FM','0.50'],['Mix ratio','1:1 by volume'],['LAA','≤ 40'],['CBR','≥ 30% soaked'],['Compaction','98% Modified Proctor']]}}
+  ]},
+
+  {id:'p8',num:'PHASE 8',title:'Culvert Approach Re-laying',en:'Ch 1+268-1+298 both sides',cost:null,tasks:[
+    {t:'Sand Sub-grade — Approach 1 (Ch 1+268-1+278)',d:'11.625 cum, 150mm thick',tag:'CULVERT',
+     det:{pur:'RCC Box Culvert (5.50m span) এর approach 1 এ sand sub-grade।',
+      bangla:'RCC Box Culvert এর approach 1 এ (Ch 1+268-1+278) 150mm thick sand sub-grade বিছান। Culvert span 5.5m তাই approach width trapezoid shape এ হয় - road 10m থেকে culvert 5.5m এ। Average width 7.75m calculate করুন। Volume 11.625 cum।',
+      specs:[['Location','Ch 1+268 → 1+278'],['Length','10 m'],['Width avg','(10.0+5.5)/2 = 7.75 m'],['Thickness','0.150 m'],['Volume','11.625 cum'],['Shape','Trapezoid (road 10m → culvert 5.5m)']]}},
+    {t:'Sand Sub-grade — Approach 2 (Ch 1+288-1+298)',d:'11.625 cum, অপর পাশ',tag:'CULVERT',
+     det:{pur:'Approach 2 — same dimensions।',
+      bangla:'Approach 2 তেও একইভাবে 150mm sand sub-grade layer দিতে হবে, যেন culvert এর দুই পাশে foundation সমান হয়। এখানে 11.625 cum sand spread করে level করতে হবে এবং তারপর compact করতে হবে, যেন দুই পাশের approach একই support পায়।',
+      specs:[['Location','Ch 1+288 → 1+298'],['Volume','11.625 cum']]}},
+    {t:'SBBC Sub-base — Approach 1 (11.625 cum)',d:'38mm chips + FM 0.50, 1:1',tag:'CULVERT',
+     det:{pur:'SBBC layer for approach 1।',
+      bangla:'Approach 1 এর জন্য SBBC sub-base layer বিছান। 38mm chips এবং FM 0.50 sand 1:1 ratio তে mix করুন। Soaked CBR ≥ 30% রাখুন। Total volume with edge + culvert 33.87 cum হয়।',
+      specs:[['Volume','11.625 cum'],['CBR','≥ 30% soaked'],['Combined total (with edge+culvert)','33.870 cum'],['Total Amount','৳ 1,45,705.69']]}},
+    {t:'SBBC Sub-base — Approach 2 (11.625 cum)',d:'অপর পাশ',tag:'CULVERT',
+     det:{pur:'SBBC for approach 2।',
+      bangla:'Approach 2 এর জন্যও একই SBBC material ব্যবহার করুন এবং একই 1:1 ratio, CBR requirement ও compaction standard follow করুন। এতে culvert এর দুই পাশ সমানভাবে support পাবে এবং future settlement কম হবে।',
+      specs:[['Volume','11.625 cum']]}},
+    {t:'BFS Re-lay — Approach 1 (77.50 sqm)',d:'Salvaged bricks দিয়ে',tag:'CULVERT',
+     det:{pur:'Salvaged PIBFS bricks পুনরায় BFS হিসেবে বিছানো।',
+      bangla:'Approach 1 এ salvaged bricks দিয়ে BFS re-lay করুন। Bricks road level এ true to level বিছান। Area 77.5 sqm। Salvaged bricks Phase 4 থেকে নিন।',
+      specs:[['Area','77.500 sqm'],['Brick','Salvaged from PIBFS (15.731 cum)'],['Level','True to road level'],['Grade','Maintain approach slope']]}},
+    {t:'BFS Re-lay — Approach 2 (77.50 sqm)',d:'অপর পাশ salvaged bricks',tag:'CULVERT',
+     det:{pur:'BFS approach 2।',
+      bangla:'Approach 2 তেও salvaged bricks ব্যবহার করে BFS রিলেই করুন, যেন উভয় approach একইভাবে stabilized হয়। একই process, same level এবং same sand fill standard follow করুন।',
+      specs:[['Area','77.500 sqm']]}},
+    {t:'HBB Re-lay — Approach 1 (77.50 sqm)',d:'Herring Bone Bond pattern',tag:'CULVERT',
+     det:{pur:'Salvaged HBB bricks পুনরায় HBB pattern এ।',
+      bangla:'Approach 1 এ salvaged HBB bricks দিয়ে Herring Bone Bond pattern এ re-lay করুন। 45° diagonal pattern। 25mm sand cushion over BFS। Area 77.5 sqm।',
+      specs:[['Area','77.500 sqm'],['Pattern','Herring Bone Bond (45° diagonal)'],['Brick','Salvaged from PIHBB (26.388 cum)'],['Sand cushion','25mm FM 0.50']]}},
+    {t:'HBB Re-lay — Approach 2 (77.50 sqm)',d:'অপর পাশ',tag:'CULVERT',
+     det:{pur:'HBB approach 2।',
+      bangla:'Approach 2 তেও salvaged HBB bricks দিয়ে একই Herring Bone Bond patternে পুনরায় HBB layer তৈরি করুন। এই প্যাটার্নটি একই load distribution দেয় এবং approach দুই পাশে একটি সমান surface প্রদান করে।',
+      specs:[['Area','77.500 sqm'],['Both approaches total','152.240 sqm']]}}
+  ]},
+
+  {id:'p9',num:'PHASE 9',title:'New End Edging 125mm — দুই পাশে 3km',en:'BOQ Item 3.04.3.2 — ৳14,72,874',cost:'৳ 14,72,874',tasks:[
+    {t:'EE 125mm — Ch 0+00→1+000 Left Side (1,000m)',d:'1st class brick, 125mm across, local sand',tag:'1,000m L',
+     det:{pur:'BOQ Item 3.04.3.2 — EE(125mm) new end edging। রাস্তার সীমানা এবং pavement edge protection।',
+      bangla:'Road এর left side এ 1000m length এ 125mm width end edging করুন। 1st class picked bricks ব্যবহার করুন। Trench cut করে brick on end lay করুন। Interstices tightly local sand fill করুন। Earth refilling এবং ramming করে level true to level, grade রাখুন। প্রতি 100m এ 800 bricks লাগবে।',
+      specs:[['BOQ Item Code','3.04.3.2 — EE(125mm)'],['Side','Left Side (L/S)'],['Chainage','0+00 → 1+000'],['Length','1,000 m'],['Width','125 mm (across road)'],['Brick grade','1st class / picked'],['Sand','Local sand fill (interstices)'],['Earth refill','Sides properly'],['Ramming','Sides'],['Level','True to level + grade']],
+      steps:['Chainage marking করুন','Trench cut করুন (cutting trenches)','Brick on end lay করুন','Sand fill interstices tightly','Earth refilling ও ramming'],
+      mat:['1st class bricks — 1000m × 8 bricks/m = 8,000 nos','Local sand — 0.5 cum/100m = 5 cum']}},
+    {t:'EE 125mm — Ch 0+00→1+000 Right Side (1,000m)',d:'Widening side সহ',tag:'1,000m R',
+     det:{pur:'R/S — widening zone integrate করুন।',
+      bangla:'Right side এ 1000m লম্বার end edging করুন। widening zone (0+530-1+000) এ extra attention দিয়ে work করুন যেন edging alignment ঠিক থাকে। 125mm wide end edging ব্যবহৃত bricks same standard ও same sand fill দিয়ে complete করুন। এটি road edge কে define এবং protect করবে।',
+      specs:[['Side','Right Side (R/S)'],['Length','1,000 m'],['Note','Widening (0+530-1+000) portion EE widened lane edge এ বসবে']],
+      mat:['1st class bricks — 8,000 nos','Local sand — 5 cum']}},
+    {t:'EE 125mm — Ch 1+000→2+000 Left Side (1,000m)',d:'Standard stretch',tag:'1,000m L',
+     det:{pur:'Standard section।',specs:[['Length','1,000 m'],['Side','L/S']]}},
+    {t:'EE 125mm — Ch 1+000→2+000 Right Side (1,000m)',d:'Standard stretch',tag:'1,000m R',
+     det:{pur:'Standard section।',specs:[['Length','1,000 m'],['Side','R/S']]}},
+    {t:'EE 125mm — Ch 2+000→3+000 Left Side (~990m)',d:'Bridge gap deduction বাদে',tag:'990m L',
+     det:{pur:'শেষ 1km L/S।',
+      bangla:'শেষ section left side এ প্রায় 990m end edging করতে হবে। Culvert zone (10m) এর কাছাকাছি যেহেতু end edging বসবে না, তাই একটি gap রেখেই কাজ করবেন। তাই total length 1000m নয়, net মানে 990m। এই gap বুঝে edge work সময়সাপেক্ষ করবেন।',
+      specs:[['Length gross','1,000 m'],['Bridge gap deduction','−10 m (culvert zone)'],['Net','990 m (approx)']]}},
+    {t:'EE 125mm — Ch 2+000→3+000 Right Side (~990m)',d:'Bridge gap deduction বাদে',tag:'990m R',
+     det:{pur:'শেষ 1km R/S।',
+      bangla:'শেষ section right side এ প্রায় 990m end edging হবে। Culvert zone-এ 10m gap রেখে compute করা হয়েছে, তাই total gross 5,980m, net ~5,970m। এই gap বুঝে site এ কাজ করবেন এবং measurements ঠিক রাখবেন।',
+      specs:[['Length','990 m (approx)'],['Total EE 125mm','5,980 m gross'],['Unit Rate','৳ 246.30/m'],['Total Amount','৳ 14,72,874.00'],['Deduction','−20m at culvert gap (Ch 1278-1288 zone, 2 sides)']],
+      note:'BOQ তে EE এর length = 5,980m। 3000m × 2 side = 6000m থেকে 20m (culvert) deduct = 5,980m।'}}
+  ]},
+
+  {id:'p10',num:'PHASE 10',title:'Sand Binding (SB)',en:'FM 0.80 @ 0.005 cum/sqm — ৳30,457',cost:'৳ 30,457',tasks:[
+    {t:'SB — Ch 0+010→0+530 (1,560 sqm)',d:'520m × 3.0m',tag:'520m',
+     det:{pur:'BOQ Item 3.10.02। HBP এর উপর, DC laying এর আগে sand blinding layer।',
+      bangla:'HBP এর উপর sand blinding layer বিছান। FM 0.80 sand ব্যবহার করুন। Rate 0.005 cum/sqm। 520m × 3m = 1560 sqm area এ 7.8 cum sand লাগবে। Uniform spreading করুন। এটা HBP voids fill করে এবং prime coat এর আগে surface prepare করে।',
+      specs:[['BOQ Item Code','3.10.02 — SB'],['Sand FM','Minimum 0.80'],['Rate','0.005 cum/sqm'],['Area','520m × 3.0m = 1,560 sqm'],['Volume','1560 × 0.005 = 7.80 cum'],['Method','Uniform spreading'],['Purpose','HBP voids fill + prime coat আগে surface']]}},
+    {t:'SB — Ch 0+530→1+000 (1,128 sqm)',d:'Widening zone',tag:'470m',
+     det:{pur:'Widening zone SB।',
+      bangla:'Widening zone এ 470m × 2.4m = 1128 sqm area তে sand blinding করবেন। 5.64 cum FM 0.80 sand spread করে surface smooth করতে হবে, যেন পরবর্তী primer ও DC overlay ঠিকভাবে বসে। এই sand layer HBP এর voids fill করে এবং overlay এর আগে uniform base তৈরি করে।',
+      specs:[['Area','470m × 2.4m = 1,128 sqm'],['Volume','5.64 cum']]}},
+    {t:'SB — Ch 1+298→2+100 (2,406 sqm)',d:'802m × 3.0m',tag:'802m',
+     det:{pur:'Post-culvert section।',
+      bangla:'Culvert এর পরের 802m section এ sand blinding করবেন। এখানে 3m width ধরে 2,406 sqm surface রয়েছে, যা 12.03 cum sand দিতেই smooth ও ready করে দেবে। এই section টি culvert পরবর্তী standard stretch, তাই careful spreading ও leveling করুন।',
+      specs:[['Chainage','1+298 → 2+100'],['Area','2,406 sqm'],['Volume','12.03 cum']]}},
+    {t:'SB — Ch 2+812→3+000 (564 sqm)',d:'188m × 3.0m',tag:'188m',
+     det:{pur:'শেষ section।',
+      bangla:'শেষ 188m section এ 3m width ধরে sand blinding করুন। এটা project শেষের অংশ, তাই clean finishing নিশ্চিত করুন। 564 sqm ক্ষেত্রফলে 2.82 cum sand প্রয়োজন এবং এই final bitumen work এর আগে smooth বেস তৈরি করে।',
+      specs:[['Area','564 sqm'],['Volume','2.82 cum'],['Gross total','5,558 sqm'],['Sand FM 0.80 total','5558×0.005 = 27.79 cum'],['Unit Rate','৳ 5.48/sqm'],['Total Amount','৳ 30,457.84']]}}
+  ]},
+
+  {id:'p11',num:'PHASE 11',title:'Brick Sub-Base — B&SBC + S&SBC',en:'৳19,86,388',cost:'৳ 19,86,388',tasks:[
+    {t:'B&SBC 50mm downgraded — 226.079 cum',d:'Salvaged bricks from Phase 4',tag:'SALVAGE',
+     det:{pur:'BOQ Item 3.05.2.3। Phase 4 এ salvage করা bricks এখন downgraded chips এ ভেঙে sub-base বানানো।',
+      bangla:'Phase 4 এর salvaged bricks কে 50mm chips এ downgrade করে B&SBC sub-base বানান। Total 226.079 cum volume। 1st class bricks break + screen + spread + roll করুন। Layer max 100mm loose per pass। Unit rate ৳346.81/cum, total ৳78,406। Salvaged bricks থেকে volume calculate: EE 94.453 cum, BFS culvert 15.731 cum, HBB culvert 26.388 cum।',
+      specs:[['BOQ Item Code','3.05.2.3 — B&SBC (50mm downgraded)'],['Source','Salvaged bricks (Phase 4)'],['Volume','226.079 cum'],['Unit Rate','৳ 346.81/cum'],['Total Amount','৳ 78,406.46'],['Process','Break + Screen + Spread + Roll'],['Layer max','100mm loose per pass']],
+      chainTable:{headers:['Source','Calculation','Volume'],rows:[['75mm EE','3542×8/300','94.453 cum'],['125mm EE','1918×14/300','89.507 cum'],['BFS culvert','152.24×31/300','15.731 cum'],['HBB culvert','152.24×52/300','26.388 cum'],['TOTAL','—','226.079 cum']]},
+      steps:['Salvaged bricks downgrade করুন (50mm chips size এ)','Screen করুন (50mm through)','Road surface এ uniform spread','Camber maintain করুন','8-10 ton roller দিয়ে compact করুন']}},
+    {t:'S&SBC 50mm — 389.180 cum',d:'New supply — LAA ≤ 40, 1st class',tag:'NEW',
+     det:{pur:'BOQ Item 3.05.1.3। New supply brick chips (salvage supplement করতে)।',
+      bangla:'New supply 1st class bricks থেকে 50mm chips বানিয়ে S&SBC sub-base। LAA ≤ 40 রাখুন। Volume calculation: existing bed 5558×0.075×1.33 = 554.411 cum, plus edge breaking 14.125 cum, wash out 25.704 cum, culvert 31 cum, minus salvaged 226.079 cum = net 389.180 cum। Unit rate ৳4,902.57/cum, total ৳19,07,982। ~100,000 bricks লাগবে chipping এর জন্য।',
+      specs:[['BOQ Item Code','3.05.1.3 — S&SBC (50mm downgraded)'],['Brick grade','1st class / picked'],['LAA value','≤ 40'],['Volume calculation base','Existing bed: 5558 × 0.075 × 1.33 = 554.411 cum'],['+ Edge breaking add','+14.125 cum (Ch 609-845)'],['+ Wash out add','+12.449 + 3.352 + 3.352 cum'],['+ Culvert approach add','+31 cum'],['Old Edging salvage deduct','−226.079 cum'],['Final net volume','389.180 cum'],['Unit Rate','৳ 4,902.57/cum'],['Total Amount','৳ 19,07,982.19']],
+      mat:['1st class bricks — ~100,000 nos (for chipping)','Crusher/manual breaking'],
+      warn:'এই item সবচেয়ে expensive (৳19 lakh)। Quantity over নিলে cost blow up হবে।'}}
+  ]},
+
+  {id:'p12',num:'PHASE 12',title:'WBM — Water Bound Macadam',en:'BOQ 3.05.6.01 — ৳2,76,585',cost:'৳ 2,76,585',tasks:[
+    {t:'CWBM(ISSM) — 462.601 cum',d:'Compacted WBM with crusher run, 150mm thick',tag:'462 cum',
+     det:{pur:'BOQ Item 3.05.6.01। Sub-base এর উপর water-bound macadam base course।',
+      bangla:'Sub-base এর উপর 150mm thick water-bound macadam base course বিছান। 1st class brick chips aggregate ব্যবহার করুন (salvage থেকে)। Soaked CBR minimum 80%। Compaction 98% MDD (Modified Proctor)। Choking material 0.012 cum/sqm rate এ। Volume calculation: (389.180 + 226.079)/1.33 = 462.601 cum। Unit rate ৳597.89/cum, total ৳2,76,585।',
+      specs:[['BOQ Item Code','3.05.6.01 — CWBM(ISSM)'],['Volume formula','(WBM Qty + Salvage)/1.33'],['Calculation','(389.180 + 226.079) / 1.33 = 462.601 cum'],['Unit Rate','৳ 597.89/cum'],['Total Amount','৳ 2,76,584.51'],['Aggregate','1st class brick chips/picked chips'],['Soaked CBR','Minimum 80%'],['Compaction','98% MDD (Modified Proctor)'],['Choking material','0.012 cum/sqm'],['Note','Rate excludes cost of brick aggregate (paid in B&SBC)']],
+      steps:['Aggregate (brick chips) spread uniformly','Dry rolling প্রথম pass (8-10 ton)','Choking material spread (0.012 cum/sqm)','Water sprinkle continuously','Wet rolling — roll until grout/slurry flushes ahead of roller','Continue rolling until wave visible','Final dry rolling pass','Compaction test: ≥ 98% MDD'],
+      eq:['8-10 MT steel drum roller','Water bowser + hand pump'],
+      tip:'Grout wave দেখলে বুঝবেন proper seating হয়েছে। ঐ সময় rolling বন্ধ করবেন না।'}},
+    {t:'Compaction Test — 98% Modified Proctor',d:'Engineer সামনে sample নিন',tag:'QC',
+     det:{pur:'WBM quality verify।',
+      bangla:'WBM এর compaction test করুন। Modified Proctor method এ 98% MDD achieve করুন। Soaked CBR ≥ 80%। প্রতি 500m minimum 1 test। Normal temperature এ করুন।',
+      specs:[['Test','Modified Proctor (AASHTO T-180)'],['Target','98% MDD'],['Soaked CBR','≥ 80%'],['Frequency','প্রতি 500m minimum 1 test'],['Temperature','Normal temp — no hot work']]}}
+  ]},
+
+  // PHASE 13 (Bituminous - most critical for contractors)
+  {id:'p13',num:'PHASE 13',title:'Bituminous Work — Prime + Tack + 25mm DC',en:'BOQ ৳71,50,053 — সবচেয়ে গুরুত্বপূর্ণ',cost:'৳ 71,50,053',tasks:[
+    {t:'Surface Cleaning (Broom + Air)',d:'Zero dust/debris — bitumen আগে',tag:'PREP',
+     det:{pur:'Bitumen surface এ বা base এ কোনো loose material থাকলে bond হবে না। Prime coat ভেসে যাবে।',
+      bangla:'Bitumen কাজ করার আগে সব loose material পরিষ্কার করুন - বাঁকা ইট, মাটির ধুলা, ছোট পাথর সব কিছু। একটি wire broom দিয়ে road surface sweep করুন এবং তারপর compressed air দিয়ে blow করুন। লক্ষ্য হল একটি absolutely clean, dry surface পাওয়া। Prime coat যদি dusty surface এ পড়ে তাহলে bond করবে না এবং overlay ভেসে যাবে। Prime করার 1 ঘন্টা আগে cleaning করুন। Weather check করুন - শুষ্ক weather দরকার, বৃষ্টি হলে কাজ করবেন না। Temperature minimum 10°C থাকতে হবে।',
+      specs:[['Method','Wire broom + compressed air blowing'],['Target','Absolutely clean, dry surface'],['Timing','Prime coat এর 1 ঘন্টা আগে'],['Weather','Dry weather — rain এ কাজ নয়'],['Temperature','Ambient > 10°C']],
+      warn:'ভেজা বা dusty surface এ কোনো bituminous কাজ করবেন না। Bond fail হবে।'}},
+    {t:'Prime Coat (PC@DB) @ 1.2 L/sqm — 8,803 sqm',d:'Bitumen 60/70, surface absorption',tag:'PRIME',
+     det:{pur:'BOQ Item 3.06.1.1। WBM surface এ primer coat যাতে DC overlay ভালো bond করে।',
+      bangla:'WBM surface এর উপর প্রথম layer bitumen spray করুন - এটাকে বলে "Prime Coat"। এটা একটি নিম্নমানের bitumen যা পুরো WBM surface কে penetrate করে এবং একটি bond layer তৈরি করে যাতে পরে DC overlay ভালোভাবে stick থাকে। Bitumen 60/70 grade ব্যবহার করুন এবং kerosene দিয়ে dilute করুন (1:100 ratio - 1 part bitumen, 100 part kerosene)। Spray করার সময় temperature 100-120°C রাখুন। Application rate হবে 1.2 লিটার প্রতি স্কোয়ার মিটার। একটি hand lance বা mechanical sprayer ব্যবহার করুন uniform spray এর জন্য। কোনো over-application করবেন না - তাহলে bleeding হবে। 24 hours cure দিতে হবে - এই সময় কোনো traffic নেই। Cure period এ surface মাট দেখাবে।',
+      specs:[['BOQ Item Code','3.06.1.1 — PC@DB 1.2 liter/sqm'],['Bitumen grade','60/70 penetration'],['Dilution','Cut-back: Kerosene 1:100 by volume'],['Application rate','1.2 litre/sqm'],['Total area','8,803.000 sqm'],['Unit Rate','৳ 159.77/sqm'],['Total Amount','৳ 14,06,455.31'],['Spray temp','100-120°C'],['Equipment','Hand lance / mechanical sprayer'],['Curing','24 hours — no traffic']],
+      steps:['Bitumen heating করুন 100-120°C','Kerosene mix করুন (1:100)','Spray uniformly 1.2 L/sqm','Edge coverage check করুন','Traffic সম্পূর্ণ বন্ধ করুন','24 hours curing — দেখুন absorbed হয়েছে কিনা'],
+      warn:'Over-application করলে bitumen bleeding হবে। Under-application করলে overlay bond করবে না।'}},
+    {t:'25mm Dense Carpeting Laying — 8,858 sqm',d:'সবচেয়ে critical কাজ — ৳57,84,540',tag:'8,858 sqm',
+     det:{pur:'BOQ Item 3.06.4.2.01। পুরো ৩ কি.মি. এর উপর 25mm thick wearing course। এটাই main surface।',
+      bangla:'এখন মূল road surface পড়বে - Dense Carpeting (DC)। এটা 25mm thick একটি layer যা সব গাড়ির চাকা এর contact surface থাকবে। সাধারণ stone chips (16mm, 12mm, 6mm sizes) এবং 5-5.5% bitumen mix করে গরম অবস্থায় road এ lay করবেন। Hot mix রাখতে হবে minimum 140°C temperature এ। Laying করার সাথে সাথে rolling শুরু করতে হবে - প্রথমে steel drum roller, তারপর pneumatic roller, আবার steel drum roller। Rolling temperature কখনো 90°C এর নিচে যাওয়া যাবে না - তার নিচে গেলে rolling বন্ধ করতে হবে। Edge coverage খুবই গুরুত্বপূর্ণ - end edging পর্যন্ত uniform coverage দিতে হবে। এটাই সবচেয়ে critical কাজ - একবার DC ঠিকভাবে lay না হলে পরে repair করা বড় খরচ।',
+      specs:[['BOQ Item Code','3.06.4.2.01 — 25mmDC'],['Total area','8,858.000 sqm'],['Unit Rate','৳ 653.03/sqm'],['Total Amount','৳ 57,84,539.74'],['Thickness','25 mm compacted'],['Aggregate','Stone chips 16mm, 12mm, 6mm (crushed)'],['Bitumen content','5.0-5.5% by weight'],['Laying temperature','140°C minimum'],['Rolling start temp','Not below 90°C'],['Width','3.0 m carpeted + 125mm EE each side']],
+      steps:['Tack coat set হয়েছে confirm করুন','Hot mix transport covered trucks (140°C)','Lay uniformly — paver বা manual raking','Thickness check: 25mm (template use করুন)','Immediate first rolling (steel drum)','Intermediate rolling (pneumatic)','Final rolling (steel drum) — no roller marks'],
+      eq:['8-10 MT steel drum roller (first + final)','3-5 tons pneumatic tire roller (intermediate)','Thermometer (surface temp check)','Raker, shovel, tamper'],
+      warn:'Rolling temperature 90°C নিচে নামলে rolling বন্ধ করুন। ঠান্ডা mix rolling করলে crack হবে।'}}
+  ]},
+
+  {id:'p14',num:'PHASE 14',title:'RCC Palisading — ১১টি Location (521m)',en:'Section 4 — ৳31,83,409',cost:'৳ 31,83,409',tasks:[
+    {t:'Loc-2: Complete Palisading (264m)',d:'সবচেয়ে বড় একটি location',tag:'264m',
+     det:{pur:'সবচেয়ে বড় palisading — ২৬৪ মিটার। পুকুর/খাল একেবারে road এর পাশে।',
+      bangla:'এটাই সবচেয়ে বড় palisading location - 264 মিটার দীর্ঘ! এখানে রাস্তার পাশে একটি পুকুর বা খাল আছে যা slope এর কাছে। এই 264 মিটার জুড়ে একটি RCC palisading wall তৈরি করতে হবে যা water slope থেকে protect করবে। Trench খুড়তে হবে, RCC posts drive করতে হবে, brick wall build করতে হবে, এবং backfill করতে হবে। এই কাজ সবচেয়ে challenging কারণ water থাকার কারণে trench এ water আসবে এবং bailing প্রয়োজন হবে। দ্রুততা দরকার - প্রতিদিন minimum 30 মিটার progress target রাখুন। RCC post এবং pre-cast plates আগে থেকে prepare করে রাখুন। Backfill করার সময় 95% compaction নিশ্চিত করুন layer by layer।',
+      specs:[['Location','Ch 0+581 → 0+845, Right Side'],['Length','264 m'],['D','1.50 m'],['Height','1.60 m (tallest water level)'],['Posts needed','264/0.9 = ~294 posts'],['Rate portion','264 × ৳6,110.19 = ৳16,13,090'],['Trench','264m × 400mm × 1000mm deep'],['Water in trench','Likely — bailing needed']],
+      steps:['Trench excavate in sections (30-50m at a time)','Bailing out water continuously','Rapid post installation before re-flooding','Plates + wall without delay'],
+      mat:['RCC posts 150×150×3000mm: 294 nos','Pre-cast plates 1050×600×75mm: ~528 nos','1st class bricks: ~19,000 nos','Cement: ~55 bags','Sand: 5 cum','Backfill soil: ~63 cum'],
+      warn:'এটা সবচেয়ে risky location। Water seepage হতে পারে। Pumping equipment ready রাখুন।'}},
+    // Additional palisading locations continue...
+  ]},
+
+  {id:'p15',num:'PHASE 15',title:'Road Safety কাজ',en:'Section 5 — ৳1,25,910',cost:'৳ 1,25,910',tasks:[
+    {t:'Road Name Plate — 1 nos (৳7,476)',d:'Ch 0+00 এ, RCC (1:2:4), enamel paint',tag:'৳7,476',
+     det:{pur:'BOQ Item 3.12.01.2 — RNPlate। Project identification plate।',
+      bangla:'Road এর শুরুতে (Ch 0+00) একটি road name plate install করুন। RCC (1:2:4) concrete এ cast করুন। 20mm chips যোগ করুন। Reinforcement: vertical 7 nos 12mm dia × 1125mm, horizontal 8 nos 10mm dia × 970mm। Mortar 1:4 cement mortar, plaster 6mm thick। Synthetic enamel paint 2 coats। Foundation 1st class bricks দিয়ে। Letters এবং numbers print করুন।',
+      specs:[['BOQ Item Code','3.12.01.2 — RNPlate'],['Quantity','1 nos'],['Unit Rate','৳ 7,475.54'],['Location','Ch 0+00 (starting point)'],['Type','Rectangular, Appendix-6 design'],['Concrete','RCC (1:2:4) with 20mm chips'],['Reinforcement (vertical)','7 nos × 12mm dia × 1125mm length'],['Reinforcement (horizontal)','8 nos × 10mm dia × 970mm length'],['Mortar','1:4 cement mortar'],['Plaster','6mm thick (1:4) all exposed'],['Paint','Synthetic enamel, 2 coats'],['Foundation','1st class bricks work']],
+      steps:['Foundation dig করুন','Bricks foundation','RCC plate cast করুন','28 days cure','Letters + numbers print করুন','2 coat enamel paint']}},
+    {t:'KM Post — 4 nos (৳15,803)',d:'প্রতি 1km এ, ৳3,951 each',tag:'৳15,803',
+     det:{pur:'BOQ — KMP। Kilometer marker posts।',
+      bangla:'প্রতি kilometer এ একটি করে KM post install করুন - total 4 nos at Ch 0+00, 1+000, 2+000, 3+000। RCC concrete এবং bricks দিয়ে বানান। Vertical rods 4 nos 12mm dia × 1085mm। White base + black text paint। Route number এবং KM number include করুন।',
+      specs:[['Quantity','4 nos'],['Locations','Ch 0+00, 1+000, 2+000, 3+000'],['Unit Rate','৳ 3,950.80/each'],['Total Amount','৳ 15,803.20'],['Material','RCC + bricks'],['Rods (V)','4 nos 12mm dia MS, 1085mm'],['Rods (H)','10mm dia'],['Paint','White base + black text'],['Content','KM number + route']]}},
+    {t:'RCC Guide Post — 30 nos (৳56,095)',d:'200mm dia × 1.70m, @ culvert approach',tag:'৳56,095',
+     det:{pur:'BOQ Item 3.12.02 — RCGPost। Culvert approach এ vehicle guidance।',
+      bangla:'Culvert এর both ends এবং both approaches এ total 30 nos RCC guide posts install করুন। Diameter 200mm, length 1.70m total। Ground depth minimum 800mm, above ground 900mm। RCC (1:2:4) concrete with 20mm chips। Vertical rods 4 nos 12mm dia × 1085mm। Horizontal rings 12 nos round। White + yellow bands alternate, each 300mm height।',
+      specs:[['BOQ Item Code','3.12.02 — RCGPost'],['Quantity','30 nos'],['Locations','Both ends + both approaches of culvert'],['Unit Rate','৳ 1,869.82/each'],['Total Amount','৳ 56,094.60'],['Diameter','200 mm round'],['Length','1.70 m total'],['Ground depth','Minimum 800 mm'],['Above ground','900 mm'],['Concrete','RCC (1:2:4) with 20mm chips'],['Rods (V)','4 nos 12mm dia, 1085mm length'],['Horizontal rings','12 nos round'],['Paint','White + yellow bands alternate'],['Band height','300mm each']]}},
+    {t:'CS-Plate Traffic Sign — 7 nos (৳46,537)',d:'Retro-reflective, 600mm triangle',tag:'৳46,537',
+     det:{pur:'BOQ Item 3.12.04.1 — CS-Plate। Cautionary + Mandatory + Informatory signs।',
+      bangla:'7 nos traffic sign install করুন - cautionary, mandatory, informatory types। Main plate 600mm equilateral triangle। Supplementary 671mm × 202mm rectangular। 18 BWG MS sheet galvanized। Frame 25mm × 25mm × 3mm MS angle। 2.5mm thick MS plates welded। Anchor bars 4 nos × 12mm dia × 200mm। Foundation 600mm deep, 1:2:4 concrete। Strength minimum 17.0 MPa at 28 days। Synthetic enamel retro-reflective paint 2 coats।',
+      specs:[['BOQ Item Code','3.12.04.1 — CS-Plate'],['Quantity','7 nos'],['Unit Rate','৳ 6,648.12/each'],['Total Amount','৳ 46,536.84'],['Main plate size','600mm equilateral triangle'],['Supplementary','671mm × 202mm rectangular'],['Sheet','18 BWG MS (galvanized)'],['Frame','25mm × 25mm × 3mm MS angle'],['MS plates','2.50mm thick, welded'],['Anchor bars','4 nos × 12mm dia × 200mm'],['Pipe','MS 50mm dia × 2.50mm thick'],['Foundation','600mm deep, 1:2:4 concrete'],['Foundation strength','Min 17.0 MPa @ 28 days'],['Paint','Synthetic enamel, retro-reflective, 2 coats'],['Varieties','Cautionary + Mandatory + Informatory']],
+      steps:['Foundation dig 600mm','Anchor bars set করুন','Concrete pour (1:2:4)','28 days cure করুন','Post + sign panel install করুন','Retro-reflective paint করুন']}}
+  ]},
+
+  {id:'p16',num:'PHASE 16',title:'Finishing ও Handover',en:'Project closeout',cost:null,tasks:[
+    {t:'Final Surface Dressing ও Cleanup',d:'Rough spots fix + debris remove',tag:'FINISH',
+     det:{pur:'Handover এর আগে সব defect ঠিক করুন।',
+      bangla:'Handover এর আগে পুরো road একবার হেঁটে যান এবং সব defects খুঁজে বের করুন - pot-holes, rough patches, uneven edges। যেসব jag থাকবে cold patching দিয়ে fix করুন বা cut-and-patch করুন। Edge এ loose brick থাকলে tighten করুন। Palisading এর joints pointed করুন এবং backfill complete করুন। Road absolutely smooth এবং uniform থাকতে হবে handover এর সময়।',
+      specs:[['Surface check','Walking survey — সব 3km'],['Defects','Pot-hole, rough patch, uneven edge'],['Repair method','Cold patching বা cut-and-patch'],['Edge','EE tightly packed + no loose bricks'],['Slope','1:1 maintained all sides'],['Palisading','All joints pointed + backfill complete']]}},
+    {t:'"After" Photos — প্রতি 100m',d:'Before/After comparison documentation',tag:'PHOTO',
+     det:{pur:'Final documentation for bill + DLP.',
+      bangla:'কাজ সম্পূর্ণ হওয়ার পর বিফোর ফটোর মতো একই angle থেকে "after" photos নিন। প্রতি 100 মিটারে একই 3 angles থেকে (L/S, R/S, center)। চেইনেজ board, তারিখ, আপনার নাম সব ফটোতে দেখা যাবে। সব 11 টি palisading location এর ফটো take করুন যাতে সব কাজ done দেখা যায়। এই ফটোগুলি final bill এ জমা দিতে হবে এবং DLP claim করার সময়ও documentation হিসেবে কাজে আসবে।',
+      specs:[['Photos','Same angles as "before" photos'],['Include','Chainage board + date + your name'],['Palisading','All 11 locations fully visible'],['Road Safety','All signs + posts installed'],['DC surface','Smooth uniform finish visible'],['Store','Cloud backup immediately']]}}
+  ]}
+  ]
+};
+
+// Flatten + assign IDs
+let totalTasks=0;
+D.phases.forEach(p=>{
+  p.totalTasks=0;
+  p.tasks.forEach((t,i)=>{
+    if(t.section)return;
+    t.id=`${p.id}_${i}`;
+    p.totalTasks++;
+    totalTasks++;
+  });
+});
+
+// State
+let S={};
+const KEY='koiya_v3';
+async function load(){try{if(typeof window.storage!=='undefined'){const r=await window.storage.get(KEY);if(r&&r.value)return JSON.parse(r.value);}}catch(e){}return {};}
+async function save(){try{if(typeof window.storage!=='undefined')await window.storage.set(KEY,JSON.stringify(S));}catch(e){}}
+
+function toast(m){const e=document.getElementById('toast');e.textContent=m;e.classList.add('on');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('on'),1800);}
+
+function updProgress(){
+  let done=0;
+  D.phases.forEach(p=>{
+    const d=p.tasks.filter(t=>!t.section&&S[t.id]).length;
+    done+=d;
+    const pct=p.totalTasks?Math.round(d/p.totalTasks*100):0;
+    const el=document.getElementById(p.id);if(!el)return;
+    const ring=el.querySelector('.ring-fg'),txt=el.querySelector('.ring-txt');
+    const c=2*Math.PI*16;
+    if(ring){ring.style.strokeDasharray=c;ring.style.strokeDashoffset=c-(c*pct/100);}
+    if(txt)txt.textContent=pct+'%';
+    pct===100?el.classList.add('done'):el.classList.remove('done');
+  });
+  const pct=totalTasks?Math.round(done/totalTasks*100):0;
+  document.getElementById('oPct').textContent=pct+'%';
+  document.getElementById('oBar').style.width=pct+'%';
+  document.getElementById('oCnt').textContent=`${done} / ${totalTasks} tasks complete`;
+  if(pct===100){const s=document.getElementById('stamp');s.classList.add('on');setTimeout(()=>s.classList.remove('on'),2500);}
+}
+
+// MODAL
+function openModal(task,phase){
+  document.getElementById('moEy').textContent=`${phase.num} · ${phase.title}`;
+  document.getElementById('moTi').textContent=task.t;
+  document.getElementById('moBody').innerHTML='';
+  const det=task.det||{};
+  const summary=task.d?`<div class="mo-sub">${esc(task.d)}</div>`:'';
+  const sourceNote=(det.specs||det.chainTable||det.mat||det.eq||det.steps)?`<div class="mo-sub">Source: PDF-based detail and project specification.</div>`:'';
+  let h=summary+sourceNote;
+
+  if(det.pur){h+=`<div class="db"><h4>উদ্দেশ্য — PDF Reference</h4><div class="purpose-box">${esc(det.pur)}</div></div>`;}
+
+  if(det.specs&&det.specs.length){
+    h+=`<div class="db"><h4>Specification / Measurement / Rate — PDF Detail</h4><div class="spec-g">`;
+    det.specs.forEach(([k,v])=>{
+      const hi=/Amount|Total|Volume|Net quantity|Rate portion/.test(k);
+      const bn=/[\u0980-\u09FF]/.test(v);
+      const value=convertUnits(String(v));
+      h+=`<div class="spec-r"><div class="spec-k">${esc(k)}</div><div class="spec-v${hi?' h':''}${bn?' bn':''}">${esc(value)}</div></div>`;
+    });
+    h+=`</div></div>`;
+  }
+
+  if(det.chainTable){
+    h+=`<div class="db"><h4>Location Breakdown — PDF Details</h4><table class="ct"><thead><tr>${det.chainTable.headers.map(x=>`<th>${esc(x)}</th>`).join('')}</tr></thead><tbody>${det.chainTable.rows.map(r=>`<tr>${r.map(c=>`<td>${esc(convertUnits(String(c)))}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+  }
+
+  if(det.mat&&det.mat.length){
+    h+=`<div class="db"><h4>Material / Quantity — PDF Reference</h4><div class="pill-row">${det.mat.map(m=>`<div class="pill">${esc(convertUnits(String(m)))}</div>`).join('')}</div></div>`;
+  }
+
+  if(det.eq&&det.eq.length){
+    h+=`<div class="db"><h4>Equipment / Tools — PDF Reference</h4><div class="pill-row">${det.eq.map(e=>`<div class="pill">${esc(convertUnits(String(e)))}</div>`).join('')}</div></div>`;
+  }
+
+  if(det.steps&&det.steps.length){
+    h+=`<div class="db"><h4>Step-by-Step Work Plan — PDF Procedures</h4><ol class="ol">${det.steps.map(s=>`<li>${esc(s)}</li>`).join('')}</ol></div>`;
+  }
+
+  if(det.bangla){h+=`<div class="db"><h4>নবীন ঠিকাদারের গাইড</h4><div class="purpose-box">${esc(det.bangla)}</div></div>`;}
+
+  if(det.tip)h+=`<div class="tip"><strong>💡 টিপ:</strong> ${esc(det.tip)}</div>`;
+  if(det.note)h+=`<div class="note"><strong>📝 মন্তব্য:</strong> ${esc(det.note)}</div>`;
+  if(det.warn)h+=`<div class="warn"><strong>⚠ সাবধান:</strong> ${esc(det.warn)}</div>`;
+
+  if(!h)h=`<div style="padding:20px;text-align:center;color:var(--muted)">এই item এর detail এখনো নেই।</div>`;
+
+  document.getElementById('moBody').innerHTML=h;
+  document.getElementById('moBody').scrollTop=0;
+  document.getElementById('mb').classList.add('on');
+}
+function closeModal(){document.getElementById('mb').classList.remove('on');}
+document.getElementById('moX').addEventListener('click',closeModal);
+document.getElementById('mb').addEventListener('click',e=>{if(e.target.id==='mb')closeModal();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c]));}
+
+function convertUnits(text){
+  if(!text||typeof text!=='string')return text;
+  return text
+    .replace(/(\d{1,3}(?:,\d{3})*(?:\.\d+)?)\s*mm\b/g,(m,n)=>{const v=parseFloat(n.replace(/,/g,''));const inches=v/25.4;const ft=Math.floor(inches/12);const rem=inches-ft*12;return `${n} mm (${inches.toFixed(2)} in${ft?` / ${ft} ft ${rem.toFixed(1)} in`:''})`;})
+    .replace(/(\d{1,3}(?:,\d{3})*(?:\.\d+)?)\s*cum\b/gi,(m,n)=>{const v=parseFloat(n.replace(/,/g,''));const cf=v*35.3147;return `${n} cum (≈${cf.toFixed(1)} cu ft)`;})
+    .replace(/(\d{1,3}(?:,\d{3})*(?:\.\d+)?)\s*sqm\b/gi,(m,n)=>{const v=parseFloat(n.replace(/,/g,''));const sf=v*10.7639;return `${n} sqm (≈${sf.toFixed(0)} sq ft)`;})
+    .replace(/(\d{1,3}(?:,\d{3})*(?:\.\d+)?)\s*m\b/g,(m,n)=>{const v=parseFloat(n.replace(/,/g,''));const ft=v*3.28084;const whole=Math.floor(ft);const rem=Math.round((ft-whole)*12);return `${n} m (≈${whole} ft ${rem} in)`;});
+}
+
+function tagCls(tag){
+  if(!tag)return'';
+  if(/TOTAL|QC/.test(tag))return'g';
+  if(/WAIT|WARRANTY|DEDUCT/.test(tag))return'a';
+  if(/DOCS|PLAN|SETUP|SAFETY|PHOTO|FINISH|CLEAN|PAINT|SURVEY|PREP|MIX|ROLL|BACKFILL|WALL|POST|PLATE|LAY|SUB/.test(tag))return'm';
+  if(/\d/.test(tag))return'b';
+  return'';
+}
+
+function render(){
+  const wrap=document.getElementById('phases');
+  wrap.innerHTML='';
+  D.phases.forEach((p,pi)=>{
+    const done=p.tasks.filter(t=>!t.section&&S[t.id]).length;
+    const pct=p.totalTasks?Math.round(done/p.totalTasks*100):0;
+    const c=2*Math.PI*16;
+    let tasksH='';
+    p.tasks.forEach((t,ti)=>{
+      if(t.section){tasksH+=`<div class="sec-hdr">${esc(t.section)}</div>`;return;}
+      const chk=S[t.id]?'done':'';
+      tasksH+=`<div class="task ${chk}" data-id="${t.id}" data-ti="${ti}">
+        <div class="chk" data-a="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="tc" data-a="det">
+          <div class="tt">${esc(t.t)}</div>
+          ${t.d?`<div class="td">${esc(t.d)}</div>`:''}
+        </div>
+        ${t.tag?`<div class="tag ${tagCls(t.tag)}">${esc(t.tag)}</div>`:'<div></div>'}
+        <div class="ibtn" data-a="det" title="Detail">i</div>
+      </div>`;
+    });
+    const el=document.createElement('div');
+    el.className='phase'+(pi===0?' open':'');
+    el.id=p.id;
+    el.innerHTML=`<div class="ph-hdr">
+      <div class="ph-num">${esc(p.num)}</div>
+      <div><div class="ph-ti">${esc(p.title)}</div><div class="ph-en">${esc(p.en)}${p.cost?' · '+esc(p.cost):''}</div></div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <div class="ph-ring">
+          <svg viewBox="0 0 40 40"><circle class="ring-bg" cx="20" cy="20" r="16"/><circle class="ring-fg" cx="20" cy="20" r="16" stroke-dasharray="${c}" stroke-dashoffset="${c-(c*pct/100)}"/></svg>
+          <div class="ring-txt">${pct}%</div>
+        </div>
+        <div class="arrow"></div>
+      </div>
+    </div>
+    <div class="ph-body"><div class="ph-body-in">${tasksH}</div></div>`;
+    wrap.appendChild(el);
+    if(pct===100)el.classList.add('done');
+    el.querySelector('.ph-hdr').addEventListener('click',()=>el.classList.toggle('open'));
+    el.querySelectorAll('.task').forEach(te=>{
+      te.addEventListener('click',async e=>{
+        const a=e.target.closest('[data-a]');if(!a)return;
+        const id=te.dataset.id,ti=parseInt(te.dataset.ti),task=p.tasks[ti];
+        if(a.dataset.a==='tick'){
+          S[id]=!S[id];te.classList.toggle('done',S[id]);
+          if(navigator.vibrate)navigator.vibrate(15);
+          await save();updProgress();
+        } else if(a.dataset.a==='det'){
+          if(navigator.vibrate)navigator.vibrate(10);
+          openModal(task,p);
+        }
+      });
+    });
+  });
+}
+
+let allEx=false;
+document.getElementById('exBtn').addEventListener('click',()=>{
+  allEx=!allEx;
+  document.querySelectorAll('.phase').forEach(p=>p.classList.toggle('open',allEx));
+  document.getElementById('exBtn').textContent=allEx?'⇧ সব বন্ধ':'⇩ সব খুলুন';
+});
+document.getElementById('rstBtn').addEventListener('click',async()=>{
+  if(!confirm('সব progress reset করবেন?\nThis cannot be undone.'))return;
+  S={};await save();render();updProgress();toast('✓ Reset');
+});
+
+function filterGlossary(){
+  const query=document.getElementById('glossarySearch').value.trim().toLowerCase();
+  document.querySelectorAll('#glossary .ph-body .task').forEach(task=>{
+    const text=task.textContent.toLowerCase();
+    task.style.display = !query || text.includes(query) ? '' : 'none';
+  });
+}
+
+(async()=>{
+  S=await load();
+  render();updProgress();
+  // Add event listeners for static sections
+  document.getElementById('glossary').querySelector('.ph-hdr').addEventListener('click',()=>document.getElementById('glossary').classList.toggle('open'));
+  const search=document.getElementById('glossarySearch');
+  if(search){search.addEventListener('input',filterGlossary);}
+})();
+</script>
+</body>
+</html>

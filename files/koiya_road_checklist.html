@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#1a2332">
+<title>কৈয়া রোড ৩কিমি — Contractor Checklist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Archivo:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f3ede0;
+    --paper: #faf6ec;
+    --ink: #1a2332;
+    --ink-soft: #3d4a5c;
+    --muted: #7a7563;
+    --line: #d4cab1;
+    --line-soft: #e6dfcd;
+    --accent: #d64e1f;
+    --accent-soft: #f4d5c5;
+    --ok: #2d6a4f;
+    --ok-soft: #c8e2d4;
+    --warning: #b8860b;
+    --shadow: 0 2px 0 rgba(26,35,50,0.08);
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink);
+    font-family: 'Hind Siliguri', system-ui, sans-serif; font-size: 15px; line-height: 1.5;
+    background-image:
+      linear-gradient(rgba(26,35,50,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(26,35,50,0.04) 1px, transparent 1px);
+    background-size: 24px 24px;
+    min-height: 100vh;
+  }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+  .header {
+    background: var(--ink); color: var(--paper); padding: 20px 18px 18px;
+    border-bottom: 3px double var(--accent); position: sticky; top: 0; z-index: 100;
+  }
+  .header-top {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: #8a9aad; margin-bottom: 6px;
+  }
+  .header-top .dot { color: var(--accent); }
+  .project-title {
+    font-family: 'Archivo', 'Hind Siliguri', sans-serif; font-weight: 900;
+    font-size: 22px; line-height: 1.1; letter-spacing: -0.02em; margin: 0;
+  }
+  .project-subtitle {
+    font-size: 13px; color: #a8b4c4; margin-top: 4px; font-weight: 500;
+  }
+  .overall-progress {
+    margin-top: 14px; padding: 12px; background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1); border-radius: 2px;
+  }
+  .op-header {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 8px;
+  }
+  .op-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #a8b4c4; }
+  .op-percent { font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 28px; color: var(--accent); line-height: 1; }
+  .op-count { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #a8b4c4; margin-top: 2px; }
+  .bar { height: 6px; background: rgba(255,255,255,0.1); border-radius: 1px; overflow: hidden; position: relative; }
+  .bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), #f57c3a); transition: width 0.4s cubic-bezier(0.4,0,0.2,1); }
+
+  .container { max-width: 720px; margin: 0 auto; padding: 18px 14px 100px; }
+
+  .phase {
+    background: var(--paper); border: 1px solid var(--line); border-radius: 3px;
+    margin-bottom: 14px; box-shadow: var(--shadow); overflow: hidden;
+  }
+  .phase-header {
+    padding: 14px 16px; cursor: pointer; user-select: none;
+    display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center;
+    background: var(--paper); transition: background 0.15s;
+    border-bottom: 1px dashed transparent;
+  }
+  .phase-header:active { background: var(--line-soft); }
+  .phase.open .phase-header { border-bottom-color: var(--line); }
+  .phase-num {
+    font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 11px;
+    color: var(--paper); background: var(--ink); padding: 4px 7px; border-radius: 2px;
+    letter-spacing: 0.05em; min-width: 44px; text-align: center;
+  }
+  .phase.done .phase-num { background: var(--ok); }
+  .phase-title-wrap { min-width: 0; }
+  .phase-title {
+    font-weight: 700; font-size: 15px; color: var(--ink); line-height: 1.25;
+    margin: 0;
+  }
+  .phase-en { font-size: 11px; color: var(--muted); font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.02em; margin-top: 2px; }
+  .phase-meta {
+    display: flex; align-items: center; gap: 10px; flex-wrap: nowrap;
+  }
+  .phase-cost {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--accent);
+    font-weight: 700; white-space: nowrap;
+  }
+  .phase-progress-ring {
+    width: 38px; height: 38px; position: relative; flex-shrink: 0;
+  }
+  .phase-progress-ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+  .phase-progress-ring circle { fill: none; stroke-width: 3; }
+  .ring-bg { stroke: var(--line); }
+  .ring-fg { stroke: var(--accent); stroke-linecap: round; transition: stroke-dashoffset 0.4s; }
+  .phase.done .ring-fg { stroke: var(--ok); }
+  .phase-progress-text {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700; color: var(--ink);
+  }
+  .phase-arrow {
+    width: 10px; height: 10px; border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted);
+    transform: rotate(45deg); transition: transform 0.2s; margin-top: -4px;
+  }
+  .phase.open .phase-arrow { transform: rotate(-135deg); margin-top: 4px; }
+
+  .phase-body {
+    max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out;
+  }
+  .phase.open .phase-body { max-height: 5000px; }
+  .phase-body-inner { padding: 6px 0; }
+
+  .task {
+    display: grid; grid-template-columns: 44px 1fr auto; align-items: flex-start;
+    padding: 10px 14px; border-bottom: 1px dashed var(--line-soft);
+    cursor: pointer; transition: background 0.1s;
+    min-height: 54px;
+  }
+  .task:last-child { border-bottom: none; }
+  .task:active { background: var(--line-soft); }
+  .task.checked { background: rgba(45,106,79,0.04); }
+
+  .checkbox {
+    width: 22px; height: 22px; border: 2px solid var(--ink); border-radius: 2px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; transition: all 0.15s; background: var(--paper); margin-top: 1px;
+  }
+  .task.checked .checkbox { background: var(--ok); border-color: var(--ok); }
+  .checkbox svg { width: 14px; height: 14px; color: white; opacity: 0; transition: opacity 0.15s; }
+  .task.checked .checkbox svg { opacity: 1; }
+
+  .task-content { min-width: 0; padding-top: 1px; }
+  .task-title { font-weight: 500; color: var(--ink); line-height: 1.35; font-size: 14.5px; }
+  .task.checked .task-title { text-decoration: line-through; text-decoration-color: var(--muted); color: var(--muted); }
+  .task-detail {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-soft);
+    margin-top: 3px; letter-spacing: 0; line-height: 1.4;
+  }
+  .task.checked .task-detail { color: var(--muted); }
+
+  .task-tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.05em; padding: 3px 6px; border-radius: 2px;
+    background: var(--accent-soft); color: var(--accent); white-space: nowrap;
+    align-self: center; margin-top: 1px;
+  }
+  .task-tag.ok { background: var(--ok-soft); color: var(--ok); }
+  .task-tag.warn { background: #fae5c3; color: var(--warning); }
+  .task-tag.muted { background: var(--line); color: var(--ink-soft); }
+
+  .sub-section {
+    padding: 8px 16px 4px; background: linear-gradient(180deg, var(--line-soft), transparent);
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700;
+    color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.1em;
+    border-top: 1px solid var(--line-soft);
+  }
+
+  .footer-actions {
+    position: fixed; bottom: 0; left: 0; right: 0; padding: 12px 14px;
+    background: linear-gradient(180deg, rgba(243,237,224,0) 0%, rgba(243,237,224,0.95) 40%, var(--bg) 100%);
+    pointer-events: none; z-index: 50;
+  }
+  .footer-inner { max-width: 720px; margin: 0 auto; display: flex; gap: 10px; pointer-events: auto; }
+  .btn {
+    flex: 1; padding: 12px; border: 1.5px solid var(--ink); background: var(--paper);
+    color: var(--ink); font-family: 'Hind Siliguri', sans-serif; font-weight: 700; font-size: 13px;
+    border-radius: 3px; cursor: pointer; transition: all 0.15s;
+    box-shadow: 2px 2px 0 var(--ink);
+  }
+  .btn:active { transform: translate(2px, 2px); box-shadow: 0 0 0 var(--ink); }
+  .btn.danger { border-color: var(--accent); color: var(--accent); box-shadow: 2px 2px 0 var(--accent); }
+  .btn.expand { border-color: var(--ink-soft); box-shadow: 2px 2px 0 var(--ink-soft); }
+
+  .stamp {
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-12deg);
+    border: 4px solid var(--ok); color: var(--ok); padding: 16px 32px;
+    font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 28px; letter-spacing: 0.1em;
+    background: rgba(250, 246, 236, 0.9); border-radius: 4px; pointer-events: none;
+    opacity: 0; transition: opacity 0.3s, transform 0.3s;
+    z-index: 200;
+  }
+  .stamp.show { opacity: 1; transform: translate(-50%, -50%) rotate(-6deg) scale(1.05); }
+
+  .toast {
+    position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(20px);
+    background: var(--ink); color: var(--paper); padding: 10px 18px; border-radius: 2px;
+    font-size: 13px; font-weight: 500; opacity: 0; transition: all 0.3s;
+    z-index: 150; pointer-events: none; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  .loading {
+    position: fixed; inset: 0; background: var(--bg); display: flex;
+    align-items: center; justify-content: center; z-index: 1000; color: var(--ink);
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .loading.hide { opacity: 0; pointer-events: none; transition: opacity 0.4s; }
+
+  .info-card {
+    background: var(--paper); border: 1px solid var(--line); border-left: 3px solid var(--accent);
+    padding: 14px 16px; margin-bottom: 14px; border-radius: 2px; box-shadow: var(--shadow);
+  }
+  .info-card h3 { margin: 0 0 6px; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); font-family: 'JetBrains Mono', monospace; }
+  .info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px 16px; margin-top: 10px; font-size: 13px; }
+  .info-grid dt { color: var(--muted); font-size: 11px; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.02em; }
+  .info-grid dd { margin: 0 0 6px; color: var(--ink); font-weight: 600; }
+
+  @media (max-width: 480px) {
+    .project-title { font-size: 19px; }
+    .op-percent { font-size: 24px; }
+    .phase-title { font-size: 14px; }
+    .task-title { font-size: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="loading" id="loading">Loading your progress…</div>
+
+<div class="header">
+  <div class="header-top">
+    <span>ROAD CODE <span class="dot">●</span> 247534057</span>
+    <span>FY 2025-26</span>
+  </div>
+  <h1 class="project-title">কৈয়া রোড ৩ কি.মি.</h1>
+  <div class="project-subtitle">R&amp;H হাতিয়ারডাঙ্গা কালভার্ট – সুরিখালী বাজার রোড via পাটনিখালী</div>
+  <div class="overall-progress">
+    <div class="op-header">
+      <div>
+        <div class="op-label">Overall Progress</div>
+        <div class="op-count" id="overallCount">0 / 0 tasks</div>
+      </div>
+      <div class="op-percent" id="overallPct">0%</div>
+    </div>
+    <div class="bar"><div class="bar-fill" id="overallBar" style="width:0%"></div></div>
+  </div>
+</div>
+
+<div class="container">
+
+<div class="info-card">
+  <h3>★ PROJECT SUMMARY</h3>
+  <dl class="info-grid">
+    <dt>Total Cost</dt><dd>৳ 1,67,89,027</dd>
+    <dt>Length</dt><dd>3,000 m (3 km)</dd>
+    <dt>Package</dt><dd>CAFDRIRP W-40</dd>
+    <dt>Upazila</dt><dd>কয়রা, খুলনা</dd>
+    <dt>Earth Work</dt><dd>4,589.897 cum</dd>
+    <dt>Carpeting</dt><dd>8,858 sqm (25mm)</dd>
+    <dt>End Edging</dt><dd>5,980 m (125mm)</dd>
+    <dt>Palisading</dt><dd>521 m @ 11 spots</dd>
+  </dl>
+</div>
+
+<div id="phases"></div>
+
+</div>
+
+<div class="footer-actions">
+  <div class="footer-inner">
+    <button class="btn expand" id="expandAllBtn">⇩ সব খুলুন / Expand All</button>
+    <button class="btn danger" id="resetBtn">↺ Reset</button>
+  </div>
+</div>
+
+<div class="stamp" id="stamp">PROJECT DONE ✓</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const PHASES = [
+  {
+    id: 'p0', num: 'PHASE 0', title: 'প্রস্তুতি ও কাগজপত্র', en: 'Pre-construction & paperwork',
+    cost: null,
+    tasks: [
+      { t: 'চুক্তিপত্র (Contract) স্বাক্ষর', d: 'Work order + signed agreement সংগ্রহ', tag: 'DOCS' },
+      { t: 'Bank Guarantee / Security deposit জমা', d: 'সাধারণত 5% of contract value', tag: 'DOCS' },
+      { t: 'VAT & Tax Registration verify', d: 'BIN + TIN, certificate copy রাখা', tag: 'DOCS' },
+      { t: 'Project Engineer এর সাথে Joint Site Visit', d: 'Upazila Engineer Md. Abul Fazel + Sub-Asst. Engineer Md. Afzal Hossain', tag: 'FIELD' },
+      { t: 'Existing road এর "Before" photos তোলা', d: 'প্রতি 100m এ ছবি, দুই পাশ থেকে', tag: 'PHOTO' },
+      { t: '১১টি Palisading location এর ছবি', d: 'Ch 450,581,1402,1496,1537,1708,1807,1862,2602,2812,2960', tag: 'PHOTO' },
+      { t: 'Box Culvert (Ch 1+278-1+288) ছবি', d: '5.50m span RCC culvert', tag: 'PHOTO' },
+      { t: 'Material supplier চূড়ান্ত', d: 'ইট, বালু (FM 0.50/0.80), পাথর chips, বিটুমিন 60/70', tag: 'PLAN' },
+      { t: 'Labour gang leader / mistri hire', d: 'Mason, rigger, roller operator, helpers', tag: 'PLAN' },
+      { t: 'Equipment rental finalize', d: 'Road roller 8-10 ton, vibro compactor, mixer, dump truck', tag: 'PLAN' }
+    ]
+  },
+  {
+    id: 'p1', num: 'PHASE 1', title: 'সাইট মোবিলাইজেশন ও Setup', en: 'Site mobilization',
+    cost: null,
+    tasks: [
+      { t: 'সাইট অফিস স্থাপন', d: 'Store room + engineer\'s table + drawings রাখার জায়গা', tag: 'SETUP' },
+      { t: 'TBM (Temporary Bench Mark) fix', d: 'Ex-UZR BC Road Top C/C, RL = 10.00', tag: 'SURVEY' },
+      { t: 'চেইনেজ markers স্থাপন', d: 'প্রতি 100m এ peg, red paint দিয়ে mark', tag: 'SURVEY' },
+      { t: 'Centerline alignment mark', d: 'Nylon dori দিয়ে, 3km full length', tag: 'SURVEY' },
+      { t: 'Safety signs + cones সাইটে রাখা', d: 'Traffic diversion plan', tag: 'SAFETY' },
+      { t: 'First aid box + safety helmet/shoe', d: 'Minimum 10 helmet, 5 pair shoe', tag: 'SAFETY' },
+      { t: 'Material storage yard prepare', d: 'ইট, বালু, chips আলাদা stack', tag: 'SETUP' },
+      { t: 'Water source arrange', d: 'Compaction + WBM এর জন্য পানি পাম্প', tag: 'SETUP' },
+      { t: 'Level machine ও staff test', d: 'Auto level + 4m staff + tripod check', tag: 'SURVEY' }
+    ]
+  },
+  {
+    id: 'p2', num: 'PHASE 2', title: 'জঙ্গল পরিষ্কার ও Stripping', en: 'Jungle clearance',
+    cost: null,
+    tasks: [
+      { t: 'Ch 0+000 → 0+500 jungle clearing', d: 'ঝোপ, আগাছা, tree stump (200mm girth পর্যন্ত)', tag: '500m' },
+      { t: 'Ch 0+500 → 1+000 jungle clearing', d: 'বিশেষ করে widening side R/S', tag: '500m' },
+      { t: 'Ch 1+000 → 1+500 jungle clearing', d: 'কালভার্ট area carefully', tag: '500m' },
+      { t: 'Ch 1+500 → 2+000 jungle clearing', d: 'Multiple palisading locations', tag: '500m' },
+      { t: 'Ch 2+000 → 2+500 jungle clearing', d: '', tag: '500m' },
+      { t: 'Ch 2+500 → 3+000 jungle clearing', d: 'শেষ সেকশন', tag: '500m' },
+      { t: 'Side slope ও top surface stripping', d: '200mm stripping as per spec', tag: 'ALL' },
+      { t: 'Debris ও rubbish removal', d: 'সাইটের বাইরে dump করা', tag: 'ALL' }
+    ]
+  },
+  {
+    id: 'p3', num: 'PHASE 3', title: 'Earth Work (মাটি ভরাট)', en: 'Section 1 — Earth Work',
+    cost: '৳ 14,43,385',
+    tasks: [
+      { t: 'Borrow pit ও dug balling prepare', d: '200m Right-of-Way এর বাইরে থেকে মাটি', tag: 'PLAN' },
+      { t: 'Ch 0 → 500 earth filling + compaction', d: 'Layer-wise 150mm (vertical), 600mm (horizontal)', tag: '500m' },
+      { t: 'Ch 500 → 1000 earth filling', d: 'Widening portion সহ R/S', tag: '500m' },
+      { t: 'Ch 1000 → 1500 earth filling', d: 'কালভার্ট gap 1378-1388 বাদ', tag: '500m' },
+      { t: 'Ch 1500 → 2000 earth filling', d: '', tag: '500m' },
+      { t: 'Ch 2000 → 2500 earth filling', d: '', tag: '500m' },
+      { t: 'Ch 2500 → 3000 earth filling', d: 'শেষ অংশ', tag: '500m' },
+      { t: 'Compaction Test — 85/95/98% MDD', d: 'Standard Proctor, Engineer witness', tag: 'QC' },
+      { t: 'Cambering 150mm at center crest', d: 'পুরো 3km এ', tag: 'FINISH' },
+      { t: 'Side slope 1:1 dressing', d: 'Left + Right উভয় পাশে', tag: 'FINISH' },
+      { t: 'Benching 100mm clod size', d: 'Slope এর সাথে নতুন মাটি bond এর জন্য', tag: 'FINISH' },
+      { t: 'Total volume measurement', d: 'Target: 4,589.897 cum (deduction বাদে)', tag: 'QC' },
+      { t: 'Engineer-in-charge এর approval নেয়া', d: 'Measurement book entry', tag: 'DOCS' }
+    ]
+  },
+  {
+    id: 'p4', num: 'PHASE 4', title: 'পুরাতন Material তুলে স্ট্যাক', en: 'Picking & salvaging',
+    cost: '৳ ~72,000',
+    tasks: [
+      { t: 'PIEE 75mm পুরাতন End Edging তুলা', d: 'Ch 0+00 → 2+000 both sides — মোট 3,542 m', tag: '3542m' },
+      { t: 'PIEE 125mm পুরাতন End Edging তুলা', d: 'Ch 2+000 → 3+000 both sides — মোট 1,918 m', tag: '1918m' },
+      { t: 'PIHBB তুলা — Ch 1+268-1+278 কালভার্ট', d: '77.50 sqm, trapezoid (10+5.5)/2 width', tag: 'CULVERT' },
+      { t: 'PIHBB তুলা — Ch 1+288-1+298 কালভার্ট', d: '77.50 sqm (অপর পাশ)', tag: 'CULVERT' },
+      { t: 'PIBFS তুলা — Ch 1+268-1+278', d: '77.50 sqm BFS layer', tag: 'CULVERT' },
+      { t: 'PIBFS তুলা — Ch 1+288-1+298', d: '77.50 sqm BFS layer (অপর পাশ)', tag: 'CULVERT' },
+      { t: 'Salvaged bricks গণনা + stacking', d: 'Approx: 3,542×8 + 1,918×14 = ~55,000 bricks', tag: 'COUNT' },
+      { t: 'Engineer কে salvage quantity জানানো', d: 'Salvage certificate (পাতা 12 অনুযায়ী)', tag: 'DOCS' }
+    ]
+  },
+  {
+    id: 'p5', num: 'PHASE 5', title: 'Widening (Ch 0+530–1+000 R/S মাত্র)', en: 'Widening 470m only',
+    cost: 'Widening portion',
+    tasks: [
+      { t: 'Box Cutting 300mm deep, 525mm wide', d: '470m × 0.525m × 0.300m = 246.750 sqm', tag: '470m R/S' },
+      { t: 'Sand FM 0.50 sub-grade 125mm', d: '30.844 cum, compaction 98% MDD', tag: 'SUB-GRADE' },
+      { t: 'SBBC sub-base 150mm (38mm Crusher run)', d: '11.625 cum, CBR 30%, 98% Mod. Proctor', tag: 'SUB-BASE' },
+      { t: 'BFS (Brick Flat Soling) single layer', d: '246.750 sqm, 1st class bricks', tag: 'BFS' },
+      { t: 'HBB + 25mm sand cushion (FM 0.50)', d: '246.750 sqm, Herring Bone Bond', tag: 'HBB' },
+      { t: 'New End Edging 75mm (EE)', d: '470m R/S — BC side, ৳1,12,630', tag: '470m' },
+      { t: 'Compaction + level check', d: 'Engineer approval', tag: 'QC' }
+    ]
+  },
+  {
+    id: 'p6', num: 'PHASE 6', title: 'Hard Bed Preparation (HBP)', en: 'Scarifying existing BC',
+    cost: '৳ 3,05,029',
+    tasks: [
+      { t: 'HBP Ch 0+00 → 0+010 flare (50 sqm)', d: 'Width (7.0+5.0+3.0)/3 = 5.0m', tag: 'JUNCTION' },
+      { t: 'HBP Ch 0+010 → 0+530 (1,560 sqm)', d: '520m × 3.0m width, scarify 75mm', tag: '520m' },
+      { t: 'HBP Ch 0+530 → 1+000 (1,128 sqm)', d: '470m × 2.4m (existing crest)', tag: '470m' },
+      { t: 'HBP Ch 1+000 → 3+000 (6,000 sqm)', d: '2000m × 3.0m width', tag: '2000m' },
+      { t: 'Deduction: Edge breaking (Ch 0+609-0+845)', d: '-70.80 sqm বাদ', tag: 'DEDUCT' },
+      { t: 'Deduction: WBM zones + culvert approach', d: '-62.4 -16.8 -90 = -169.2 sqm', tag: 'DEDUCT' },
+      { t: 'Rolling 8-10 MT road roller', d: '100% MDD (Standard Proctor)', tag: 'QC' },
+      { t: 'Total HBP complete: 8,499 sqm', d: 'Engineer measurement verify', tag: 'TOTAL' }
+    ]
+  },
+  {
+    id: 'p7', num: 'PHASE 7', title: 'Edge Breaking Repair (Ch 609-845 R/S)', en: 'Pond-side edge repair',
+    cost: null,
+    tasks: [
+      { t: 'Sand FM 0.50 sub-grade', d: '236m × 0.300m × 0.150m = 10.620 cum', tag: '236m' },
+      { t: 'SBBC sub-base 150mm', d: '10.620 cum (38mm crusher run)', tag: '236m' },
+      { t: 'Compaction test', d: 'CBR 30% minimum', tag: 'QC' }
+    ]
+  },
+  {
+    id: 'p8', num: 'PHASE 8', title: 'Culvert Approach HBB Re-laying', en: 'RCC Box Culvert approaches',
+    cost: null,
+    tasks: [
+      { t: 'Sand sub-grade Ch 1+268-1+278', d: '11.625 cum (0.150m thick)', tag: 'APPROACH-1' },
+      { t: 'Sand sub-grade Ch 1+288-1+298', d: '11.625 cum (অপর পাশ)', tag: 'APPROACH-2' },
+      { t: 'SBBC sub-base Ch 1+268-1+278', d: '11.625 cum (38mm chips)', tag: 'APPROACH-1' },
+      { t: 'SBBC sub-base Ch 1+288-1+298', d: '11.625 cum', tag: 'APPROACH-2' },
+      { t: 'Re-lay BFS (salvaged) — Ch 1+268-1+278', d: '77.50 sqm', tag: 'APPROACH-1' },
+      { t: 'Re-lay BFS (salvaged) — Ch 1+288-1+298', d: '77.50 sqm', tag: 'APPROACH-2' },
+      { t: 'Re-lay HBB (salvaged) — Ch 1+268-1+278', d: '77.50 sqm', tag: 'APPROACH-1' },
+      { t: 'Re-lay HBB (salvaged) — Ch 1+288-1+298', d: '77.50 sqm', tag: 'APPROACH-2' }
+    ]
+  },
+  {
+    id: 'p9', num: 'PHASE 9', title: 'New End Edging 125mm (দুই পাশে 3km)', en: 'New brick edging',
+    cost: '৳ 14,72,874',
+    tasks: [
+      { t: 'EE 125mm Ch 0+00 → 1+000 L/S', d: '1000m × 125mm across, 1st class ইট', tag: '1000m L' },
+      { t: 'EE 125mm Ch 0+00 → 1+000 R/S', d: '1000m × 125mm, Widening side সহ', tag: '1000m R' },
+      { t: 'EE 125mm Ch 1+000 → 2+000 L/S', d: '1000m', tag: '1000m L' },
+      { t: 'EE 125mm Ch 1+000 → 2+000 R/S', d: '1000m', tag: '1000m R' },
+      { t: 'EE 125mm Ch 2+000 → 3+000 L/S', d: '1000m — 10m (culvert gap) = 990m', tag: '990m L' },
+      { t: 'EE 125mm Ch 2+000 → 3+000 R/S', d: '990m (culvert gap বাদ)', tag: '990m R' },
+      { t: 'Gap filling with local sand', d: 'Interstices tightly pack', tag: 'FINISH' },
+      { t: 'Total EE check: 5,980m × ৳246.30', d: '৳14,72,874', tag: 'TOTAL' }
+    ]
+  },
+  {
+    id: 'p10', num: 'PHASE 10', title: 'Sand Binding (SB)', en: 'Sand filler layer',
+    cost: '৳ 30,457',
+    tasks: [
+      { t: 'SB Ch 0+010 → 0+530 (1,560 sqm)', d: 'FM 0.80 @ 0.005 cum/sqm', tag: '520m' },
+      { t: 'SB Ch 0+530 → 1+000 (1,128 sqm)', d: 'Widening portion সহ', tag: '470m' },
+      { t: 'SB Ch 1+298 → 2+100 (2,406 sqm)', d: '802m × 3.0m', tag: '802m' },
+      { t: 'SB Ch 2+812 → 3+000 (564 sqm)', d: '188m × 3.0m', tag: '188m' },
+      { t: 'Deduction zones বাদ', d: '-150 sqm (edge/WBM)', tag: 'DEDUCT' }
+    ]
+  },
+  {
+    id: 'p11', num: 'PHASE 11', title: 'Brick Sub-Base (B&SBC + S&SBC)', en: 'Sub-base course',
+    cost: '৳ 19,86,388',
+    tasks: [
+      { t: 'B&SBC (50mm downgraded) — 226.079 cum', d: 'Salvaged bricks থেকে chips তৈরি', tag: 'SALVAGE' },
+      { t: 'S&SBC (50mm downgraded) — 389.180 cum', d: 'New supply brick chips, LAA ≤ 40', tag: 'NEW' },
+      { t: 'Spreading + leveling', d: 'Camber + super-elevation maintain', tag: 'LAY' },
+      { t: 'Rolling + compaction', d: '100mm max loose thickness per layer', tag: 'QC' }
+    ]
+  },
+  {
+    id: 'p12', num: 'PHASE 12', title: 'WBM (Water Bound Macadam)', en: '150mm CWBM',
+    cost: '৳ 2,76,585',
+    tasks: [
+      { t: 'CWBM Ch 0+00 → 1+000 (widening lane)', d: '462.601 cum total', tag: '150mm' },
+      { t: 'Crusher run aggregate spread', d: '1st class bricks/picked chips, CBR 80%', tag: 'LAY' },
+      { t: 'Dry rolling (8-10 ton)', d: 'First pass', tag: 'ROLL' },
+      { t: 'Choking material (screening) spread', d: '0.012 cum/sqm filler', tag: 'LAY' },
+      { t: 'Wet rolling — water sprinkling', d: 'Continue till grout flushes ahead of roller', tag: 'ROLL' },
+      { t: 'Compaction 98% MDD (Modified Proctor)', d: 'Engineer test', tag: 'QC' }
+    ]
+  },
+  {
+    id: 'p13', num: 'PHASE 13', title: 'Bituminous Work (সবচেয়ে important)', en: 'Prime + Tack + 25mm DC',
+    cost: '৳ 71,50,053',
+    tasks: [
+      { t: 'Surface সম্পূর্ণ পরিষ্কার (dust/debris)', d: 'Broom + compressed air', tag: 'PREP' },
+      { t: 'Prime Coat @ 1.2 L/sqm (8,803 sqm)', d: 'Bitumen 60/70, ASTM/AASHTO spec', tag: 'PRIME' },
+      { t: 'Prime Coat 24 hours curing', d: 'Traffic বন্ধ রাখা', tag: 'WAIT' },
+      { t: 'Tack Coat @ 0.5 kg/sqm (55 sqm)', d: 'কালভার্ট area + culvert approach', tag: 'TACK' },
+      { t: 'Bitumen heating 175-185°C', d: 'Penetration grade 60/70', tag: 'MIX' },
+      { t: 'Aggregate heating 160-170°C', d: 'Job mix design approved', tag: 'MIX' },
+      { t: 'Hot mix laying 25mm DC (8,858 sqm)', d: 'Final mix temp 140°C, uniform thickness', tag: '8858sqm' },
+      { t: 'Steel Drum Roller 8-10 tons (first pass)', d: 'Temp when rolling: not below 90°C', tag: 'ROLL' },
+      { t: 'Pneumatic Tire Roller (intermediate)', d: '3-5 tons, multiple tire', tag: 'ROLL' },
+      { t: 'Final steel roller pass', d: 'Smooth finish, no roller marks', tag: 'ROLL' },
+      { t: 'Core sample test for density', d: '>= 95% of Marshall density', tag: 'QC' }
+    ]
+  },
+  {
+    id: 'p14', num: 'PHASE 14', title: 'RCC Palisading — ১১ locations (521m)', en: 'Section 4 — Protective Works',
+    cost: '৳ 31,83,409',
+    subGroups: true,
+    tasks: [
+      { section: 'LOCATION 1 — Ch 450-467 L/S (17m, D=1.75m, ht=1.50m)' },
+      { t: 'Trench excavate 1m deep', d: 'Width 250mm + 150mm backfill', tag: '17m' },
+      { t: 'RCC post (150×150×3m) driven 2/3 in ground', d: '@ 900mm c/c, ~20 posts', tag: 'POST' },
+      { t: 'Pre-cast RCC plate (1050×600×75mm) fit', d: 'Fitted between posts with bolts', tag: 'PLATE' },
+      { t: '250mm brick wall (1:1.5:3) build', d: 'Cement mortar, pointing', tag: 'WALL' },
+      { t: '150mm layer-by-layer compacted backfill', d: '95% compaction, Clay & Silty', tag: 'BACKFILL' },
+
+      { section: 'LOCATION 2 — Ch 581-845 R/S (264m, D=1.50m, ht=1.60m) ★ সবচেয়ে বড়' },
+      { t: 'Trench excavation 264m', d: 'সবচেয়ে দীর্ঘ — extra time লাগবে', tag: '264m' },
+      { t: 'RCC posts ~300 nos install', d: '@900mm c/c × 2/3 driven', tag: 'POST' },
+      { t: 'Pre-cast plates installation', d: 'Alignment check continuous', tag: 'PLATE' },
+      { t: '250mm brick wall + plastering', d: 'Longest stretch', tag: 'WALL' },
+      { t: 'Backfill ও compaction (95%)', d: 'Layer-wise 150mm', tag: 'BACKFILL' },
+
+      { section: 'LOCATION 3 — Ch 1402-1417 L/S (15m)' },
+      { t: 'Full palisading set (15m)', d: 'Trench → Post → Plate → Wall → Backfill', tag: '15m' },
+
+      { section: 'LOCATION 4 — Ch 1496-1511 L/S (15m)' },
+      { t: 'Full palisading set (15m)', d: 'Standard spec', tag: '15m' },
+
+      { section: 'LOCATION 5 — Ch 1537-1551 L/S (14m, D=1.50m)' },
+      { t: 'Full palisading set (14m)', d: 'Standard spec', tag: '14m' },
+
+      { section: 'LOCATION 6 — Ch 1708-1760 L/S (52m, D=1.82m, ht=1.55m)' },
+      { t: 'Full palisading set (52m)', d: '~60 posts', tag: '52m' },
+
+      { section: 'LOCATION 7 — Ch 1807-1829 L/S (22m)' },
+      { t: 'Full palisading set (22m)', d: '', tag: '22m' },
+
+      { section: 'LOCATION 8 — Ch 1862-1880 L/S (18m)' },
+      { t: 'Full palisading set (18m)', d: 'ht=1.45m, D=1.67m', tag: '18m' },
+
+      { section: 'LOCATION 9 — Ch 2602-2642 L/S (40m)' },
+      { t: 'Full palisading set (40m)', d: '', tag: '40m' },
+
+      { section: 'LOCATION 10 — Ch 2812-2836 R/S (24m, ht=1.40m)' },
+      { t: 'Full palisading set (24m)', d: 'Right Side', tag: '24m' },
+
+      { section: 'LOCATION 11 — Ch 2960-3000 L/S (40m, D=5.05m ★ ভিন্ন)' },
+      { t: 'Full palisading set (40m)', d: 'Design D বড় — junction এলাকা', tag: '40m' },
+
+      { section: '— FINAL PALISADING CHECK —' },
+      { t: 'মোট 521m verify', d: '৳6,110.19/m × 521m = ৳31,83,409', tag: 'TOTAL' },
+      { t: 'Engineer এর joint measurement', d: 'সব 11 location check', tag: 'DOCS' }
+    ]
+  },
+  {
+    id: 'p15', num: 'PHASE 15', title: 'Road Safety কাজ', en: 'Section 5 — Road Safety',
+    cost: '৳ 1,25,910',
+    tasks: [
+      { t: 'Road Name Plate (1 no)', d: 'Ch 0+00 এ, RCC (1:2:4) with bricks, paint', tag: '৳7,476' },
+      { t: 'KM Post (4 nos)', d: 'প্রতি 1km এ, ৳3,950 each', tag: '৳15,803' },
+      { t: 'RCC Guide Post (30 nos)', d: 'Culvert approach, 200mm dia, 1.70m long', tag: '৳56,094' },
+      { t: 'Cautionary Sign Plates (7 nos)', d: 'Retro-reflective, 600mm equilateral triangle', tag: '৳46,537' },
+      { t: 'Painting white/yellow bands', d: 'Guide post + signs', tag: 'PAINT' },
+      { t: 'Foundation concrete setting', d: '28 days curing for signs', tag: 'WAIT' }
+    ]
+  },
+  {
+    id: 'p16', num: 'PHASE 16', title: 'Finishing ও Handover', en: 'Final closeout',
+    cost: null,
+    tasks: [
+      { t: 'Final surface dressing', d: 'সব rough spots ঠিক করা', tag: 'FINISH' },
+      { t: 'Edge finishing ও turfing area dressing', d: 'Side slopes clean', tag: 'FINISH' },
+      { t: 'সম্পূর্ণ debris cleanup', d: 'রাস্তার পাশ থেকে সব leftover সরানো', tag: 'CLEAN' },
+      { t: 'Temporary markers + barricade সরানো', d: 'Traffic পুরোপুরি open', tag: 'CLEAN' },
+      { t: '"After" photos — প্রতি 100m', d: 'Before/after comparison', tag: 'PHOTO' },
+      { t: 'Material test reports জমা', d: 'Bitumen, aggregate, brick, compaction', tag: 'DOCS' },
+      { t: 'As-built drawings তৈরি', d: 'Actual measurement অনুযায়ী', tag: 'DOCS' },
+      { t: 'Joint measurement with Engineer', d: 'SAE + UE + Executive Engineer', tag: 'DOCS' },
+      { t: 'Measurement Book (MB) entry + sign', d: 'All 5 sections item-wise', tag: 'DOCS' },
+      { t: 'Final bill submission', d: 'IPC + supporting documents', tag: 'DOCS' },
+      { t: 'Handover Certificate সংগ্রহ', d: 'LGED থেকে project completion certificate', tag: 'DOCS' },
+      { t: 'Defect Liability Period start (1 year)', d: 'কোন ক্ষতি হলে free repair', tag: 'WARRANTY' }
+    ]
+  }
+];
+
+// Flatten tasks + assign unique IDs
+let totalTasks = 0;
+PHASES.forEach((p, pi) => {
+  p.totalTasks = 0;
+  p.tasks.forEach((task, ti) => {
+    if (task.section) return; // section heading, not a task
+    task.id = `${p.id}_t${ti}`;
+    p.totalTasks++;
+    totalTasks++;
+  });
+});
+
+// State
+let state = {}; // id -> boolean
+
+// Storage helpers (fallback to in-memory if window.storage unavailable)
+const STORAGE_KEY = 'koiya_road_checklist_v1';
+async function loadState() {
+  try {
+    if (typeof window.storage !== 'undefined') {
+      const res = await window.storage.get(STORAGE_KEY);
+      if (res && res.value) return JSON.parse(res.value);
+    }
+  } catch(e) { /* key doesn't exist — fresh start */ }
+  return {};
+}
+async function saveState() {
+  try {
+    if (typeof window.storage !== 'undefined') {
+      await window.storage.set(STORAGE_KEY, JSON.stringify(state));
+    }
+  } catch(e) { console.error('Save failed:', e); }
+}
+
+function showToast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 1800);
+}
+
+function countDone(phase) {
+  let done = 0;
+  phase.tasks.forEach(t => { if (!t.section && state[t.id]) done++; });
+  return done;
+}
+
+function updateProgress() {
+  let totalDone = 0;
+  PHASES.forEach(p => {
+    const done = countDone(p);
+    totalDone += done;
+    const pct = p.totalTasks ? Math.round((done / p.totalTasks) * 100) : 0;
+    const phaseEl = document.getElementById(p.id);
+    if (!phaseEl) return;
+    const ring = phaseEl.querySelector('.ring-fg');
+    const ringText = phaseEl.querySelector('.phase-progress-text');
+    const circ = 2 * Math.PI * 16;
+    if (ring) {
+      ring.style.strokeDasharray = circ;
+      ring.style.strokeDashoffset = circ - (circ * pct / 100);
+    }
+    if (ringText) ringText.textContent = pct + '%';
+    if (pct === 100) phaseEl.classList.add('done');
+    else phaseEl.classList.remove('done');
+  });
+  const pct = totalTasks ? Math.round((totalDone / totalTasks) * 100) : 0;
+  document.getElementById('overallPct').textContent = pct + '%';
+  document.getElementById('overallBar').style.width = pct + '%';
+  document.getElementById('overallCount').textContent = `${totalDone} / ${totalTasks} tasks complete`;
+  if (pct === 100) {
+    const stamp = document.getElementById('stamp');
+    stamp.classList.add('show');
+    setTimeout(() => stamp.classList.remove('show'), 2500);
+  }
+}
+
+function render() {
+  const container = document.getElementById('phases');
+  container.innerHTML = '';
+  PHASES.forEach((p, idx) => {
+    const done = countDone(p);
+    const pct = p.totalTasks ? Math.round((done / p.totalTasks) * 100) : 0;
+    const circ = 2 * Math.PI * 16;
+    const offset = circ - (circ * pct / 100);
+
+    let tasksHtml = '';
+    p.tasks.forEach(task => {
+      if (task.section) {
+        tasksHtml += `<div class="sub-section">${escapeHtml(task.section)}</div>`;
+      } else {
+        const checked = state[task.id] ? 'checked' : '';
+        const tagClass = tagClassFor(task.tag);
+        tasksHtml += `
+          <div class="task ${checked}" data-id="${task.id}">
+            <div class="checkbox">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="task-content">
+              <div class="task-title">${escapeHtml(task.t)}</div>
+              ${task.d ? `<div class="task-detail">${escapeHtml(task.d)}</div>` : ''}
+            </div>
+            ${task.tag ? `<div class="task-tag ${tagClass}">${escapeHtml(task.tag)}</div>` : ''}
+          </div>
+        `;
+      }
+    });
+
+    const el = document.createElement('div');
+    el.className = 'phase' + (idx === 0 ? ' open' : '');
+    el.id = p.id;
+    el.innerHTML = `
+      <div class="phase-header">
+        <div class="phase-num">${escapeHtml(p.num)}</div>
+        <div class="phase-title-wrap">
+          <h2 class="phase-title">${escapeHtml(p.title)}</h2>
+          <div class="phase-en">${escapeHtml(p.en)}${p.cost ? ' · ' + escapeHtml(p.cost) : ''}</div>
+        </div>
+        <div class="phase-meta">
+          <div class="phase-progress-ring">
+            <svg viewBox="0 0 40 40">
+              <circle class="ring-bg" cx="20" cy="20" r="16"></circle>
+              <circle class="ring-fg" cx="20" cy="20" r="16"
+                stroke-dasharray="${circ}" stroke-dashoffset="${offset}"></circle>
+            </svg>
+            <div class="phase-progress-text">${pct}%</div>
+          </div>
+          <div class="phase-arrow"></div>
+        </div>
+      </div>
+      <div class="phase-body"><div class="phase-body-inner">${tasksHtml}</div></div>
+    `;
+    container.appendChild(el);
+
+    if (pct === 100) el.classList.add('done');
+
+    // Header toggle
+    el.querySelector('.phase-header').addEventListener('click', () => {
+      el.classList.toggle('open');
+    });
+
+    // Task clicks
+    el.querySelectorAll('.task').forEach(taskEl => {
+      taskEl.addEventListener('click', async () => {
+        const id = taskEl.dataset.id;
+        state[id] = !state[id];
+        taskEl.classList.toggle('checked', state[id]);
+        if (navigator.vibrate) navigator.vibrate(15);
+        await saveState();
+        updateProgress();
+      });
+    });
+  });
+}
+
+function tagClassFor(tag) {
+  if (!tag) return '';
+  if (['DONE','TOTAL','QC','APPROVAL'].includes(tag)) return 'ok';
+  if (['WAIT','WARRANTY','DEDUCT'].includes(tag)) return 'warn';
+  if (['DOCS','PLAN','SETUP','SAFETY','PHOTO','COUNT','CLEAN','FINISH','PAINT','SURVEY'].includes(tag)) return 'muted';
+  return '';
+}
+
+function escapeHtml(str) {
+  return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// Buttons
+let allExpanded = false;
+document.getElementById('expandAllBtn').addEventListener('click', () => {
+  allExpanded = !allExpanded;
+  document.querySelectorAll('.phase').forEach(p => p.classList.toggle('open', allExpanded));
+  document.getElementById('expandAllBtn').textContent = allExpanded ? '⇧ সব বন্ধ / Collapse All' : '⇩ সব খুলুন / Expand All';
+});
+
+document.getElementById('resetBtn').addEventListener('click', async () => {
+  if (!confirm('সব টিক মার্ক মুছে ফেলবেন? এটি undo করা যাবে না।\n\nReset all progress? This cannot be undone.')) return;
+  state = {};
+  await saveState();
+  render();
+  updateProgress();
+  showToast('✓ Reset complete');
+});
+
+// Init
+(async () => {
+  state = await loadState();
+  render();
+  updateProgress();
+  document.getElementById('loading').classList.add('hide');
+  setTimeout(() => document.getElementById('loading').remove(), 500);
+})();
+</script>
+
+</body>
+</html>

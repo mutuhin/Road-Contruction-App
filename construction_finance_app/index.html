@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Road Construction Finance App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Road Construction Finance Management</h1>
+    
+    <div id="dashboard">
+        <h2>Dashboard</h2>
+        <p>Total Money Spent: <span id="totalSpent">0</span></p>
+        <p>Total Due: <span id="totalDue">0</span></p>
+    </div>
+    
+    <div id="sections">
+        <div class="section">
+            <h3>Labour</h3>
+            <form id="labourForm">
+                <input type="text" id="labourName" placeholder="Labour Name" required>
+                <input type="date" id="labourDate" required>
+                <input type="number" id="labourMoney" placeholder="Money" required>
+                <button type="submit">Add Labour</button>
+            </form>
+            <ul id="labourList"></ul>
+        </div>
+        
+        <div class="section">
+            <h3>Raw Materials</h3>
+            <form id="materialForm">
+                <input type="text" id="buyerName" placeholder="Buyer Name" required>
+                <input type="date" id="materialDate" required>
+                <input type="number" id="billAmount" placeholder="Bill Amount" required>
+                <input type="text" id="quantity" placeholder="Quantity" required>
+                <input type="number" id="paidAmount" placeholder="Paid Amount" required>
+                <input type="number" id="dueAmount" placeholder="Due Amount" required>
+                <button type="submit">Add Material</button>
+            </form>
+            <ul id="materialList"></ul>
+        </div>
+        
+        <div class="section">
+            <h3>Payments</h3>
+            <form id="paymentForm">
+                <select id="paymentType">
+                    <option value="bank">Bank Transfer</option>
+                    <option value="cash">Cash</option>
+                </select>
+                <input type="text" id="paymentDetails" placeholder="Details (Cheque/NPSB/Number)" required>
+                <input type="file" id="paymentImage" accept="image/*">
+                <input type="number" id="paymentAmount" placeholder="Amount" required>
+                <button type="submit">Add Payment</button>
+            </form>
+            <ul id="paymentList"></ul>
+        </div>
+        
+        <div class="section">
+            <h3>Engineer Dowry</h3>
+            <form id="engineerForm">
+                <input type="text" id="engineerName" placeholder="Engineer Name" required>
+                <input type="date" id="engineerDate" required>
+                <input type="number" id="engineerAmount" placeholder="Amount" required>
+                <select id="engineerPaymentType">
+                    <option value="cash">Cash</option>
+                    <option value="bank">Bank Transfer</option>
+                </select>
+                <button type="submit">Add Engineer Payment</button>
+            </form>
+            <ul id="engineerList"></ul>
+        </div>
+        
+        <div class="section">
+            <h3>Expenses</h3>
+            <form id="expenseForm">
+                <input type="text" id="expenseDescription" placeholder="Description" required>
+                <input type="date" id="expenseDate" required>
+                <input type="number" id="expenseAmount" placeholder="Amount" required>
+                <button type="submit">Add Expense</button>
+            </form>
+            <ul id="expenseList"></ul>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

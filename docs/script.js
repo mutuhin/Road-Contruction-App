@@ -175,15 +175,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const billAmtEl        = document.getElementById('billAmountInput');
 
     function updateBillForm() {
-        const isTender = billCatEl.value === 'tender';
-        tenderValueGroup.classList.toggle('hidden', !isTender);
-        tenderPctGroup.classList.toggle('hidden', !isTender);
-        billAmtEl.readOnly = isTender;
-        if (!isTender) { billAmtEl.readOnly = false; billAmtEl.value = ''; }
+        const cat = billCatEl.value;
+        const hasCalc = cat === 'tender' || cat === 'govt' || cat === 'lged';
+        tenderValueGroup.classList.toggle('hidden', !hasCalc);
+        tenderPctGroup.classList.toggle('hidden', !hasCalc);
+        billAmtEl.readOnly = hasCalc;
+        if (!hasCalc) { billAmtEl.readOnly = false; billAmtEl.value = ''; tenderValueEl.value = ''; tenderPctEl.value = ''; }
         calcTenderAmt();
     }
     function calcTenderAmt() {
-        if (billCatEl.value !== 'tender') return;
+        const cat = billCatEl.value;
+        if (cat !== 'tender' && cat !== 'govt' && cat !== 'lged') return;
         const v = parseFloat(tenderValueEl.value) || 0;
         const p = parseFloat(tenderPctEl.value) || 0;
         billAmtEl.value = (v - (v * p / 100)).toFixed(2);
@@ -208,7 +210,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         const entry = { cat, party, description, amount, dueDate, status: 'pending', created: new Date().toISOString().slice(0,10) };
-        if (cat === 'tender') {
+        if (cat === 'tender' || cat === 'govt' || cat === 'lged') {
             entry.tenderValue = parseFloat(document.getElementById('tenderValue').value) || 0;
             entry.tenderPct   = parseFloat(document.getElementById('tenderPct').value) || 0;
         }
@@ -901,7 +903,7 @@ function displayBills() {
                 <div class="bill-info">
                     <span class="bill-party">${bill.party || '—'}</span>
                     <span class="bill-desc">${bill.description}</span>
-                    ${bill.cat === 'tender' && bill.tenderValue ? `<span class="bill-tender-meta">Tender $${Number(bill.tenderValue).toLocaleString()} × ${bill.tenderPct}%</span>` : ''}
+                    ${bill.tenderValue ? `<span class="bill-tender-meta">$${Number(bill.tenderValue).toLocaleString()} − ${bill.tenderPct}%</span>` : ''}
                     <span class="bill-due-date" style="color:${overdue ? 'var(--red)' : 'var(--muted)'}">Due: ${bill.dueDate}</span>
                 </div>
                 <span class="bill-amount">$${Number(bill.amount).toLocaleString()}</span>

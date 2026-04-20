@@ -183,16 +183,60 @@ let data = {
     expenses: []
 };
 
+const toArr = v => !v ? [] : Array.isArray(v) ? v : Object.values(v);
+
+function setSyncStatus(status) {
+    const el = document.getElementById('syncStatus');
+    if (!el) return;
+    const map = {
+        connected:    { text: '● Live',         color: 'var(--green)' },
+        disconnected: { text: '○ Offline',       color: 'var(--muted)' },
+        saving:       { text: '↑ Saving…',       color: 'var(--amber)' },
+        local:        { text: '⬡ Local only',    color: 'var(--muted)' },
+    };
+    const s = map[status] || map.local;
+    el.textContent = s.text;
+    el.style.color = s.color;
+}
+
 function loadData() {
-    const stored = localStorage.getItem(DATABASE_KEY);
-    if (stored) {
-        data = JSON.parse(stored);
+    if (window.firebaseDB) {
+        // Real-time listener — fires on every remote or local change
+        window.firebaseDB.ref('data').on('value', snapshot => {
+            const val = snapshot.val();
+            if (val) {
+                data = {
+                    labour:    toArr(val.labour),
+                    materials: toArr(val.materials),
+                    payments:  toArr(val.payments),
+                    engineers: toArr(val.engineers),
+                    expenses:  toArr(val.expenses),
+                };
+                localStorage.setItem(DATABASE_KEY, JSON.stringify(data));
+            }
+            displayData();
+            updateDashboard();
+        });
+
+        // Connection status indicator
+        window.firebaseDB.ref('.info/connected').on('value', snap => {
+            setSyncStatus(snap.val() ? 'connected' : 'disconnected');
+        });
+    } else {
+        // Fallback: localStorage only
+        const stored = localStorage.getItem(DATABASE_KEY);
+        if (stored) data = JSON.parse(stored);
+        displayData();
+        setSyncStatus('local');
     }
-    displayData();
 }
 
 function saveData() {
     localStorage.setItem(DATABASE_KEY, JSON.stringify(data));
+    if (window.firebaseDB) {
+        setSyncStatus('saving');
+        window.firebaseDB.ref('data').set(data);
+    }
 }
 
 function exportData() {

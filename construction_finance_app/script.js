@@ -492,17 +492,36 @@ function showTotalSpentDetails() {
 
 function showTotalDueDetails() {
     const totalDue = data.materials.reduce((sum, item) => sum + item.due, 0);
-    let details = 'Raw Material Due Details:\n\n';
-    data.materials.forEach(item => {
-        if (item.due > 0) {
-            details += `${item.date}: ${item.buyer} / ${item.materialName} - Bill $${item.bill}, Paid $${item.paid}, Due $${item.due}\n`;
-        }
-    });
-    if (!data.materials.some(item => item.due > 0)) {
-        details += 'No outstanding due details found.';
+    const items = data.materials.filter(item => item.due > 0);
+    let html = '';
+    if (!items.length) {
+        html = '<p class="due-empty">No outstanding due details found.</p>';
+    } else {
+        items.forEach(item => {
+            html += `<div class="due-item">
+                <div class="due-meta">
+                    <span class="due-date">${item.date}</span>
+                    <span class="due-name">${item.buyer} / ${item.materialName}</span>
+                </div>
+                <span class="due-amount">Due $${Number(item.due).toLocaleString()}</span>
+            </div>`;
+        });
     }
-    details += `\nTotal Due: $${totalDue.toFixed(2)}`;
-    showDetails('Total Due', details);
+    html += `<div class="due-total">Total Due: $${totalDue.toFixed(2)}</div>`;
+    showDetailsHTML('Total Due', html);
+}
+
+function showDetailsHTML(title, htmlContent) {
+    const detailPanel = document.getElementById('detailPanel');
+    const detailsTitle = document.getElementById('detailsTitle');
+    const detailsContent = document.getElementById('detailsContent');
+    if (detailPanel && detailsTitle && detailsContent) {
+        detailsTitle.textContent = title;
+        detailsContent.innerHTML = htmlContent;
+        detailsContent.classList.add('html-content');
+        detailPanel.classList.remove('hidden');
+        detailPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
 }
 
 function showDetails(title, content) {
@@ -512,6 +531,7 @@ function showDetails(title, content) {
     if (detailPanel && detailsTitle && detailsContent) {
         detailsTitle.textContent = title;
         detailsContent.textContent = content;
+        detailsContent.classList.remove('html-content');
         detailPanel.classList.remove('hidden');
         detailPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
     } else {

@@ -1,9 +1,6 @@
 const DATABASE_KEY = 'roadConstructionFinanceDB';
 
-// ── Bangla number formatting ──────────────────────
-const BN = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
-const toBn = s => String(s).replace(/\d/g, d => BN[+d]);
-const fmtTaka = n => '৳\u00a0' + toBn(Math.abs(Number(n)).toLocaleString(undefined, { maximumFractionDigits: 2 }));
+const fmtTaka = n => '৳\u00a0' + Math.abs(Number(n)).toLocaleString(undefined, { maximumFractionDigits: 2 });
 
 document.addEventListener('DOMContentLoaded', function() {
     loadData();
@@ -16,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const date = document.getElementById('labourDate').value;
         const money = parseFloat(document.getElementById('labourMoney').value);
         if (!name || !date || isNaN(money) || money <= 0) {
-            alert('Please enter valid data.');
+            alert('সঠিক তথ্য দিন।');
             return;
         }
         addLabour(name, date, money);
@@ -58,11 +55,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const paymentType = matPaymentTypeInput.value;
         const paymentRef = matPaymentRefInput.value.trim();
         if (!buyer || !materialName || !date || isNaN(bill) || bill < 0 || !quantity || isNaN(paid) || paid < 0 || paid > bill) {
-            alert('Please enter valid data. Paid amount must be between 0 and bill amount.');
+            alert('সঠিক তথ্য দিন। পরিশোধিত পরিমাণ বিলের চেয়ে বেশি হতে পারবে না।');
             return;
         }
         if (paid > 0 && paymentType === 'bank' && !paymentRef) {
-            alert('Please enter a reference number for bank transfer.');
+            alert('ব্যাংক ট্রান্সফারের জন্য রেফারেন্স নম্বর দিন।');
             return;
         }
         addMaterial(buyer, materialName, date, bill, quantity, paid, due, paymentType, paymentRef);
@@ -79,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const date = document.getElementById('engineerDate').value;
         const amount = parseFloat(document.getElementById('engineerAmount').value);
         const paymentType = document.getElementById('engineerPaymentType').value;        if (!name || !date || isNaN(amount) || amount <= 0) {
-            alert('Please enter valid data.');
+            alert('সঠিক তথ্য দিন।');
             return;
         }        addEngineer(name, date, amount, paymentType);
         this.reset();
@@ -91,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const description = document.getElementById('expenseDescription').value;
         const date = document.getElementById('expenseDate').value;
         const amount = parseFloat(document.getElementById('expenseAmount').value);        if (!description || !date || isNaN(amount) || amount <= 0) {
-            alert('Please enter valid data.');
+            alert('সঠিক তথ্য দিন।');
             return;
         }        addExpense(description, date, amount);
         this.reset();
@@ -126,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const amount = parseFloat(document.getElementById('gotBillAmount').value);
         const date   = document.getElementById('gotBillDate').value;
         if (!date || isNaN(amount) || amount <= 0) {
-            alert('Please enter a valid amount and date.');
+            alert('সঠিক পরিমাণ ও তারিখ দিন।');
             return;
         }
         data.govtReceived.push({ description: description || 'Received', amount, date });
@@ -143,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const amount = parseFloat(document.getElementById('cashAmount').value);
         const date   = document.getElementById('cashDate').value;
         if (!description || !date || isNaN(amount) || amount <= 0) {
-            alert('Please enter valid data.');
+            alert('সঠিক তথ্য দিন।');
             return;
         }
         data.cashIn.push({ description, amount, date });
@@ -161,7 +158,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const date   = document.getElementById('contractDate').value;
         const note   = document.getElementById('contractNote').value.trim();
         if (!name || !date || isNaN(amount) || amount <= 0) {
-            alert('Please enter valid data.');
+            alert('সঠিক তথ্য দিন।');
             return;
         }
         data.contracts.push({ name, amount, date, note });
@@ -187,7 +184,7 @@ document.addEventListener('DOMContentLoaded', function() {
         billAmtEl.readOnly = hasCalc;
         if (!hasCalc) { billAmtEl.readOnly = false; billAmtEl.value = ''; tenderValueEl.value = ''; tenderPctEl.value = ''; }
         const lbl = document.getElementById('tenderValueLabel');
-        if (lbl) lbl.textContent = cat === 'tender' ? 'Tender Value (৳)' : 'Base Value (৳)';
+        if (lbl) lbl.textContent = cat === 'tender' ? 'টেন্ডার মূল্য (৳)' : 'মূল মান (৳)';
         calcTenderAmt();
     }
     function calcTenderAmt() {
@@ -219,7 +216,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const amount      = parseFloat(document.getElementById('billAmountInput').value);
         const dueDate     = document.getElementById('billDueDate').value;
         if (!description || !amount || !dueDate) {
-            alert('Please fill all required fields.');
+            alert('সব প্রয়োজনীয় তথ্য পূরণ করুন।');
             return;
         }
         const entry = { cat, party, description, amount, dueDate, status: 'pending', created: new Date().toISOString().slice(0,10) };
@@ -281,7 +278,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Clear data button
     document.getElementById('clearDataBtn').addEventListener('click', function() {
-        if (confirm('Are you sure you want to clear all data? This cannot be undone.')) {
+        if (confirm('সব ডেটা মুছে যাবে। নিশ্চিত?')) {
             data = {
                 labour: [],
                 materials: [],
@@ -576,7 +573,7 @@ function displayData() {
 }
 
 function deleteItem(type, index) {
-    if (!confirm('Delete this entry?')) return;
+    if (!confirm('এই এন্ট্রি মুছবেন?')) return;
     if (type === 'bills') {
         data.bills.splice(index, 1);
     } else if (type === 'contracts') {
@@ -623,7 +620,7 @@ function displayMaterials() {
     data.materials.forEach((item, index) => {
         const li = document.createElement('li');
         const payLabel = item.paymentType === 'bank' ? `Bank${item.paymentRef ? ' · ' + item.paymentRef : ''}` : 'Cash';
-        li.innerHTML = `${item.buyer} - ${item.materialName} - ${item.date} - Bill: ${fmtTaka(item.bill)}, Paid: ${fmtTaka(item.paid)} <span class="pay-method-tag">${payLabel}</span>, Due: ${fmtTaka(item.due)} <button class="delete-btn" data-type="materials" data-index="${index}">×</button>`;
+        li.innerHTML = `${item.buyer} - ${item.materialName} - ${item.date} - বিল: ${fmtTaka(item.bill)}, পরিশোধ: ${fmtTaka(item.paid)} <span class="pay-method-tag">${payLabel}</span>, বাকি: ${fmtTaka(item.due)} <button class="delete-btn" data-type="materials" data-index="${index}">×</button>`;
         li.addEventListener('click', (e) => {
             if (e.target.classList.contains('delete')) return;
             showMaterialDetails(item.buyer, item.materialName);
@@ -756,7 +753,7 @@ function updateDashboard() {
         pnlResult.className = 'pnl-amount pnl-result ' + (isProfit ? 'is-profit' : 'is-loss');
     }
     if (pnlLabel) {
-        pnlLabel.textContent = isProfit ? 'Profit' : 'Loss';
+        pnlLabel.textContent = isProfit ? 'লাভ' : 'লোকসান';
         pnlLabel.className = 'pnl-label pnl-result-label ' + (isProfit ? 'is-profit' : 'is-loss');
     }
 
@@ -766,7 +763,7 @@ function updateDashboard() {
 function showLabourDetails(name) {
     const items = data.labour.filter(item => item.name === name);
     const total = items.reduce((sum, item) => sum + item.money, 0);
-    let html = `<div class="detail-header">Total Paid: <strong>${fmtTaka(total)}</strong></div>`;
+    let html = `<div class="detail-header">মোট পরিশোধ: <strong>${fmtTaka(total)}</strong></div>`;
     items.forEach(item => {
         html += `<div class="detail-item">
             <span class="detail-date">${item.date}</span>
@@ -780,31 +777,31 @@ function showMaterialDetails(buyer, materialName) {
     const items = data.materials.filter(item => item.buyer === buyer && item.materialName === materialName);
     const totalPaid = items.reduce((sum, item) => sum + item.paid, 0);
     const totalDue = items.reduce((sum, item) => sum + item.due, 0);
-    let html = `<div class="detail-header">Paid <strong>${fmtTaka(totalPaid)}</strong> · Due <span class="detail-due-text">${fmtTaka(totalDue)}</span></div>`;
+    let html = `<div class="detail-header">পরিশোধ <strong>${fmtTaka(totalPaid)}</strong> · বাকি <span class="detail-due-text">${fmtTaka(totalDue)}</span></div>`;
     items.forEach(item => {
         const payLabel = item.paymentType === 'bank'
-            ? `Bank Transfer${item.paymentRef ? ' · ' + item.paymentRef : ''}`
-            : 'Cash';
+            ? `ব্যাংক ট্রান্সফার${item.paymentRef ? ' · ' + item.paymentRef : ''}`
+            : 'নগদ';
         html += `<div class="detail-item">
             <div class="detail-meta">
                 <span class="detail-date">${item.date}</span>
-                <span class="detail-name">Qty: ${item.quantity}</span>
+                <span class="detail-name">পরিমাণ: ${item.quantity}</span>
                 <span class="detail-paymethod">${payLabel}</span>
             </div>
             <div class="detail-amounts">
-                <span class="detail-paid-tag">Paid ${fmtTaka(item.paid)}</span>
-                ${item.due > 0 ? `<span class="detail-due-tag">Due ${fmtTaka(item.due)}</span>` : ''}
+                <span class="detail-paid-tag">পরিশোধ ${fmtTaka(item.paid)}</span>
+                ${item.due > 0 ? `<span class="detail-due-tag">বাকি ${fmtTaka(item.due)}</span>` : ''}
             </div>
         </div>`;
     });
-    html += `<div class="detail-total">Total Paid: ${fmtTaka(totalPaid)}</div>`;
+    html += `<div class="detail-total">মোট পরিশোধ: ${fmtTaka(totalPaid)}</div>`;
     showDetailsHTML(`${buyer} / ${materialName}`, html);
 }
 
 function showEngineerDetails(name) {
     const items = data.engineers.filter(item => item.name === name);
     const total = items.reduce((sum, item) => sum + item.amount, 0);
-    let html = `<div class="detail-header">Total Paid: <strong>${fmtTaka(total)}</strong></div>`;
+    let html = `<div class="detail-header">মোট পরিশোধ: <strong>${fmtTaka(total)}</strong></div>`;
     items.forEach(item => {
         html += `<div class="detail-item">
             <div class="detail-meta">
@@ -819,22 +816,22 @@ function showEngineerDetails(name) {
 
 function showPaymentDetails(index) {
     const payment = data.payments[index];
-    showDetails('Payment details', `Type: ${payment.type}\nDetails: ${payment.details || 'cash'}\nAmount: ${fmtTaka(payment.amount)}`);
+    showDetails('পেমেন্টের বিবরণ', `ধরন: ${payment.type}\nবিবরণ: ${payment.details || 'নগদ'}\nপরিমাণ: ${fmtTaka(payment.amount)}`);
 }
 
 function showBuyerDetails(buyer) {
     const items = data.materials.filter(item => item.buyer === buyer);
     if (!items.length) {
-        showDetailsHTML(buyer, '<p class="due-empty">No materials found for this buyer.</p>');
+        showDetailsHTML(buyer, '<p class="due-empty">কোনো মালামাল পাওয়া যায়নি।</p>');
         return;
     }
     const totalPaid = items.reduce((sum, item) => sum + item.paid, 0);
     const totalDue = items.reduce((sum, item) => sum + item.due, 0);
-    let html = `<div class="detail-header">Paid <strong>${fmtTaka(totalPaid)}</strong> · Due <span class="detail-due-text">${fmtTaka(totalDue)}</span></div>`;
+    let html = `<div class="detail-header">পরিশোধ <strong>${fmtTaka(totalPaid)}</strong> · বাকি <span class="detail-due-text">${fmtTaka(totalDue)}</span></div>`;
     items.forEach(item => {
         const payLabel = item.paymentType === 'bank'
-            ? `Bank Transfer${item.paymentRef ? ' · ' + item.paymentRef : ''}`
-            : 'Cash';
+            ? `ব্যাংক ট্রান্সফার${item.paymentRef ? ' · ' + item.paymentRef : ''}`
+            : 'নগদ';
         html += `<div class="detail-item">
             <div class="detail-meta">
                 <span class="detail-date">${item.date}</span>
@@ -842,24 +839,24 @@ function showBuyerDetails(buyer) {
                 <span class="detail-paymethod">${payLabel}</span>
             </div>
             <div class="detail-amounts">
-                <span class="detail-paid-tag">Paid ${fmtTaka(item.paid)}</span>
-                ${item.due > 0 ? `<span class="detail-due-tag">Due ${fmtTaka(item.due)}</span>` : ''}
+                <span class="detail-paid-tag">পরিশোধ ${fmtTaka(item.paid)}</span>
+                ${item.due > 0 ? `<span class="detail-due-tag">বাকি ${fmtTaka(item.due)}</span>` : ''}
             </div>
         </div>`;
     });
-    html += `<div class="detail-total">Total Paid: ${fmtTaka(totalPaid)}</div>`;
+    html += `<div class="detail-total">মোট পরিশোধ: ${fmtTaka(totalPaid)}</div>`;
     showDetailsHTML(buyer, html);
 }
 
 function showMaterialNameDetails(name) {
     const items = data.materials.filter(item => item.materialName === name);
     if (!items.length) {
-        showDetailsHTML(name, '<p class="due-empty">No transactions found for this material.</p>');
+        showDetailsHTML(name, '<p class="due-empty">কোনো লেনদেন পাওয়া যায়নি।</p>');
         return;
     }
     const totalPaid = items.reduce((sum, item) => sum + item.paid, 0);
     const totalDue = items.reduce((sum, item) => sum + item.due, 0);
-    let html = `<div class="detail-header">Paid <strong>${fmtTaka(totalPaid)}</strong> · Due <span class="detail-due-text">${fmtTaka(totalDue)}</span></div>`;
+    let html = `<div class="detail-header">পরিশোধ <strong>${fmtTaka(totalPaid)}</strong> · বাকি <span class="detail-due-text">${fmtTaka(totalDue)}</span></div>`;
     items.forEach(item => {
         html += `<div class="detail-item">
             <div class="detail-meta">
@@ -867,21 +864,21 @@ function showMaterialNameDetails(name) {
                 <span class="detail-name">${item.buyer}</span>
             </div>
             <div class="detail-amounts">
-                <span class="detail-paid-tag">Paid ${fmtTaka(item.paid)}</span>
-                ${item.due > 0 ? `<span class="detail-due-tag">Due ${fmtTaka(item.due)}</span>` : ''}
+                <span class="detail-paid-tag">পরিশোধ ${fmtTaka(item.paid)}</span>
+                ${item.due > 0 ? `<span class="detail-due-tag">বাকি ${fmtTaka(item.due)}</span>` : ''}
             </div>
         </div>`;
     });
-    html += `<div class="detail-total">Total Paid: ${fmtTaka(totalPaid)}</div>`;
+    html += `<div class="detail-total">মোট পরিশোধ: ${fmtTaka(totalPaid)}</div>`;
     showDetailsHTML(name, html);
 }
 
 
 const BILL_CAT_LABELS = {
-    tender: 'Tender Drop',
-    govt:   'Govt Fees',
-    lged:   'LGED Office Fees',
-    other:  'Other'
+    tender: 'টেন্ডার ড্রপ',
+    govt:   'সরকারি ফি',
+    lged:   'এলজিইডি ফি',
+    other:  'অন্যান্য'
 };
 const BILL_CAT_COLORS = {
     tender: 'var(--amber)',
@@ -909,7 +906,7 @@ function displayBills() {
                     ${BILL_CAT_LABELS[bill.cat] || bill.cat}
                 </span>
                 <span class="bill-status-tag ${isPaid ? 'bill-tag-paid' : overdue ? 'bill-tag-overdue' : 'bill-tag-pending'}">
-                    ${isPaid ? '✓ Paid' : overdue ? '! Overdue' : '⏳ Pending'}
+                    ${isPaid ? '✓ পরিশোধ' : overdue ? '! মেয়াদোত্তীর্ণ' : '⏳ বাকি'}
                 </span>
             </div>
             <div class="bill-middle">
@@ -917,12 +914,12 @@ function displayBills() {
                     <span class="bill-party">${bill.party || '—'}</span>
                     <span class="bill-desc">${bill.description}</span>
                     ${bill.tenderValue ? `<span class="bill-tender-meta">${fmtTaka(bill.tenderValue)} − ${toBn(bill.tenderPct)}%</span>` : ''}
-                    <span class="bill-due-date" style="color:${overdue ? 'var(--red)' : 'var(--muted)'}">Due: ${bill.dueDate}</span>
+                    <span class="bill-due-date" style="color:${overdue ? 'var(--red)' : 'var(--muted)'}">শেষ তারিখ: ${bill.dueDate}</span>
                 </div>
                 <span class="bill-amount">${fmtTaka(bill.amount)}</span>
             </div>
             <div class="bill-actions">
-                ${!isPaid ? `<button class="bill-pay-btn" data-index="${index}">✓ Mark Paid</button>` : ''}
+                ${!isPaid ? `<button class="bill-pay-btn" data-index="${index}">✓ পরিশোধ করুন</button>` : ''}
                 <button class="delete-btn" data-type="bills" data-index="${index}">×</button>
             </div>`;
         list.appendChild(li);
@@ -956,15 +953,15 @@ function renderEntitySummary() {
         });
     };
 
-    addEntities('labour', 'Labour', data.labour.map(item => item.name));
-    addEntities('engineer', 'Engineer', data.engineers.map(item => item.name));
+    addEntities('labour', 'শ্রমিক', data.labour.map(item => item.name));
+    addEntities('engineer', 'ইঞ্জিনিয়ার', data.engineers.map(item => item.name));
 
     // Materials: show unique buyer+material pairs
     const uniquePairs = Array.from(new Set(data.materials.map(i => `${i.buyer}||${i.materialName}`))).sort();
     uniquePairs.forEach(pair => {
         const [buyer, materialName] = pair.split('||');
         const li = document.createElement('li');
-        li.innerHTML = `<span class="entity-type-items"><span class="entity-tag">Material</span><span class="entity-name">${materialName}</span><span class="entity-buyer">${buyer}</span></span>`;
+        li.innerHTML = `<span class="entity-type-items"><span class="entity-tag">মালামাল</span><span class="entity-name">${materialName}</span><span class="entity-buyer">${buyer}</span></span>`;
         li.addEventListener('click', () => showMaterialDetails(buyer, materialName));
         list.appendChild(li);
     });
@@ -979,7 +976,7 @@ function showEntityDetails(type, name) {
 
 function showExpenseDetails(index) {
     const expense = data.expenses[index];
-    showDetails('Expense details', `Description: ${expense.description}\nDate: ${expense.date}\nAmount: ${fmtTaka(expense.amount)}`);
+    showDetails('খরচের বিবরণ', `বিবরণ: ${expense.description}\nতারিখ: ${expense.date}\nপরিমাণ: ${fmtTaka(expense.amount)}`);
 }
 
 function showTotalSpentDetails() {
@@ -1005,15 +1002,15 @@ function showTotalSpentDetails() {
     data.engineers.forEach(item => { totalSpent += item.amount; });
     data.expenses.forEach(item => { totalSpent += item.amount; });
 
-    html += section('Labour', data.labour.map(i => row(i.date, i.name, i.money)));
-    html += section('Materials', data.materials.map(i => row(i.date, `${i.buyer} / ${i.materialName}`, i.paid)));
-    html += section('Payments', data.payments.map(i => row(i.type, i.details || 'Cash', i.amount)));
-    html += section('Engineers', data.engineers.map(i => row(i.date, i.name, i.amount)));
-    html += section('Expenses', data.expenses.map(i => row(i.date, i.description, i.amount)));
+    html += section('শ্রমিক', data.labour.map(i => row(i.date, i.name, i.money)));
+    html += section('মালামাল', data.materials.map(i => row(i.date, `${i.buyer} / ${i.materialName}`, i.paid)));
+    html += section('পেমেন্ট', data.payments.map(i => row(i.type, i.details || 'নগদ', i.amount)));
+    html += section('ইঞ্জিনিয়ার', data.engineers.map(i => row(i.date, i.name, i.amount)));
+    html += section('অন্যান্য খরচ', data.expenses.map(i => row(i.date, i.description, i.amount)));
 
-    if (!html) html = '<p class="due-empty">No spending recorded yet.</p>';
-    html += `<div class="detail-total">Total Spent: ${fmtTaka(totalSpent)}</div>`;
-    showDetailsHTML('Total Money Spent', html);
+    if (!html) html = '<p class="due-empty">এখনো কোনো খরচ নেই।</p>';
+    html += `<div class="detail-total">মোট খরচ: ${fmtTaka(totalSpent)}</div>`;
+    showDetailsHTML('মোট খরচ', html);
 }
 
 function showTotalDueDetails() {
@@ -1021,7 +1018,7 @@ function showTotalDueDetails() {
     const items = data.materials.filter(item => item.due > 0);
     let html = '';
     if (!items.length) {
-        html = '<p class="due-empty">No outstanding due details found.</p>';
+        html = '<p class="due-empty">কোনো বাকি নেই।</p>';
     } else {
         items.forEach(item => {
             html += `<div class="due-item">
@@ -1029,12 +1026,12 @@ function showTotalDueDetails() {
                     <span class="due-date">${item.date}</span>
                     <span class="due-name">${item.buyer} / ${item.materialName}</span>
                 </div>
-                <span class="due-amount">Due ${fmtTaka(item.due)}</span>
+                <span class="due-amount">বাকি ${fmtTaka(item.due)}</span>
             </div>`;
         });
     }
-    html += `<div class="due-total">Total Due: ${fmtTaka(totalDue)}</div>`;
-    showDetailsHTML('Total Due', html);
+    html += `<div class="due-total">মোট বাকি: ${fmtTaka(totalDue)}</div>`;
+    showDetailsHTML('মোট বাকি', html);
 }
 
 function showDetailsHTML(title, htmlContent) {
@@ -1079,7 +1076,7 @@ function initSections() {
             btn.className = 'close-btn sec-close-btn';
             btn.type = 'button';
             btn.innerHTML = '✕';
-            btn.setAttribute('aria-label', 'Close section');
+            btn.setAttribute('aria-label', 'বন্ধ করুন');
             btn.addEventListener('click', () => {
                 el.classList.add('hidden');
                 document.querySelectorAll('.bnav-btn').forEach(b => b.classList.remove('active'));
@@ -1175,22 +1172,22 @@ function displayContracts() {
             ${contract.note ? `<span class="contract-note">${contract.note}</span>` : ''}
             <div class="contract-amounts">
                 <div class="contract-stat">
-                    <span class="contract-stat-label">Contract</span>
+                    <span class="contract-stat-label">চুক্তি</span>
                     <span class="contract-stat-value">${fmtTaka(contract.amount)}</span>
                 </div>
                 <div class="contract-stat">
-                    <span class="contract-stat-label">Paid</span>
+                    <span class="contract-stat-label">পরিশোধ</span>
                     <span class="contract-stat-value cstat-paid">${fmtTaka(paid)}</span>
                 </div>
                 <div class="contract-stat">
-                    <span class="contract-stat-label">Remaining</span>
+                    <span class="contract-stat-label">বাকি</span>
                     <span class="contract-stat-value cstat-remaining">${fmtTaka(remaining)}</span>
                 </div>
             </div>
             <div class="contract-bar-wrap">
                 <div class="contract-bar-fill" style="width:${pct.toFixed(0)}%"></div>
             </div>
-            <span class="contract-bar-label">${pct.toFixed(0)}% paid · ${contract.date}</span>`;
+            <span class="contract-bar-label">${pct.toFixed(0)}% পরিশোধ · ${contract.date}</span>`;
         list.appendChild(li);
     });
 
@@ -1219,17 +1216,17 @@ function updateSectionCards() {
     const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
 
     set('dashLabourTotal', fmtTaka(labourTotal));
-    set('dashLabourSub', toBn(data.labour.length) + ' entries');
+    set('dashLabourSub', data.labour.length + ' এন্ট্রি');
     set('dashMatTotal', fmtTaka(matPaid));
-    set('dashMatSub', matDue > 0 ? 'Due ' + fmtTaka(matDue) : 'No due');
+    set('dashMatSub', matDue > 0 ? 'বাকি ' + fmtTaka(matDue) : 'বাকি নেই');
     set('dashEngTotal', fmtTaka(engTotal));
-    set('dashEngSub', toBn(data.engineers.length) + ' entries');
+    set('dashEngSub', data.engineers.length + ' এন্ট্রি');
     set('dashExpTotal', fmtTaka(expTotal));
-    set('dashExpSub', toBn(data.expenses.length) + ' entries');
-    set('dashBillsTotal', toBn(pendingBills.length) + ' pending');
+    set('dashExpSub', data.expenses.length + ' এন্ট্রি');
+    set('dashBillsTotal', pendingBills.length + ' বাকি আছে');
     set('dashBillsSub', fmtTaka(billsTotal));
-    set('dashPeopleTotal', toBn(peopleCount) + ' people');
-    set('dashPeopleSub', toBn(data.materials.length) + ' materials');
+    set('dashPeopleTotal', peopleCount + ' জন');
+    set('dashPeopleSub', data.materials.length + ' মালামাল');
 
     const contracts = data.contracts || [];
     const contractRemaining = contracts.reduce((s, c) => {
@@ -1238,6 +1235,6 @@ function updateSectionCards() {
             .reduce((a, l) => a + (l.money || 0), 0);
         return s + Math.max(0, c.amount - paid);
     }, 0);
-    set('dashContractTotal', toBn(contracts.length) + ' contracts');
-    set('dashContractSub', fmtTaka(contractRemaining) + ' remaining');
+    set('dashContractTotal', contracts.length + ' চুক্তি');
+    set('dashContractSub', fmtTaka(contractRemaining) + ' বাকি');
 }

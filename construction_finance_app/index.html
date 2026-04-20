@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Road Construction</title>
+    <title>সড়ক নির্মাণ</title>
 
     <!-- PWA -->
     <link rel="manifest" href="manifest.json">
@@ -13,7 +13,7 @@
     <!-- iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Road Const">
+    <meta name="apple-mobile-web-app-title" content="সড়ক নির্মাণ">
     <link rel="apple-touch-icon" href="logo.png">
 
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Archivo:wght@700;900&display=swap" rel="stylesheet">
@@ -21,346 +21,347 @@
 </head>
 <body>
     <header class="app-header">
-        <img src="logo.png" alt="Road Construction Logo" class="app-logo">
-        <h1>Road Construction</h1>
+        <img src="logo.png" alt="সড়ক নির্মাণ লোগো" class="app-logo">
+        <h1>সড়ক নির্মাণ</h1>
         <span id="syncStatus" class="sync-status"></span>
     </header>
-    
+
     <div id="dashboard">
-        <h2>Dashboard</h2>
+        <h2>ড্যাশবোর্ড</h2>
         <div class="dashboard-stats">
             <div class="stat stat-clickable" id="totalSpentCard">
-                <h3>Total Money Spent</h3>
-                <p class="amount"><span id="totalSpent">৳ ০</span></p>
+                <h3>মোট খরচ</h3>
+                <p class="amount"><span id="totalSpent">৳ 0</span></p>
             </div>
             <div class="stat stat-clickable" id="totalDueCard">
-                <h3>Due from Govt</h3>
-                <p class="amount"><span id="totalDue">৳ ০</span></p>
+                <h3>সরকার থেকে পাওনা</h3>
+                <p class="amount"><span id="totalDue">৳ 0</span></p>
             </div>
         </div>
         <div class="cash-card" id="cashSummaryCard">
-            <div class="cash-card-title">Liquid Cash</div>
+            <div class="cash-card-title">নগদ টাকা</div>
             <div class="cash-row">
-                <span class="cash-label">Cash Added</span>
-                <span class="cash-val cash-in" id="cashTotalIn">৳ ০</span>
+                <span class="cash-label">যোগ হয়েছে</span>
+                <span class="cash-val cash-in" id="cashTotalIn">৳ 0</span>
             </div>
             <div class="cash-row">
-                <span class="cash-label">− Total Spent</span>
-                <span class="cash-val cash-out" id="cashTotalOut">৳ ০</span>
+                <span class="cash-label">− মোট খরচ</span>
+                <span class="cash-val cash-out" id="cashTotalOut">৳ 0</span>
             </div>
             <div class="cash-divider"></div>
             <div class="cash-row">
-                <span class="cash-label cash-balance-label" id="cashBalanceLabel">Balance</span>
-                <span class="cash-val cash-balance" id="cashBalance">৳ ০</span>
+                <span class="cash-label cash-balance-label" id="cashBalanceLabel">ব্যালেন্স</span>
+                <span class="cash-val cash-balance" id="cashBalance">৳ 0</span>
             </div>
         </div>
 
         <div class="pnl-card">
             <div class="pnl-row">
-                <span class="pnl-label pnl-govt-label">Total Bill (Income)</span>
-                <span class="pnl-amount pnl-govt" id="pnlGovtPayment">৳ ০</span>
+                <span class="pnl-label pnl-govt-label">মোট বিল (আয়)</span>
+                <span class="pnl-amount pnl-govt" id="pnlGovtPayment">৳ 0</span>
             </div>
             <div class="pnl-row">
-                <span class="pnl-label pnl-deduct-label">− Total Spent</span>
-                <span class="pnl-amount pnl-expense" id="pnlSpent">৳ ০</span>
+                <span class="pnl-label pnl-deduct-label">− মোট খরচ</span>
+                <span class="pnl-amount pnl-expense" id="pnlSpent">৳ 0</span>
             </div>
             <div class="pnl-divider"></div>
             <div class="pnl-row pnl-result-row">
-                <span class="pnl-label pnl-result-label" id="pnlResultLabel">Profit</span>
-                <span class="pnl-amount pnl-result" id="pnlResult">৳ ০</span>
+                <span class="pnl-label pnl-result-label" id="pnlResultLabel">লাভ</span>
+                <span class="pnl-amount pnl-result" id="pnlResult">৳ 0</span>
             </div>
         </div>
 
         <div class="section-cards">
             <div class="sec-card sec-labour" data-target="secLabour">
-                <span class="sec-card-label">Labour</span>
-                <span class="sec-card-total" id="dashLabourTotal">৳ ০</span>
-                <span class="sec-card-sub" id="dashLabourSub">০ entries</span>
+                <span class="sec-card-label">শ্রমিক</span>
+                <span class="sec-card-total" id="dashLabourTotal">৳ 0</span>
+                <span class="sec-card-sub" id="dashLabourSub">0 এন্ট্রি</span>
             </div>
             <div class="sec-card sec-materials" data-target="secMaterials">
-                <span class="sec-card-label">Materials</span>
-                <span class="sec-card-total" id="dashMatTotal">৳ ০</span>
-                <span class="sec-card-sub" id="dashMatSub">No due</span>
+                <span class="sec-card-label">মালামাল</span>
+                <span class="sec-card-total" id="dashMatTotal">৳ 0</span>
+                <span class="sec-card-sub" id="dashMatSub">বাকি নেই</span>
             </div>
             <div class="sec-card sec-engineer" data-target="secEngineer">
-                <span class="sec-card-label">Engineer</span>
-                <span class="sec-card-total" id="dashEngTotal">৳ ০</span>
-                <span class="sec-card-sub" id="dashEngSub">০ entries</span>
+                <span class="sec-card-label">ইঞ্জিনিয়ার</span>
+                <span class="sec-card-total" id="dashEngTotal">৳ 0</span>
+                <span class="sec-card-sub" id="dashEngSub">0 এন্ট্রি</span>
             </div>
             <div class="sec-card sec-expenses" data-target="secExpenses">
-                <span class="sec-card-label">Expenses</span>
-                <span class="sec-card-total" id="dashExpTotal">৳ ০</span>
-                <span class="sec-card-sub" id="dashExpSub">০ entries</span>
+                <span class="sec-card-label">খরচ</span>
+                <span class="sec-card-total" id="dashExpTotal">৳ 0</span>
+                <span class="sec-card-sub" id="dashExpSub">0 এন্ট্রি</span>
             </div>
             <div class="sec-card sec-bills" data-target="secBills">
-                <span class="sec-card-label">Bills</span>
-                <span class="sec-card-total" id="dashBillsTotal">০ pending</span>
-                <span class="sec-card-sub" id="dashBillsSub">৳ ০</span>
+                <span class="sec-card-label">বিল</span>
+                <span class="sec-card-total" id="dashBillsTotal">0 বাকি আছে</span>
+                <span class="sec-card-sub" id="dashBillsSub">৳ 0</span>
             </div>
             <div class="sec-card sec-people" data-target="secPeople">
-                <span class="sec-card-label">People</span>
-                <span class="sec-card-total" id="dashPeopleTotal">০ people</span>
-                <span class="sec-card-sub" id="dashPeopleSub">০ materials</span>
+                <span class="sec-card-label">লোকজন</span>
+                <span class="sec-card-total" id="dashPeopleTotal">0 জন</span>
+                <span class="sec-card-sub" id="dashPeopleSub">0 মালামাল</span>
             </div>
             <div class="sec-card sec-contract" data-target="secContract">
                 <span class="sec-card-label">চুক্তি</span>
-                <span class="sec-card-total" id="dashContractTotal">০ contracts</span>
-                <span class="sec-card-sub" id="dashContractSub">৳ ০ remaining</span>
+                <span class="sec-card-total" id="dashContractTotal">0 চুক্তি</span>
+                <span class="sec-card-sub" id="dashContractSub">৳ 0 বাকি</span>
             </div>
         </div>
         <div class="dashboard-actions">
-            <button id="exportDataBtn">⬇️ Export Data</button>
-            <button id="clearDataBtn">🗑️ Clear All Data</button>
+            <button id="exportDataBtn">⬇️ ডেটা রপ্তানি</button>
+            <button id="clearDataBtn">🗑️ সব মুছুন</button>
         </div>
     </div>
-    
+
     <div id="sections">
         <div class="section" id="secLabour">
-            <h3>Labour</h3>
+            <h3>শ্রমিক</h3>
             <form id="labourForm">
                 <div class="form-group">
-                    <label for="labourName">Labour Name</label>
+                    <label for="labourName">শ্রমিকের নাম</label>
                     <input type="text" id="labourName" required>
                 </div>
                 <div class="form-group">
-                    <label for="labourDate">Date</label>
+                    <label for="labourDate">তারিখ</label>
                     <input type="date" id="labourDate" required>
                 </div>
                 <div class="form-group">
-                    <label for="labourMoney">Amount (৳)</label>
+                    <label for="labourMoney">পরিমাণ (৳)</label>
                     <input type="number" id="labourMoney" step="0.01" required>
                 </div>
-                <button type="submit">Add Labour</button>
+                <button type="submit">শ্রমিক যোগ করুন</button>
             </form>
             <ul id="labourList"></ul>
         </div>
-        
+
         <div class="section" id="secMaterials">
-            <h3>Materials</h3>
+            <h3>মালামাল</h3>
             <div class="subsection">
-                <h4>Raw Materials</h4>
+                <h4>কাঁচামাল</h4>
                 <form id="materialForm">
                     <div class="form-group">
-                        <label for="buyerName">Buyer Name</label>
+                        <label for="buyerName">ক্রেতার নাম</label>
                         <input type="text" id="buyerName" required>
                     </div>
                     <div class="form-group">
-                        <label for="materialName">Raw Material Name</label>
+                        <label for="materialName">মালামালের নাম</label>
                         <input type="text" id="materialName" required>
                     </div>
                     <div class="form-group">
-                        <label for="materialDate">Date</label>
+                        <label for="materialDate">তারিখ</label>
                         <input type="date" id="materialDate" required>
                     </div>
                     <div class="form-group">
-                        <label for="billAmount">Bill Amount (৳)</label>
+                        <label for="billAmount">বিলের পরিমাণ (৳)</label>
                         <input type="number" id="billAmount" step="0.01" required>
                     </div>
                     <div class="form-group">
-                        <label for="quantity">Quantity</label>
+                        <label for="quantity">পরিমাণ/সংখ্যা</label>
                         <input type="text" id="quantity" required>
                     </div>
                     <div class="form-group">
-                        <label for="paidAmount">Paid Amount (৳)</label>
+                        <label for="paidAmount">পরিশোধিত (৳)</label>
                         <input type="number" id="paidAmount" step="0.01" required>
                     </div>
                     <div class="form-group">
-                        <label for="materialPaymentType">Payment Method</label>
+                        <label for="materialPaymentType">পেমেন্ট পদ্ধতি</label>
                         <select id="materialPaymentType">
-                            <option value="cash">Cash</option>
-                            <option value="bank">Bank Transfer</option>
+                            <option value="cash">নগদ</option>
+                            <option value="bank">ব্যাংক ট্রান্সফার</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="materialPaymentRef">Reference</label>
-                        <input type="text" id="materialPaymentRef" placeholder="Optional for cash">
+                        <label for="materialPaymentRef">রেফারেন্স</label>
+                        <input type="text" id="materialPaymentRef" placeholder="নগদের জন্য ঐচ্ছিক">
                     </div>
                     <div class="form-group">
-                        <label for="dueAmount">Due Amount (৳)</label>
+                        <label for="dueAmount">বাকি (৳)</label>
                         <input type="number" id="dueAmount" step="0.01" readonly>
                     </div>
-                    <button type="submit">Add Material</button>
+                    <button type="submit">মালামাল যোগ করুন</button>
                 </form>
             </div>
             <div class="subsection" style="display:none">
                 <form id="paymentForm">
-                    <button type="submit">Add Payment</button>
+                    <button type="submit">পেমেন্ট যোগ করুন</button>
                 </form>
             </div>
+            <ul id="materialList"></ul>
         </div>
-        
+
         <div class="section" id="secEngineer">
-            <h3>Engineer Dowry</h3>
+            <h3>ইঞ্জিনিয়ার ভাতা</h3>
             <form id="engineerForm">
                 <div class="form-group">
-                    <label for="engineerName">Engineer Name</label>
+                    <label for="engineerName">ইঞ্জিনিয়ারের নাম</label>
                     <input type="text" id="engineerName" required>
                 </div>
                 <div class="form-group">
-                    <label for="engineerDate">Date</label>
+                    <label for="engineerDate">তারিখ</label>
                     <input type="date" id="engineerDate" required>
                 </div>
                 <div class="form-group">
-                    <label for="engineerAmount">Amount (৳)</label>
+                    <label for="engineerAmount">পরিমাণ (৳)</label>
                     <input type="number" id="engineerAmount" step="0.01" required>
                 </div>
                 <div class="form-group">
-                    <label for="engineerPaymentType">Payment Type</label>
+                    <label for="engineerPaymentType">পেমেন্টের ধরন</label>
                     <select id="engineerPaymentType">
-                        <option value="cash">Cash</option>
-                        <option value="bank">Bank Transfer</option>
+                        <option value="cash">নগদ</option>
+                        <option value="bank">ব্যাংক ট্রান্সফার</option>
                     </select>
                 </div>
-                <button type="submit">Add Engineer Payment</button>
+                <button type="submit">পেমেন্ট যোগ করুন</button>
             </form>
             <ul id="engineerList"></ul>
         </div>
-        
+
         <div class="section" id="secExpenses">
-            <h3>Expenses</h3>
+            <h3>অন্যান্য খরচ</h3>
             <form id="expenseForm">
                 <div class="form-group">
-                    <label for="expenseDescription">Description</label>
+                    <label for="expenseDescription">বিবরণ</label>
                     <input type="text" id="expenseDescription" required>
                 </div>
                 <div class="form-group">
-                    <label for="expenseDate">Date</label>
+                    <label for="expenseDate">তারিখ</label>
                     <input type="date" id="expenseDate" required>
                 </div>
                 <div class="form-group">
-                    <label for="expenseAmount">Amount (৳)</label>
+                    <label for="expenseAmount">পরিমাণ (৳)</label>
                     <input type="number" id="expenseAmount" step="0.01" required>
                 </div>
-                <button type="submit">Add Expense</button>
+                <button type="submit">খরচ যোগ করুন</button>
             </form>
             <ul id="expenseList"></ul>
         </div>
         <div class="section" id="secBills">
-            <h3>Bills to Pay</h3>
+            <h3>পরিশোধযোগ্য বিল</h3>
             <form id="billForm">
                 <div class="form-group">
-                    <label for="billCategory">Category</label>
+                    <label for="billCategory">ক্যাটাগরি</label>
                     <select id="billCategory">
-                        <option value="govt">Govt Fees</option>
-                        <option value="lged">LGED Office Fees</option>
-                        <option value="tender">Tender Drop</option>
-                        <option value="other">Other</option>
+                        <option value="govt">সরকারি ফি</option>
+                        <option value="lged">এলজিইডি অফিস ফি</option>
+                        <option value="tender">টেন্ডার ড্রপ</option>
+                        <option value="other">অন্যান্য</option>
                     </select>
                 </div>
                 <div class="form-group hidden" id="tenderValueGroup">
-                    <label for="tenderValue" id="tenderValueLabel">Base Value (৳)</label>
-                    <input type="number" id="tenderValue" step="0.01" placeholder="Tender amount">
+                    <label for="tenderValue" id="tenderValueLabel">মূল মান (৳)</label>
+                    <input type="number" id="tenderValue" step="0.01" placeholder="টেন্ডারের পরিমাণ">
                 </div>
                 <div class="form-group hidden" id="tenderPctGroup">
-                    <label for="tenderPct">Percentage (%)</label>
-                    <input type="number" id="tenderPct" step="0.01" min="0" max="100" placeholder="e.g. 2">
+                    <label for="tenderPct">শতাংশ (%)</label>
+                    <input type="number" id="tenderPct" step="0.01" min="0" max="100" placeholder="যেমন: 2">
                 </div>
                 <div class="form-group">
-                    <label for="billPartyInput">Party / Vendor</label>
-                    <input type="text" id="billPartyInput" placeholder="Name or company">
+                    <label for="billPartyInput">পার্টি / ভেন্ডর</label>
+                    <input type="text" id="billPartyInput" placeholder="নাম বা প্রতিষ্ঠান">
                 </div>
                 <div class="form-group">
-                    <label for="billDescription">Description</label>
+                    <label for="billDescription">বিবরণ</label>
                     <input type="text" id="billDescription" required>
                 </div>
                 <div class="form-group">
-                    <label for="billAmountInput">Amount (৳)</label>
+                    <label for="billAmountInput">পরিমাণ (৳)</label>
                     <input type="number" id="billAmountInput" step="0.01" required>
                 </div>
                 <div class="form-group">
-                    <label for="billDueDate">Due Date</label>
+                    <label for="billDueDate">শেষ তারিখ</label>
                     <input type="date" id="billDueDate" required>
                 </div>
-                <button type="submit">Add Bill</button>
+                <button type="submit">বিল যোগ করুন</button>
             </form>
             <ul id="billList"></ul>
             <div class="subsection gotbill-sub">
-                <h4>Received from Govt</h4>
+                <h4>সরকার থেকে প্রাপ্ত</h4>
                 <form id="gotBillForm">
                     <div class="form-group">
-                        <label for="gotBillDesc">Description</label>
-                        <input type="text" id="gotBillDesc" placeholder="e.g. 1st installment">
+                        <label for="gotBillDesc">বিবরণ</label>
+                        <input type="text" id="gotBillDesc" placeholder="যেমন: ১ম কিস্তি">
                     </div>
                     <div class="form-group">
-                        <label for="gotBillAmount">Amount (৳)</label>
+                        <label for="gotBillAmount">পরিমাণ (৳)</label>
                         <input type="number" id="gotBillAmount" step="0.01" required>
                     </div>
                     <div class="form-group">
-                        <label for="gotBillDate">Date</label>
+                        <label for="gotBillDate">তারিখ</label>
                         <input type="date" id="gotBillDate" required>
                     </div>
-                    <button type="submit">Add Received</button>
+                    <button type="submit">প্রাপ্তি যোগ করুন</button>
                 </form>
                 <ul id="gotBillList"></ul>
             </div>
         </div>
         <div class="section" id="secPeople">
-            <h3>People & Materials</h3>
-            <p class="entity-help"><a href="#entityList" id="entityHelpLink">Click any name below to view all related details.</a></p>
+            <h3>লোকজন ও মালামাল</h3>
+            <p class="entity-help"><a href="#entityList" id="entityHelpLink">নামে ক্লিক করুন বিস্তারিত দেখতে।</a></p>
             <ul id="entityList"></ul>
         </div>
         <div class="section" id="secCash">
-            <h3>Liquid Cash</h3>
+            <h3>নগদ টাকা</h3>
             <form id="cashForm">
                 <div class="form-group">
-                    <label for="cashDescription">Description</label>
-                    <input type="text" id="cashDescription" placeholder="e.g. Initial capital" required>
+                    <label for="cashDescription">বিবরণ</label>
+                    <input type="text" id="cashDescription" placeholder="যেমন: প্রাথমিক মূলধন" required>
                 </div>
                 <div class="form-group">
-                    <label for="cashAmount">Amount (৳)</label>
+                    <label for="cashAmount">পরিমাণ (৳)</label>
                     <input type="number" id="cashAmount" step="0.01" required>
                 </div>
                 <div class="form-group">
-                    <label for="cashDate">Date</label>
+                    <label for="cashDate">তারিখ</label>
                     <input type="date" id="cashDate" required>
                 </div>
-                <button type="submit">Add Money</button>
+                <button type="submit">টাকা যোগ করুন</button>
             </form>
             <ul id="cashList"></ul>
         </div>
 
         <div class="section" id="secContract">
-            <h3>চুক্তি (Contract)</h3>
+            <h3>চুক্তি</h3>
             <form id="contractForm">
                 <div class="form-group">
-                    <label for="contractName">Person / Party Name</label>
+                    <label for="contractName">ব্যক্তি / পার্টির নাম</label>
                     <input type="text" id="contractName" required>
                 </div>
                 <div class="form-group">
-                    <label for="contractAmount">Contract Amount (৳)</label>
+                    <label for="contractAmount">চুক্তির পরিমাণ (৳)</label>
                     <input type="number" id="contractAmount" step="0.01" required>
                 </div>
                 <div class="form-group">
-                    <label for="contractDate">Date</label>
+                    <label for="contractDate">তারিখ</label>
                     <input type="date" id="contractDate" required>
                 </div>
                 <div class="form-group">
-                    <label for="contractNote">Note (optional)</label>
-                    <input type="text" id="contractNote" placeholder="Work description">
+                    <label for="contractNote">নোট (ঐচ্ছিক)</label>
+                    <input type="text" id="contractNote" placeholder="কাজের বিবরণ">
                 </div>
-                <button type="submit">Add Contract</button>
+                <button type="submit">চুক্তি যোগ করুন</button>
             </form>
             <ul id="contractList"></ul>
         </div>
         <div class="section details-card hidden" id="detailPanel">
             <div class="details-header">
-                <h3 id="detailsTitle">Details</h3>
-                <button id="closeDetailsBtn" class="close-btn" type="button" aria-label="Close details">✕</button>
+                <h3 id="detailsTitle">বিস্তারিত</h3>
+                <button id="closeDetailsBtn" class="close-btn" type="button" aria-label="বন্ধ করুন">✕</button>
             </div>
             <pre id="detailsContent"></pre>
         </div>
     </div>
-    
+
     <!-- Export Modal -->
     <div id="exportModal" class="modal-overlay hidden">
         <div class="modal-box">
             <div class="modal-header">
-                <h3>Export Data</h3>
+                <h3>ডেটা রপ্তানি</h3>
                 <button id="closeExportModal" class="close-btn" type="button">✕</button>
             </div>
 
             <div class="modal-section">
-                <p class="modal-label">Format</p>
+                <p class="modal-label">ফরম্যাট</p>
                 <div class="format-btns">
                     <button class="format-btn active" data-format="json">JSON</button>
                     <button class="format-btn" data-format="csv">Sheet (CSV)</button>
@@ -369,17 +370,17 @@
             </div>
 
             <div class="modal-section">
-                <p class="modal-label">Categories</p>
+                <p class="modal-label">বিভাগ</p>
                 <div class="category-checks">
-                    <label><input type="checkbox" value="labour" checked> Labour</label>
-                    <label><input type="checkbox" value="materials" checked> Materials</label>
-                    <label><input type="checkbox" value="engineers" checked> Engineer Dowry</label>
-                    <label><input type="checkbox" value="expenses" checked> Expenses</label>
+                    <label><input type="checkbox" value="labour" checked> শ্রমিক</label>
+                    <label><input type="checkbox" value="materials" checked> মালামাল</label>
+                    <label><input type="checkbox" value="engineers" checked> ইঞ্জিনিয়ার ভাতা</label>
+                    <label><input type="checkbox" value="expenses" checked> অন্যান্য খরচ</label>
                 </div>
             </div>
 
             <div class="modal-section">
-                <p class="modal-label">Date Range <span class="modal-hint">(optional)</span></p>
+                <p class="modal-label">তারিখ পরিসর <span class="modal-hint">(ঐচ্ছিক)</span></p>
                 <div class="date-range-row">
                     <input type="date" id="exportFrom">
                     <span>—</span>
@@ -387,18 +388,18 @@
                 </div>
             </div>
 
-            <button id="doExportBtn" class="export-go-btn">⬇ Export</button>
+            <button id="doExportBtn" class="export-go-btn">⬇ রপ্তানি</button>
         </div>
     </div>
 
     <footer>
-        <p>Road Construction Finance Management App — powered by Firebase</p>
+        <p>সড়ক নির্মাণ আর্থিক ব্যবস্থাপনা — Firebase দ্বারা চালিত</p>
     </footer>
 
     <!-- Update Banner -->
     <div id="updateBanner" class="update-banner">
-        <span class="update-banner-text">New version available!</span>
-        <button id="updateNowBtn" class="update-now-btn">Update Now</button>
+        <span class="update-banner-text">নতুন ভার্সন পাওয়া গেছে!</span>
+        <button id="updateNowBtn" class="update-now-btn">আপডেট করুন</button>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -422,7 +423,6 @@
                 }
             });
 
-            // When the new SW takes control, reload to get fresh content
             navigator.serviceWorker.addEventListener('controllerchange', () => {
                 window.location.reload();
             });
@@ -433,7 +433,6 @@
                         showUpdateBanner(reg.waiting);
                     }
                 }
-                // New SW found while page is open
                 reg.addEventListener('updatefound', () => {
                     const newWorker = reg.installing;
                     newWorker.addEventListener('statechange', () => {
@@ -442,9 +441,7 @@
                         }
                     });
                 });
-                // SW already waiting on load
                 checkForWaiting();
-                // Re-check every time user comes back to the app
                 document.addEventListener('visibilitychange', () => {
                     if (document.visibilityState === 'visible') {
                         reg.update().then(checkForWaiting);
@@ -456,28 +453,28 @@
 
     <nav class="bottom-nav" id="bottomNav">
         <button class="bnav-btn" data-target="dashboard">
-            <span class="bnav-label">Dashboard</span>
+            <span class="bnav-label">ড্যাশবোর্ড</span>
         </button>
         <button class="bnav-btn" data-target="secLabour">
-            <span class="bnav-label">Labour</span>
+            <span class="bnav-label">শ্রমিক</span>
         </button>
         <button class="bnav-btn" data-target="secMaterials">
-            <span class="bnav-label">Materials</span>
+            <span class="bnav-label">মালামাল</span>
         </button>
         <button class="bnav-btn" data-target="secEngineer">
-            <span class="bnav-label">Engineer</span>
+            <span class="bnav-label">ইঞ্জিনিয়ার</span>
         </button>
         <button class="bnav-btn" data-target="secExpenses">
-            <span class="bnav-label">Expenses</span>
+            <span class="bnav-label">খরচ</span>
         </button>
         <button class="bnav-btn" data-target="secBills">
-            <span class="bnav-label">Bills</span>
+            <span class="bnav-label">বিল</span>
         </button>
         <button class="bnav-btn" data-target="secPeople">
-            <span class="bnav-label">People</span>
+            <span class="bnav-label">লোকজন</span>
         </button>
         <button class="bnav-btn" data-target="secCash">
-            <span class="bnav-label">Cash</span>
+            <span class="bnav-label">নগদ</span>
         </button>
         <button class="bnav-btn" data-target="secContract">
             <span class="bnav-label">চুক্তি</span>

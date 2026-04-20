@@ -114,6 +114,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.getElementById('doExportBtn').addEventListener('click', runExport);
 
+    // Cash In form
+    document.getElementById('cashForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const description = document.getElementById('cashDescription').value.trim();
+        const amount = parseFloat(document.getElementById('cashAmount').value);
+        const date   = document.getElementById('cashDate').value;
+        if (!description || !date || isNaN(amount) || amount <= 0) {
+            alert('Please enter valid data.');
+            return;
+        }
+        data.cashIn.push({ description, amount, date });
+        saveData();
+        displayCash();
+        updateDashboard();
+        this.reset();
+    });
+
     // Contract form
     document.getElementById('contractForm').addEventListener('submit', function(e) {
         e.preventDefault();
@@ -252,7 +269,8 @@ let data = {
     engineers: [],
     expenses: [],
     bills: [],
-    contracts: []
+    contracts: [],
+    cashIn: []
 };
 
 const toArr = v => !v ? [] : Array.isArray(v) ? v : Object.values(v);
@@ -285,6 +303,7 @@ function loadData() {
                     expenses:  toArr(val.expenses),
                     bills:     toArr(val.bills),
                     contracts: toArr(val.contracts),
+                    cashIn:    toArr(val.cashIn),
                 };
                 localStorage.setItem(DATABASE_KEY, JSON.stringify(data));
             }
@@ -504,6 +523,7 @@ function displayData() {
     displayExpenses();
     displayBills();
     displayContracts();
+    displayCash();
     renderEntitySummary();
     
     // Add delete event listeners
@@ -524,6 +544,8 @@ function deleteItem(type, index) {
         data.bills.splice(index, 1);
     } else if (type === 'contracts') {
         data.contracts.splice(index, 1);
+    } else if (type === 'cashIn') {
+        data.cashIn.splice(index, 1);
     } else if (data[type]) {
         data[type].splice(index, 1);
     }
@@ -665,6 +687,18 @@ function updateDashboard() {
 
     const fmt = n => '$' + Math.abs(n).toLocaleString(undefined, { minimumFractionDigits: 2 });
     const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+
+    // Liquid cash
+    const totalCashIn = (data.cashIn || []).reduce((s, c) => s + (c.amount || 0), 0);
+    const cashBalance = totalCashIn - totalSpent;
+    const cashPositive = cashBalance >= 0;
+    set('cashTotalIn',  fmt(totalCashIn));
+    set('cashTotalOut', fmt(totalSpent));
+    set('cashBalance',  (cashPositive ? '' : '-') + fmt(cashBalance));
+    const cashBalEl  = document.getElementById('cashBalance');
+    const cashLabEl  = document.getElementById('cashBalanceLabel');
+    if (cashBalEl) cashBalEl.className = 'cash-val cash-balance ' + (cashPositive ? 'cash-pos' : 'cash-neg');
+    if (cashLabEl) cashLabEl.className = 'cash-label cash-balance-label ' + (cashPositive ? 'cash-pos' : 'cash-neg');
 
     set('pnlTender',      fmt(tenderTotal));
     set('pnlGovt',        fmt(govtTotal));
@@ -988,7 +1022,7 @@ function showDetails(title, content) {
     }
 }
 
-const SECTION_IDS = ['secLabour', 'secMaterials', 'secEngineer', 'secExpenses', 'secBills', 'secPeople', 'secContract'];
+const SECTION_IDS = ['secLabour', 'secMaterials', 'secEngineer', 'secExpenses', 'secBills', 'secPeople', 'secCash', 'secContract'];
 
 function initSections() {
     SECTION_IDS.forEach(id => {
@@ -1029,6 +1063,29 @@ function openSection(id) {
     el.classList.remove('hidden');
     document.querySelector(`.bnav-btn[data-target="${id}"]`)?.classList.add('active');
     setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 40);
+}
+
+function displayCash() {
+    const list = document.getElementById('cashList');
+    if (!list) return;
+    list.innerHTML = '';
+    (data.cashIn || []).forEach((item, index) => {
+        const li = document.createElement('li');
+        li.className = 'record-card record-cash';
+        li.innerHTML = `
+            <div class="record-left">
+                <span class="record-name">${item.description}</span>
+                <span class="record-date">${item.date}</span>
+            </div>
+            <div class="record-right">
+                <span class="record-amount">$${Number(item.amount).toLocaleString()}</span>
+                <button class="delete-btn" data-type="cashIn" data-index="${index}">×</button>
+            </div>`;
+        li.querySelector('.delete-btn').addEventListener('click', function() {
+            deleteItem('cashIn', parseInt(this.dataset.index));
+        });
+        list.appendChild(li);
+    });
 }
 
 function displayContracts() {

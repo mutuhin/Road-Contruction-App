@@ -38,6 +38,23 @@
                 <p class="amount">$<span id="totalDue">0</span></p>
             </div>
         </div>
+        <div class="cash-card" id="cashSummaryCard">
+            <div class="cash-card-title">Liquid Cash</div>
+            <div class="cash-row">
+                <span class="cash-label">Cash Added</span>
+                <span class="cash-val cash-in" id="cashTotalIn">$0</span>
+            </div>
+            <div class="cash-row">
+                <span class="cash-label">− Total Spent</span>
+                <span class="cash-val cash-out" id="cashTotalOut">$0</span>
+            </div>
+            <div class="cash-divider"></div>
+            <div class="cash-row">
+                <span class="cash-label cash-balance-label" id="cashBalanceLabel">Balance</span>
+                <span class="cash-val cash-balance" id="cashBalance">$0</span>
+            </div>
+        </div>
+
         <div class="pnl-card">
             <div class="pnl-row">
                 <span class="pnl-label">Tender Drop</span>
@@ -276,6 +293,26 @@
             <p class="entity-help"><a href="#entityList" id="entityHelpLink">Click any name below to view all related details.</a></p>
             <ul id="entityList"></ul>
         </div>
+        <div class="section" id="secCash">
+            <h3>Liquid Cash</h3>
+            <form id="cashForm">
+                <div class="form-group">
+                    <label for="cashDescription">Description</label>
+                    <input type="text" id="cashDescription" placeholder="e.g. Initial capital" required>
+                </div>
+                <div class="form-group">
+                    <label for="cashAmount">Amount ($)</label>
+                    <input type="number" id="cashAmount" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="cashDate">Date</label>
+                    <input type="date" id="cashDate" required>
+                </div>
+                <button type="submit">Add Money</button>
+            </form>
+            <ul id="cashList"></ul>
+        </div>
+
         <div class="section" id="secContract">
             <h3>চুক্তি (Contract)</h3>
             <form id="contractForm">
@@ -432,6 +469,9 @@
         </button>
         <button class="bnav-btn" data-target="secPeople">
             <span class="bnav-label">People</span>
+        </button>
+        <button class="bnav-btn" data-target="secCash">
+            <span class="bnav-label">Cash</span>
         </button>
         <button class="bnav-btn" data-target="secContract">
             <span class="bnav-label">চুক্তি</span>

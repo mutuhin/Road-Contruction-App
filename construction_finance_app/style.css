@@ -1113,6 +1113,67 @@ footer {
     box-shadow: none;
 }
 
+/* ── Liquid Cash Card ────────────────────────────── */
+.cash-card {
+    margin: 0 16px 14px;
+    background: #1e3a5f;
+    border-radius: 12px;
+    padding: 14px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    box-shadow: 0 4px 16px rgba(26,35,50,.18);
+}
+
+.cash-card-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: rgba(147,197,253,.7);
+    margin-bottom: 2px;
+}
+
+.cash-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cash-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(250,246,236,.5);
+}
+
+.cash-val {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 900;
+    font-size: 1.05em;
+}
+
+.cash-in  { color: #86efac; }
+.cash-out { color: #fca5a5; font-size: 0.95em; }
+
+.cash-divider {
+    height: 1px;
+    background: rgba(147,197,253,.2);
+    margin: 2px 0;
+}
+
+.cash-balance-label { font-size: 12px; font-weight: 700; }
+.cash-balance { font-size: 1.5em; }
+.cash-pos { color: #86efac; }
+.cash-neg { color: #fca5a5; }
+
+.record-cash {
+    background: #dbeafe;
+    border-left-color: #1d4ed8;
+}
+.record-cash .record-amount { color: #1d4ed8; }
+
 /* ── P&L Summary Card ────────────────────────────── */
 .pnl-card {
     margin: 0 16px 18px;

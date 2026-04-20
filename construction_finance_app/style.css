@@ -563,33 +563,49 @@ li:last-child {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 14px;
-    border-bottom: 1px dashed var(--line2);
-    border-left: 4px solid transparent;
-    border-radius: 0;
+    padding: 14px 16px;
+    margin: 6px 10px;
+    border-radius: 8px;
+    border: none;
+    border-left: 5px solid transparent;
     cursor: pointer;
-    transition: background-color 0.15s;
+    transition: transform 0.12s, box-shadow 0.12s;
     flex-direction: row;
     gap: 0;
+    box-shadow: 0 1px 4px rgba(26,35,50,.08);
 }
 
 .record-card:hover {
-    background-color: var(--line2);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(26,35,50,.13);
 }
 
-.record-labour  { border-left-color: var(--green); }
-.record-engineer { border-left-color: var(--blue); }
-.record-expense  { border-left-color: var(--red); }
+.record-card:last-child {
+    border-bottom: none;
+}
+
+.record-labour  {
+    background: var(--green2);
+    border-left-color: var(--green);
+}
+.record-engineer {
+    background: var(--blue2);
+    border-left-color: var(--blue);
+}
+.record-expense  {
+    background: var(--red2);
+    border-left-color: var(--red);
+}
 
 .record-left {
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 4px;
 }
 
 .record-name {
     font-weight: 700;
-    font-size: 1em;
+    font-size: 1.05em;
     color: var(--ink);
 }
 
@@ -603,15 +619,16 @@ li:last-child {
 .record-right {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     flex-shrink: 0;
 }
 
 .record-amount {
     font-family: 'Archivo', sans-serif;
     font-weight: 900;
-    font-size: 1.5em;
-    letter-spacing: -0.02em;
+    font-size: 1.8em;
+    letter-spacing: -0.03em;
+    line-height: 1;
 }
 
 .record-labour  .record-amount { color: var(--green); }

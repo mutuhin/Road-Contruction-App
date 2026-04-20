@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Road Construction Finance App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Archivo:wght@700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Road Construction Finance Management</h1>
+    
+    <div id="dashboard">
+        <h2>Dashboard</h2>
+        <div class="dashboard-stats">
+            <div class="stat stat-clickable" id="totalSpentCard">
+                <h3>Total Money Spent</h3>
+                <p class="amount">$<span id="totalSpent">0</span></p>
+            </div>
+            <div class="stat stat-clickable" id="totalDueCard">
+                <h3>Total Due</h3>
+                <p class="amount">$<span id="totalDue">0</span></p>
+            </div>
+        </div>
+        <div class="dashboard-actions">
+            <button id="exportDataBtn">⬇️ Export Data</button>
+            <button id="clearDataBtn">🗑️ Clear All Data</button>
+        </div>
+    </div>
+    
+    <div id="sections">
+        <div class="section">
+            <h3>Labour</h3>
+            <form id="labourForm">
+                <div class="form-group">
+                    <label for="labourName">Labour Name</label>
+                    <input type="text" id="labourName" required>
+                </div>
+                <div class="form-group">
+                    <label for="labourDate">Date</label>
+                    <input type="date" id="labourDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="labourMoney">Amount ($)</label>
+                    <input type="number" id="labourMoney" step="0.01" required>
+                </div>
+                <button type="submit">Add Labour</button>
+            </form>
+            <ul id="labourList"></ul>
+        </div>
+        
+        <div class="section">
+            <h3>Materials & Payments</h3>
+            <div class="subsection">
+                <h4>Raw Materials</h4>
+                <form id="materialForm">
+                    <div class="form-group">
+                        <label for="buyerName">Buyer Name</label>
+                        <input type="text" id="buyerName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="materialName">Raw Material Name</label>
+                        <input type="text" id="materialName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="materialDate">Date</label>
+                        <input type="date" id="materialDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="billAmount">Bill Amount ($)</label>
+                        <input type="number" id="billAmount" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="quantity">Quantity</label>
+                        <input type="text" id="quantity" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="paidAmount">Paid Amount ($)</label>
+                        <input type="number" id="paidAmount" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="dueAmount">Due Amount ($)</label>
+                        <input type="number" id="dueAmount" step="0.01" readonly>
+                    </div>
+                    <button type="submit">Add Material</button>
+                </form>
+                <ul id="materialList"></ul>
+            </div>
+            <div class="subsection">
+                <h4>Payments</h4>
+                <form id="paymentForm">
+                    <div class="form-group">
+                        <label for="paymentType">Payment Type</label>
+                        <select id="paymentType">
+                            <option value="bank">Bank Transfer</option>
+                            <option value="cash">Cash</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="paymentDetails">Details</label>
+                        <input type="text" id="paymentDetails" placeholder="Cheque/NPSB/Number (optional for cash)">
+                    </div>
+                    <div class="form-group">
+                        <label for="paymentAmount">Amount ($)</label>
+                        <input type="number" id="paymentAmount" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="paymentImage">Receipt Image (optional)</label>
+                        <input type="file" id="paymentImage" accept="image/*">
+                    </div>
+                    <button type="submit">Add Payment</button>
+                </form>
+                <ul id="paymentList"></ul>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h3>Engineer Dowry</h3>
+            <form id="engineerForm">
+                <div class="form-group">
+                    <label for="engineerName">Engineer Name</label>
+                    <input type="text" id="engineerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="engineerDate">Date</label>
+                    <input type="date" id="engineerDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="engineerAmount">Amount ($)</label>
+                    <input type="number" id="engineerAmount" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="engineerPaymentType">Payment Type</label>
+                    <select id="engineerPaymentType">
+                        <option value="cash">Cash</option>
+                        <option value="bank">Bank Transfer</option>
+                    </select>
+                </div>
+                <button type="submit">Add Engineer Payment</button>
+            </form>
+            <ul id="engineerList"></ul>
+        </div>
+        
+        <div class="section">
+            <h3>Expenses</h3>
+            <form id="expenseForm">
+                <div class="form-group">
+                    <label for="expenseDescription">Description</label>
+                    <input type="text" id="expenseDescription" required>
+                </div>
+                <div class="form-group">
+                    <label for="expenseDate">Date</label>
+                    <input type="date" id="expenseDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="expenseAmount">Amount ($)</label>
+                    <input type="number" id="expenseAmount" step="0.01" required>
+                </div>
+                <button type="submit">Add Expense</button>
+            </form>
+            <ul id="expenseList"></ul>
+        </div>
+        <div class="section">
+            <h3>People & Materials</h3>
+            <p class="entity-help"><a href="#entityList" id="entityHelpLink">Click any name below to view all related details.</a></p>
+            <ul id="entityList"></ul>
+        </div>
+        <div class="section details-card hidden" id="detailPanel">
+            <div class="details-header">
+                <h3 id="detailsTitle">Details</h3>
+                <button id="closeDetailsBtn" class="delete" type="button" aria-label="Close details">✕</button>
+            </div>
+            <pre id="detailsContent"></pre>
+        </div>
+    </div>
+    
+    <footer>
+        <p>Road Construction Finance Management App - Data saved locally in your browser</p>
+    </footer>
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

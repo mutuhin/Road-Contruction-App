@@ -192,13 +192,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (cat !== 'tender' && cat !== 'govt' && cat !== 'lged') return;
         const v = parseFloat(tenderValueEl.value) || 0;
         const p = parseFloat(tenderPctEl.value) || 0;
-        if (cat === 'tender') {
-            // Income: full value minus the dropped percentage
-            billAmtEl.value = (v - (v * p / 100)).toFixed(2);
-        } else {
-            // Deduction: only the percentage amount is charged
-            billAmtEl.value = (v * p / 100).toFixed(2);
-        }
+        billAmtEl.value = (v - (v * p / 100)).toFixed(2);
     }
     billCatEl.addEventListener('change', updateBillForm);
     tenderValueEl.addEventListener('input', calcTenderAmt);

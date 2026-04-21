@@ -705,10 +705,14 @@ function updateDashboard() {
     data.expenses.forEach(item => totalSpent += (item.amount || 0));
 
     const bills = data.bills || [];
-    const tenderTotal = bills.filter(b => b.cat === 'tender').reduce((s, b) => s + (b.amount || 0), 0);
-    const govtTotal   = bills.filter(b => b.cat === 'govt').reduce((s, b) => s + (b.amount || 0), 0);
-    const lgedTotal   = bills.filter(b => b.cat === 'lged').reduce((s, b) => s + (b.amount || 0), 0);
-    const govtPayment = tenderTotal - govtTotal - lgedTotal;
+    const tenderBills = bills.filter(b => b.cat === 'tender');
+    const govtBills   = bills.filter(b => b.cat === 'govt');
+    const lgedBills   = bills.filter(b => b.cat === 'lged');
+    const tenderTotal = tenderBills.reduce((s, b) => s + (b.amount || 0), 0);
+    const govtTotal   = govtBills.reduce((s, b) => s + (b.amount || 0), 0);
+    const lgedTotal   = lgedBills.reduce((s, b) => s + (b.amount || 0), 0);
+    // Final income = last step in the chain: LGED → Govt → Tender
+    const govtPayment = lgedBills.length ? lgedTotal : govtBills.length ? govtTotal : tenderTotal;
     const profit = govtPayment - totalSpent;
     const isProfit = profit >= 0;
 
